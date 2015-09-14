@@ -1,0 +1,5 @@
+#include "NSDictionaryMerge.xcconfig"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/NSDictionaryMerge" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/KMSClient" "${PODS_ROOT}/Headers/Public/MTLJSONAdapterWithoutNil" "${PODS_ROOT}/Headers/Public/Mantle" "${PODS_ROOT}/Headers/Public/NSDictionaryMerge" "${PODS_ROOT}/Headers/Public/RACSRWebSocket" "${PODS_ROOT}/Headers/Public/ReactiveCocoa" "${PODS_ROOT}/Headers/Public/SocketRocket" "${PODS_ROOT}/Headers/Public/libjingle_peerconnection"
+PODS_ROOT = ${SRCROOT}
+SKIP_INSTALL = YES

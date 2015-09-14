@@ -1,0 +1,1 @@
+../../../MTLJSONAdapterWithoutNil/Classes/MTLJSONAdapterWithoutNil.h
