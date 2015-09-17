@@ -33,12 +33,13 @@
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <RACSRWebSocket/RACSRWebSocket.h>
-#import <KMSClient/KMSAPIService.h>
+#import <KMSClient/KMSSession.h>
 #import <KMSClient/KMSMediaPipeline.h>
 #import <KMSClient/KMSWebRTCEndpoint.h>
 #import <KMSClient/KMSRequestMessageFactory.h>
 #import <KMSClient/KMSICECandidate.h>
 #import <KMSClient/KMSLog.h>
+#import <KMSClient/KMSMediaPipeline.h>
 #import "KMSWebRTCCall.h"
 
 
@@ -56,13 +57,16 @@
 @end
 
 
-static NSString * const KMS_URL = @"KURENTO_URL";
+static NSString * const KMS_URL = @"ws://192.168.2.13:8888/kurento";
 
 
 @interface RootViewController () <CallViewControllerDelegate,KMSWebRTCCallDataSource,KMSWebRTCCallDelegate>
+@property (weak, nonatomic) IBOutlet UIButton *callButton;
 
 @property(strong,nonatomic,readwrite) KMSWebRTCCall *webRTCCall;
 @property(weak,nonatomic,readwrite) CallViewController *callViewController;
+@property(strong,nonatomic,readwrite) KMSMediaPipeline *mediaPipeline;
+@property(strong,nonatomic,readwrite) KMSSession *kmsAPIService;
 
 @end
 
@@ -94,6 +98,8 @@ static NSString * const KMS_URL = @"KURENTO_URL";
 
 -(void)initialize{
     [[KMSLog sharedInstance] setLogger:[[KurentoLogger alloc] init]];
+    RACSRWebSocket *wsClient = [[RACSRWebSocket alloc] initWithURL:[NSURL URLWithString:KMS_URL]];
+    _kmsAPIService = [KMSSession sessionWithWebSocketClient:wsClient];
 }
 
 -(void)setupControls{
@@ -104,10 +110,33 @@ static NSString * const KMS_URL = @"KURENTO_URL";
     
 }
 
-- (void)viewDidLoad {
+-(void)initializeMediaPipeline{
+    [_callButton setEnabled:NO];
+    KMSMessageFactoryMediaPipeline *mediaPipelineMessageFactory = [[KMSMessageFactoryMediaPipeline alloc] init];
+    _mediaPipeline = [KMSMediaPipeline pipelineWithKurentoSession:_kmsAPIService messageFactory:mediaPipelineMessageFactory];
+    [mediaPipelineMessageFactory setDataSource:_mediaPipeline];
+    @weakify(self);
+    [[_mediaPipeline create] subscribeError:^(NSError *error) {
+        NSLog(@"error creating meda pipeline object %@",error);
+    } completed:^{
+        @strongify(self);
+        [[self callButton] setEnabled:YES];
+        
+    }];
+}
+
+-(void)viewDidLoad {
     [super viewDidLoad];
     [self setupControls];
     [self setupBindings];
+    [self initializeMediaPipeline];
+    
+    
+    
+}
+
+-(IBAction)makeCall:(UIButton *)sender {
+    [self call:[_mediaPipeline identifier]];
 }
 
 -(void)call:(NSString *)webRTCEndpointId{
@@ -116,15 +145,11 @@ static NSString * const KMS_URL = @"KURENTO_URL";
     [self showCallViewController:callViewController];
     [self setCallViewController:callViewController];
     
-    RACSRWebSocket *wsClient = [[RACSRWebSocket alloc] initWithURL:[NSURL URLWithString:KMS_URL]];
-    KMSAPIService *apiService = [KMSAPIService serviceWithWebSocketClient:wsClient];
-    KMSMessageFactoryWebRTCEndpoint *webRTCEndpointMessageFactory = [[KMSMessageFactoryWebRTCEndpoint alloc] init];
-    KMSWebRTCEndpoint  *webRTCEndpoint = [KMSWebRTCEndpoint endpointWithAPIService:apiService messageFactory:webRTCEndpointMessageFactory identifier:webRTCEndpointId];
-    [webRTCEndpointMessageFactory setDataSource:webRTCEndpoint];
-    _webRTCCall = [KMSWebRTCCall callWithWebRTCEndpoint:webRTCEndpoint peerConnectionFactory:[[RTCPeerConnectionFactory alloc] init]];
+    _webRTCCall = [KMSWebRTCCall callWithServerURL:[NSURL URLWithString:KMS_URL] peerConnectionFactory:[[RTCPeerConnectionFactory alloc] init] mediaPipelineId:webRTCEndpointId];
+    
     [_webRTCCall setDelegate:self];
     [_webRTCCall setDataSource:self];
-    [_webRTCCall startCall];
+    [_webRTCCall makeCall];
 }
 
 
@@ -152,7 +177,7 @@ static NSString * const KMS_URL = @"KURENTO_URL";
 }
 
 -(void)callViewControllerDidHangup:(CallViewController *)callViewController{
-    [_webRTCCall endCall];
+    [_webRTCCall hangup];
 }
 
 #pragma mark KMSWebRTCCallDataSource
@@ -178,17 +203,21 @@ static NSString * const KMS_URL = @"KURENTO_URL";
     return [self defaultPeerConnectionConstraints];
 }
 
+-(NSArray *)sinkEndpointsForWebRTCCall:(KMSWebRTCCall *)webRTCCall{
+    return @[[webRTCCall webRTCEndpointId]];
+}
+
 #pragma mark KMSWebRTCCallDelegate
 
--(void)webRTCCall:(KMSWebRTCCall *)webRTCCall didCreateLocalMediaStream:(RTCMediaStream *)localMediaStream{
+-(void)webRTCCall:(KMSWebRTCCall *)webRTCCall didAddLocalMediaStream:(RTCMediaStream *)localMediaStream{
     [_callViewController setLocalMediaStream:localMediaStream];
 }
 
--(void)webRTCCall:(KMSWebRTCCall *)webRTCCall didCreateRemoteMediaStream:(RTCMediaStream *)remoteMediaStream{
+-(void)webRTCCall:(KMSWebRTCCall *)webRTCCall didAddRemoteMediaStream:(RTCMediaStream *)remoteMediaStream{
     [_callViewController setRemoteMediaStream:remoteMediaStream];
 }
 
--(void)webRTCCallDidEndCall:(KMSWebRTCCall *)webRTCCall{
+-(void)webRTCCallDidHangup:(KMSWebRTCCall *)webRTCCall{
     [self removeCallViewController];
     [self setWebRTCCall:nil];
 }

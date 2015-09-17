@@ -1,1 +1,1 @@
-../../../RACSRWebSocket/Classes/RACSRWebSocket.h
+../../../RACSRWebSocket/RACSRWebSocket/RACSRWebSocket.h

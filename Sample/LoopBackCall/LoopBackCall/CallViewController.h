@@ -36,8 +36,8 @@
 
 @property(weak,nonatomic,readwrite) id <CallViewControllerDelegate> delegate;
 
-@property(weak,nonatomic,readwrite) RTCMediaStream *localMediaStream;
-@property(weak,nonatomic,readwrite) RTCMediaStream *remoteMediaStream;
+@property(strong,nonatomic,readwrite) RTCMediaStream *localMediaStream;
+@property(strong,nonatomic,readwrite) RTCMediaStream *remoteMediaStream;
 
 
 @end

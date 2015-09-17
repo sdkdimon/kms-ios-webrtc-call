@@ -1,46 +1,46 @@
 PODS:
-  - KMSClient (1.0):
-    - KMSClient/Log (= 1.0)
-    - KMSClient/MessageFactory (= 1.0)
-    - KMSClient/ModelLayer (= 1.0)
-    - KMSClient/UUID (= 1.0)
+  - KMSClient (1.0.4):
+    - KMSClient/Log (= 1.0.4)
+    - KMSClient/MessageFactory (= 1.0.4)
+    - KMSClient/ModelLayer (= 1.0.4)
+    - KMSClient/UUID (= 1.0.4)
     - Mantle (= 2.0)
     - MTLJSONAdapterWithoutNil (= 1.0)
     - NSDictionaryMerge (= 1.0)
-    - RACSRWebSocket (= 1.1)
+    - RACSRWebSocket (= 1.1.2)
     - ReactiveCocoa (= 2.5)
-  - KMSClient/Log (1.0):
+  - KMSClient/Log (1.0.4):
     - Mantle (= 2.0)
     - MTLJSONAdapterWithoutNil (= 1.0)
     - NSDictionaryMerge (= 1.0)
-    - RACSRWebSocket (= 1.1)
+    - RACSRWebSocket (= 1.1.2)
     - ReactiveCocoa (= 2.5)
-  - KMSClient/MessageFactory (1.0):
+  - KMSClient/MessageFactory (1.0.4):
     - KMSClient/ModelLayer
     - KMSClient/UUID
     - Mantle (= 2.0)
     - MTLJSONAdapterWithoutNil (= 1.0)
     - NSDictionaryMerge (= 1.0)
-    - RACSRWebSocket (= 1.1)
+    - RACSRWebSocket (= 1.1.2)
     - ReactiveCocoa (= 2.5)
-  - KMSClient/ModelLayer (1.0):
-    - KMSClient/ModelLayer/Types (= 1.0)
+  - KMSClient/ModelLayer (1.0.4):
+    - KMSClient/ModelLayer/Types (= 1.0.4)
     - Mantle (= 2.0)
     - MTLJSONAdapterWithoutNil (= 1.0)
     - NSDictionaryMerge (= 1.0)
-    - RACSRWebSocket (= 1.1)
+    - RACSRWebSocket (= 1.1.2)
     - ReactiveCocoa (= 2.5)
-  - KMSClient/ModelLayer/Types (1.0):
+  - KMSClient/ModelLayer/Types (1.0.4):
     - Mantle (= 2.0)
     - MTLJSONAdapterWithoutNil (= 1.0)
     - NSDictionaryMerge (= 1.0)
-    - RACSRWebSocket (= 1.1)
+    - RACSRWebSocket (= 1.1.2)
     - ReactiveCocoa (= 2.5)
-  - KMSClient/UUID (1.0):
+  - KMSClient/UUID (1.0.4):
     - Mantle (= 2.0)
     - MTLJSONAdapterWithoutNil (= 1.0)
     - NSDictionaryMerge (= 1.0)
-    - RACSRWebSocket (= 1.1)
+    - RACSRWebSocket (= 1.1.2)
     - ReactiveCocoa (= 2.5)
   - libjingle_peerconnection (9814.2.0)
   - Mantle (2.0):
@@ -49,7 +49,7 @@ PODS:
   - MTLJSONAdapterWithoutNil (1.0):
     - Mantle (= 2.0)
   - NSDictionaryMerge (1.0)
-  - RACSRWebSocket (1.1):
+  - RACSRWebSocket (1.1.2):
     - ReactiveCocoa (= 2.5)
     - SocketRocket (= 0.4)
   - ReactiveCocoa (2.5):
@@ -62,20 +62,17 @@ PODS:
   - SocketRocket (0.4)
 
 DEPENDENCIES:
-  - KMSClient (= 1.0)
+  - KMSClient (= 1.0.4)
   - libjingle_peerconnection
-  - MTLJSONAdapterWithoutNil (= 1.0)
-  - NSDictionaryMerge (= 1.0)
-  - RACSRWebSocket (= 1.1)
   - ReactiveCocoa (= 2.5)
 
 SPEC CHECKSUMS:
-  KMSClient: 8f7b989bbc5260e00f0d4818974bb44c40ecfc89
+  KMSClient: a5965baa2a11012b5ddc3c33a5074a2c26de575d
   libjingle_peerconnection: f03d6c0532595e8b9b233eccea68ad344e0395ac
   Mantle: d7c75b6fb789b20f7ae30cd0d09435fe545896ff
   MTLJSONAdapterWithoutNil: f17d2a089628ab4da5158bf11f13a9e4bc5f4709
   NSDictionaryMerge: 27071382a60ebf258eaed63f17430a51fb4c0c00
-  RACSRWebSocket: c1ad4ab9a6f7ba3b933c6bca52cffe6f0f7cee4a
+  RACSRWebSocket: d4ef8d96d5c93754d9fda213215d79aea212c8c5
   ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
   SocketRocket: 01443933b7bc362621325f4607b80b4286a99707
 

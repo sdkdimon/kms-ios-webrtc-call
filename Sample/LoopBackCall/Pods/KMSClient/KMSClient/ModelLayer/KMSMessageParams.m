@@ -153,7 +153,8 @@
                                                                            @"ElementDisconnected" : @(KMSEventTypeMediaElementDisconnected),
                                                                            @"MediaSessionStarted" : @(KMSEventTypeMediaSessionStarted),
                                                                            @"MediaSessionTerminated" : @(KMSEventTypeMediaSessionTerminated),
-                                                                           @"ConnectionStateChanged" : @(KMSEventTypeConnectionStateChanged)}];
+                                                                           @"ConnectionStateChanged" : @(KMSEventTypeConnectionStateChanged),
+                                                                           @"MediaStateChanged" : @(KMSEventTypeMediaStateChanged)}];
 }
 
 @end

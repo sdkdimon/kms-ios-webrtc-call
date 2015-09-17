@@ -24,26 +24,26 @@
 #import "KMSEventType.h"
 
 @class RACSignal;
-@class KMSAPIService;
+@class KMSSession;
 @class KMSICECandidate;
 @class KMSMessageFactoryWebRTCEndpoint;
 
 @interface KMSWebRTCEndpoint : NSObject <KMSMessageFactoryDataSource>
 
-+(instancetype)endpointWithAPIService:(KMSAPIService *)apiService messageFactory:(KMSMessageFactoryWebRTCEndpoint *)messageFactory;
--(instancetype)initWithAPIService:(KMSAPIService *)apiService messageFactory:(KMSMessageFactoryWebRTCEndpoint *)messageFactory;
++(instancetype)endpointWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryWebRTCEndpoint *)messageFactory mediaPipelineId:(NSString *)mediaPipelineId;
+-(instancetype)initWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryWebRTCEndpoint *)messageFactory mediaPipelineId:(NSString *)mediaPipelineId;
 
-+(instancetype)endpointWithAPIService:(KMSAPIService *)apiService messageFactory:(KMSMessageFactoryWebRTCEndpoint *)messageFactory identifier:(NSString *)identifier;
--(instancetype)initWithAPIService:(KMSAPIService *)apiService messageFactory:(KMSMessageFactoryWebRTCEndpoint *)messageFactory identifier:(NSString *)identifier;
++(instancetype)endpointWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryWebRTCEndpoint *)messageFactory identifier:(NSString *)identifier;
+-(instancetype)initWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryWebRTCEndpoint *)messageFactory identifier:(NSString *)identifier;
 
-@property(strong,nonatomic,readonly) KMSAPIService *apiService;
+@property(strong,nonatomic,readonly) KMSSession *kurentoSession;
 @property(strong,nonatomic,readonly) KMSMessageFactoryWebRTCEndpoint *messageFactory;
 @property(strong,nonatomic,readonly) RACSignal *eventSignal;
 
 @property(strong,nonatomic,readonly) NSString *identifier;
 @property(strong,nonatomic,readonly) NSString *mediaPipelineId;
 
--(RACSignal *)createWithMediaPipelineId:(NSString *)mediaPipelineId;
+-(RACSignal *)create;
 -(RACSignal *)dispose;
 -(RACSignal *)connect:(NSString *)endpointId;
 -(RACSignal *)disconnect:(NSString *)endpointId;

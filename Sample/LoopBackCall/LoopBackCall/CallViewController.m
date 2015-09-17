@@ -60,12 +60,16 @@
 
 -(void)initialize{
     _localMediaSreamObserver =
-    [[self rac_valuesAndChangesForKeyPath:@keypath(self, localMediaStream) options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial) observer:self] map:^id(RACTuple *args) {
+    [[[self rac_valuesAndChangesForKeyPath:@keypath(self, localMediaStream) options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial) observer:self] map:^id(RACTuple *args) {
         return [args first];
+    }] filter:^BOOL(RTCMediaStream *mediaStream) {
+        return mediaStream != nil;
     }];
     _remoteMediaSreamObserver =
-    [[self rac_valuesAndChangesForKeyPath:@keypath(self, remoteMediaStream) options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial) observer:self] map:^id(RACTuple *args) {
+    [[[self rac_valuesAndChangesForKeyPath:@keypath(self, remoteMediaStream) options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial) observer:self] map:^id(RACTuple *args) {
         return [args first];
+    }] filter:^BOOL(RTCMediaStream *mediaStream) {
+        return mediaStream != nil;
     }];
 }
 
@@ -141,8 +145,10 @@
     
     [_remoteMediaSreamObserver subscribeNext:^(RTCMediaStream *remoteMediaStream) {
         @strongify(self);
-        RTCVideoTrack *remoteVideoTrack = [[remoteMediaStream videoTracks] firstObject];
-        [remoteVideoTrack addRenderer:[self remoteVideoView]];
+        if(remoteMediaStream){
+            RTCVideoTrack *remoteVideoTrack = [[remoteMediaStream videoTracks] firstObject];
+            [remoteVideoTrack addRenderer:[self remoteVideoView]];
+        }
     }];
 }
 
@@ -156,6 +162,8 @@
 }
 
 -(void)removeFromParentViewController{
+    _localMediaStream = nil;
+    _remoteMediaStream = nil;
     [_remoteVideoView setDelegate:nil];
     [_localVideoView setDelegate:nil];
     
@@ -172,15 +180,5 @@
 -(void)videoView:(RTCEAGLVideoView *)videoView didChangeVideoSize:(CGSize)size{
     NSLog(@"videoView didChangeVideoSize %@",NSStringFromCGSize(size));
 }
-
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
 
 @end

@@ -28,21 +28,26 @@
 @class KMSRequestMessage;
 @class KMSICECandidate;
 
+typedef enum {
+    KMSSessionStateConnecting = 0,
+    KMSSessionStateOpen,
+    KMSSessionStateClosed
+}KMSSessionState;
 
+@interface KMSSession : NSObject
 
-@interface KMSAPIService : NSObject
-
-+(instancetype)serviceWithWebSocketClient:(RACSRWebSocket *)wsClient;
++(instancetype)sessionWithWebSocketClient:(RACSRWebSocket *)wsClient;
 -(instancetype)initWithWebSocketClient:(RACSRWebSocket *)wsClient;
 
 
 @property(strong,nonatomic,readonly) RACSRWebSocket *wsClient;
 @property(strong,nonatomic,readonly) RACSignal *eventSignal;
 
+@property(assign,nonatomic,readonly) KMSSessionState state;
+
 @property(strong,nonatomic,readonly) NSString *sessionId;
 
-
-
 -(RACSignal *)sendMessage:(KMSRequestMessage *)requestMessage;
+-(RACSignal *)close;
 
 @end

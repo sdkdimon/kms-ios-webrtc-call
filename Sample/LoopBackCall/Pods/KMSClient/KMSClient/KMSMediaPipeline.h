@@ -22,18 +22,18 @@
 #import <Foundation/Foundation.h>
 #import "KMSMessageFactoryMediaPipeline.h"
 @class RACSignal;
-@class KMSAPIService;
+@class KMSSession;
 
 @interface KMSMediaPipeline : NSObject <KMSMessageFactoryDataSource>
 
-+(instancetype)pipelineWithAPIService:(KMSAPIService *)apiService messageFactory:(KMSMessageFactoryMediaPipeline *)messageFactory identifier:(NSString *)identifier;
--(instancetype)initWithAPIService:(KMSAPIService *)apiService messageFactory:(KMSMessageFactoryMediaPipeline *)messageFactory identifier:(NSString *)identifier;
++(instancetype)pipelineWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryMediaPipeline *)messageFactory identifier:(NSString *)identifier;
+-(instancetype)initWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryMediaPipeline *)messageFactory identifier:(NSString *)identifier;
 
-+(instancetype)pipelineWithAPIService:(KMSAPIService *)apiService messageFactory:(KMSMessageFactoryMediaPipeline *)messageFactory;
--(instancetype)initWithAPIService:(KMSAPIService *)apiService messageFactory:(KMSMessageFactoryMediaPipeline *)messageFactory;;
++(instancetype)pipelineWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryMediaPipeline *)messageFactory;
+-(instancetype)initWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryMediaPipeline *)messageFactory;
 
 @property(strong,nonatomic,readonly) NSString *identifier;
-@property(strong,nonatomic,readonly) KMSAPIService *apiService;
+@property(strong,nonatomic,readonly) KMSSession *kurentoSession;
 @property(strong,nonatomic,readonly) KMSMessageFactoryMediaPipeline *messageFactory;
 
 

@@ -1,4 +1,4 @@
-// KMSEventType.h
+// RACSRWebSocket.h
 // Copyright (c) 2015 Dmitry Lizin (sdkdimon@gmail.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,14 +19,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-typedef enum {
-    KMSEventTypeNone = 0,
-    KMSEventTypeOnICECandidate,
-    KMSEventTypeOnICEGatheringDone,
-    KMSEventTypeMediaElementConnected,
-    KMSEventTypeMediaElementDisconnected,
-    KMSEventTypeMediaSessionStarted,
-    KMSEventTypeMediaSessionTerminated,
-    KMSEventTypeConnectionStateChanged,
-    KMSEventTypeMediaStateChanged
-}KMSEventType;
+
+#import <SocketRocket/SRWebSocket.h>
+@class RACSignal;
+@class RACCommand;
+@class RACSRWebSocket;
+
+
+@protocol RACSRWebSocketMessageTransformer <NSObject>
+
+-(id)websocket:(RACSRWebSocket *)websocket transformResponseMessage:(id)message;
+-(id)websocket:(RACSRWebSocket *)websocket transformRequestMessage:(id)message;
+
+@end
+
+
+@interface RACSRWebSocket : SRWebSocket
+
+@property(weak,nonatomic,readonly) RACSignal *webSocketDidOpenSignal;
+@property(weak,nonatomic,readonly) RACSignal *webSocketDidReceiveMessageSignal;
+@property(weak,nonatomic,readonly) RACSignal *webSocketDidFailSignal;
+@property(weak,nonatomic,readonly) RACSignal *webSocketDidCloseSignal;
+@property(weak,nonatomic,readonly) RACSignal *webSocketDidReceivePongSignal;
+
+@property(weak,nonatomic,readwrite) id <RACSRWebSocketMessageTransformer> messageTransformer;
+
+@property(strong,nonatomic,readonly) RACCommand *sendDataCommand;
+
+-(RACSignal *)openConnection;
+-(RACSignal *)closeConnection;
+
+@end
