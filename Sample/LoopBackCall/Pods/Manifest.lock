@@ -1,21 +1,21 @@
 PODS:
-  - KMSClient (1.0.4):
-    - KMSClient/Log (= 1.0.4)
-    - KMSClient/MessageFactory (= 1.0.4)
-    - KMSClient/ModelLayer (= 1.0.4)
-    - KMSClient/UUID (= 1.0.4)
+  - KMSClient (1.0.5):
+    - KMSClient/Log (= 1.0.5)
+    - KMSClient/MessageFactory (= 1.0.5)
+    - KMSClient/ModelLayer (= 1.0.5)
+    - KMSClient/UUID (= 1.0.5)
     - Mantle (= 2.0)
     - MTLJSONAdapterWithoutNil (= 1.0)
     - NSDictionaryMerge (= 1.0)
     - RACSRWebSocket (= 1.1.2)
     - ReactiveCocoa (= 2.5)
-  - KMSClient/Log (1.0.4):
+  - KMSClient/Log (1.0.5):
     - Mantle (= 2.0)
     - MTLJSONAdapterWithoutNil (= 1.0)
     - NSDictionaryMerge (= 1.0)
     - RACSRWebSocket (= 1.1.2)
     - ReactiveCocoa (= 2.5)
-  - KMSClient/MessageFactory (1.0.4):
+  - KMSClient/MessageFactory (1.0.5):
     - KMSClient/ModelLayer
     - KMSClient/UUID
     - Mantle (= 2.0)
@@ -23,20 +23,20 @@ PODS:
     - NSDictionaryMerge (= 1.0)
     - RACSRWebSocket (= 1.1.2)
     - ReactiveCocoa (= 2.5)
-  - KMSClient/ModelLayer (1.0.4):
-    - KMSClient/ModelLayer/Types (= 1.0.4)
+  - KMSClient/ModelLayer (1.0.5):
+    - KMSClient/ModelLayer/Types (= 1.0.5)
     - Mantle (= 2.0)
     - MTLJSONAdapterWithoutNil (= 1.0)
     - NSDictionaryMerge (= 1.0)
     - RACSRWebSocket (= 1.1.2)
     - ReactiveCocoa (= 2.5)
-  - KMSClient/ModelLayer/Types (1.0.4):
+  - KMSClient/ModelLayer/Types (1.0.5):
     - Mantle (= 2.0)
     - MTLJSONAdapterWithoutNil (= 1.0)
     - NSDictionaryMerge (= 1.0)
     - RACSRWebSocket (= 1.1.2)
     - ReactiveCocoa (= 2.5)
-  - KMSClient/UUID (1.0.4):
+  - KMSClient/UUID (1.0.5):
     - Mantle (= 2.0)
     - MTLJSONAdapterWithoutNil (= 1.0)
     - NSDictionaryMerge (= 1.0)
@@ -62,12 +62,12 @@ PODS:
   - SocketRocket (0.4)
 
 DEPENDENCIES:
-  - KMSClient (= 1.0.4)
+  - KMSClient (= 1.0.5)
   - libjingle_peerconnection
   - ReactiveCocoa (= 2.5)
 
 SPEC CHECKSUMS:
-  KMSClient: a5965baa2a11012b5ddc3c33a5074a2c26de575d
+  KMSClient: 9ded941dc67e04b13ea868be590e98a3388c05bf
   libjingle_peerconnection: f03d6c0532595e8b9b233eccea68ad344e0395ac
   Mantle: d7c75b6fb789b20f7ae30cd0d09435fe545896ff
   MTLJSONAdapterWithoutNil: f17d2a089628ab4da5158bf11f13a9e4bc5f4709

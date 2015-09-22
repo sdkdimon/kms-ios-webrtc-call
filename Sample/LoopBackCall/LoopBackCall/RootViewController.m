@@ -217,7 +217,7 @@ static NSString * const KMS_URL = @"ws://192.168.2.13:8888/kurento";
     [_callViewController setRemoteMediaStream:remoteMediaStream];
 }
 
--(void)webRTCCallDidHangup:(KMSWebRTCCall *)webRTCCall{
+-(void)webRTCCall:(KMSWebRTCCall *)webRTCCall hangupFromInitiator:(KMSWebRTCCallInitiator)inititator{
     [self removeCallViewController];
     [self setWebRTCCall:nil];
 }
@@ -226,6 +226,9 @@ static NSString * const KMS_URL = @"ws://192.168.2.13:8888/kurento";
     
 }
 
+-(void)webRTCCallDidStart:(KMSWebRTCCall *)webRTCCall{
+    
+}
 
 #pragma mark Defaults
 

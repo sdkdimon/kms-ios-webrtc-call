@@ -23,6 +23,7 @@
 #import "KMSEventType.h"
 #import "KMSEventData.h"
 
+
 @interface KMSEvent : MTLModel <MTLJSONSerializing>
 
 @property(strong,nonatomic,readwrite) KMSEventData *data;
@@ -42,5 +43,11 @@
 @interface KMSEventElementConnection : KMSEvent
 
 @property(strong,nonatomic,readwrite) KMSEventDataElementConnection *data;
+
+@end
+
+@interface KMSEventMediaStateChanged : KMSEvent
+
+@property(strong,nonatomic,readwrite) KMSEventDataMediaStateChanged *data;
 
 @end

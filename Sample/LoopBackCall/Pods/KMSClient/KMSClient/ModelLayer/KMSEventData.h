@@ -23,9 +23,11 @@
 #import "KMSEventType.h"
 #import "KMSElementConnection.h"
 #import "KMSICECandidate.h"
+#import "KMSMediaState.h"
 
 @interface KMSEventData : MTLModel <MTLJSONSerializing>
 @property(assign,nonatomic,readwrite) KMSEventType type;
+@property(strong,nonatomic,readwrite) NSString *source;
 @end
 
 @interface KMSEventDataICECandidate : KMSEventData
@@ -34,10 +36,16 @@
 
 @interface KMSEventDataElementConnection : KMSEventData
 
-@property(strong,nonatomic,readwrite) NSString *source;
 @property(strong,nonatomic,readwrite) NSString *sink;
 @property(assign,nonatomic,readwrite) KMSMediaType mediaType;
-
 @property(strong,nonatomic,readwrite) KMSElementConnection *elementConnection;
+
+@end
+
+
+@interface KMSEventDataMediaStateChanged : KMSEventData
+
+@property(assign,nonatomic,readwrite) KMSMediaState newState;
+@property(assign,nonatomic,readwrite) KMSMediaState oldState;
 
 @end

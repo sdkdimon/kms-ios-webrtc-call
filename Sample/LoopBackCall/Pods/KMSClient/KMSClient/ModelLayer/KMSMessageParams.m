@@ -151,9 +151,6 @@
                                                                            @"OnIceCandidate" : @(KMSEventTypeOnICECandidate),
                                                                            @"ElementConnected" : @(KMSEventTypeMediaElementConnected),
                                                                            @"ElementDisconnected" : @(KMSEventTypeMediaElementDisconnected),
-                                                                           @"MediaSessionStarted" : @(KMSEventTypeMediaSessionStarted),
-                                                                           @"MediaSessionTerminated" : @(KMSEventTypeMediaSessionTerminated),
-                                                                           @"ConnectionStateChanged" : @(KMSEventTypeConnectionStateChanged),
                                                                            @"MediaStateChanged" : @(KMSEventTypeMediaStateChanged)}];
 }
 

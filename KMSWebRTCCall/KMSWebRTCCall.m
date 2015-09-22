@@ -36,10 +36,16 @@
 
 #import <KMSClient/KMSWebRTCEndpoint.h>
 #import <KMSClient/KMSEvent.h>
+
 #import <ReactiveCocoa/RACSignal.h>
 #import <ReactiveCocoa/RACSignal+Operations.h>
 #import <ReactiveCocoa/RACEXTScope.h>
 #import <ReactiveCocoa/RACCompoundDisposable.h>
+#import <ReactiveCocoa/NSObject+RACSelectorSignal.h>
+#import <ReactiveCocoa/RACSubscriber.h>
+#import <ReactiveCocoa/RACTuple.h>
+#import <ReactiveCocoa/RACScheduler.h>
+
 #import <RACSRWebSocket/RACSRWebSocket.h>
 #import <KMSClient/KMSSession.h>
 #import <KMSClient/KMSMessageFactoryWebRTCEndpoint.h>
@@ -185,20 +191,43 @@
         [[self peerConnection] createOfferWithDelegate:self constraints:[[self dataSource] localMediaSteamConstraintsForWebRTCCall:self]];
     }];
     
+    [[[[_webRTCEndpoint eventSignalForEvent:KMSEventTypeMediaStateChanged] filter:^BOOL(KMSEventDataMediaStateChanged *mediaStateChangedEvent) {
+        return [mediaStateChangedEvent newState] == KMSMediaStateConnected;
+    }] take:1] subscribeNext:^(KMSEventDataMediaStateChanged *mediaStateChangedEvent) {
+        @strongify(self);
+        [[self delegate] webRTCCallDidStart:self];
+    }];
+    
+}
+
+-(void)hangupFromInitiator:(KMSWebRTCCallInitiator)initiator{
+    @weakify(self);
+    RACSignal *hangupSignal = [RACSignal concat:@[[self unsubscribeWebRTCEventsSignal],[self closePeerConnectionSignal],[self disposeWebRTCEndpointSignal]]];
+    [hangupSignal subscribeError:^(NSError *error) {
+        @strongify(self);
+        [[self delegate] webRTCCall:self didFailWithError:error];
+    } completed:^{
+        @strongify(self);
+        [[self delegate] webRTCCall:self hangupFromInitiator:initiator];
+    }];
 }
 
 -(void)hangup{
-    _peerConnection != nil ? [_peerConnection close] : [self disposeWebRTCEndpoint];
+    [self hangupFromInitiator:KMSWebRTCCallInitiatorCaller];
 }
 
 -(RACSignal *)connectWebRTCEndpointSignal{
-    NSArray *sinkEndpoints = [[self dataSource] sinkEndpointsForWebRTCCall:self];
-    RACSignal *connectWebRTCEndpointSignal = [RACSignal empty];
-    
-    for(NSString *sinkEndpoint in sinkEndpoints){
-        connectWebRTCEndpointSignal = [connectWebRTCEndpointSignal concat:[_webRTCEndpoint connect:sinkEndpoint]];
+    if([_dataSource respondsToSelector:@selector(sinkEndpointsForWebRTCCall:)]){
+        NSArray *sinkEndpoints = [_dataSource sinkEndpointsForWebRTCCall:self];
+        if([sinkEndpoints count] > 0){
+            NSMutableArray *connectionSignals = [[NSMutableArray alloc] init];
+            for(NSString *sinkEndpoint in sinkEndpoints){
+                [connectionSignals addObject:[_webRTCEndpoint connect:sinkEndpoint]];
+            }
+            return [[RACSignal concat:connectionSignals] ignoreValues];
+        }
     }
-    return connectWebRTCEndpointSignal;
+    return [RACSignal empty];
 }
 
 -(RACSignal *)webRTCEndpointInitialSignal{
@@ -222,6 +251,12 @@
         [[self mutableWebRTCEndpointSubscriptions] setObject:subscriptionId forKey:@(KMSEventTypeMediaElementDisconnected)];
     }];
     
+    RACSignal *webRTCEndpointEventMediaStateChangedSignal =
+    [[_webRTCEndpoint subscribe:KMSEventTypeMediaStateChanged] doNext:^(NSString *subscriptionId) {
+        @strongify(self);
+        [[self mutableWebRTCEndpointSubscriptions] setObject:subscriptionId forKey:@(KMSEventTypeMediaStateChanged)];
+    }];
+    
     //Connect WebRTCEndpoint if needed
     RACSignal *webRTCEndpointGetSinkConnectionsSignal =
     [[_webRTCEndpoint getSinkConnections] doNext:^(NSArray *connections) {
@@ -234,10 +269,12 @@
         return @([connections count] > 0);
     }] then:[RACSignal empty] else:[self connectWebRTCEndpointSignal]];
     
-    return [RACSignal concat:@[webRTCEndpointEventOnICECandidateSignal,
+    return [[RACSignal concat:@[webRTCEndpointEventOnICECandidateSignal,
                                webRTCEndpointEventMediaElementConnectedSignal,
                                webRTCEndpointEventMediaElementDisconnectedSignal,
-                               connectWebRTCEndpointIfNeededSignal]];
+                               webRTCEndpointEventMediaStateChangedSignal,
+                               connectWebRTCEndpointIfNeededSignal
+                               ]] ignoreValues];
 }
 
 -(void)subscribeWebRTCEndpointEvents{
@@ -258,7 +295,7 @@
         [[self mutableWebRTCEndpointConnections] removeObject:[elementConnectionEvent elementConnection]];
         NSUInteger connectionCount = [[self webRTCEndpointConnections] count];
         if(connectionCount == 0){
-            [self hangup];
+            [self hangupFromInitiator:KMSWebRTCCallInitiatorOperator];
         }
     }]];
 }
@@ -266,53 +303,62 @@
 -(void)createPeerConnection{
     RTCConfiguration *config = [[RTCConfiguration alloc] init];
     _peerConnection = [[self peerConnectionFactory] peerConnectionWithConfiguration:config constraints:[[self dataSource] peerConnetionMediaConstraintsForWebRTCCall:self] delegate:self];
+}
+
+-(RACSignal *)unsubscribeWebRTCEventsSignal{
+    
+    if([_webRTCEndpointSubscriptions count] > 0){
+        NSMutableArray *unsubscribeSignals = [[NSMutableArray alloc] init];
+        for(NSNumber *subscriptionType in _webRTCEndpointSubscriptions){
+            NSString *subscriptionId = _webRTCEndpointSubscriptions[subscriptionType];
+            [unsubscribeSignals addObject:[_webRTCEndpoint unsubscribeSubscriptionId:subscriptionId]];
+        }
+        @weakify(self);
+        return [[[RACSignal concat:unsubscribeSignals] doCompleted:^{
+            @strongify(self);
+            [[self subscriptionDisposables] dispose];
+            [[self mutableWebRTCEndpointSubscriptions] removeAllObjects];
+        }] ignoreValues];
+    }
+    
+    return [RACSignal empty];
+
+}
+
+-(RACSignal *)disposeWebRTCEndpointSignal{
+    return [RACSignal concat:@[[[self webRTCEndpoint] dispose],[[self kurentoSession] close]]];
+}
+
+-(RACSignal *)closePeerConnectionSignal{
+    @weakify(self);
+    return _peerConnection != nil ?
+    [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+            RACSignal *peerConnectionSignalingStateChanged =
+            [[[self rac_signalForSelector:@selector(peerConnection:signalingStateChanged:) fromProtocol:@protocol(RTCPeerConnectionDelegate)] filter:^BOOL(RACTuple *args) {
+                RTCSignalingState signalingState = (RTCSignalingState)[[args second] integerValue];
+                return signalingState == RTCSignalingClosed;
+            }] deliverOn:[RACScheduler mainThreadScheduler]];
+            
+            
+            RACDisposable *disposable =
+            [peerConnectionSignalingStateChanged subscribeNext:^(RACTuple *args) {
+                [subscriber sendNext:nil];
+                [subscriber sendCompleted];
+            }];
+            [[self peerConnection] close];
+            
+            return disposable;
+        
+    }] : [RACSignal empty];
     
 }
 
--(void)disposeWebRTCEndpoint{
-    RACSignal *unsubscribeSignal = [RACSignal empty];
-    for(NSNumber *subscriptionType in _webRTCEndpointSubscriptions){
-        NSString *subscriptionId = _webRTCEndpointSubscriptions[subscriptionType];
-        unsubscribeSignal = [unsubscribeSignal concat:[_webRTCEndpoint unsubscribeSubscriptionId:subscriptionId]];
-    }
-    
-    @weakify(self);
-    RACSignal *endCallSignal =
-    [[unsubscribeSignal  doCompleted:^{
-        @strongify(self);
-        [[self subscriptionDisposables] dispose];
-        [[self mutableWebRTCEndpointSubscriptions] removeAllObjects];
-    }] then:^RACSignal *{
-        @strongify(self);
-        return [RACSignal concat:@[[[self webRTCEndpoint] dispose],[[self kurentoSession] close]]];
-    }];
-    
-    [endCallSignal subscribeError:^(NSError *error) {
-        @strongify(self);
-        [[self delegate] webRTCCall:self didFailWithError:error];
-    } completed:^{
-        @strongify(self);
-        [[self delegate] webRTCCallDidHangup:self];
-    }];
-}
 
 #pragma mark RTCPeerConnectionDelegate
 
 // Triggered when the SignalingState changed.
 -(void)peerConnection:(RTCPeerConnection *)peerConnection signalingStateChanged:(RTCSignalingState)stateChanged{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        KMSLog(KMSLogMessageLevelVerbose,@"RTCPeerConnection signalingStateChanged %@",[[self class] rtcSignalingStateMap][@(stateChanged)]);
-        switch (stateChanged) {
-            case RTCSignalingClosed:
-                [self disposeWebRTCEndpoint];
-                break;
-                
-            default:
-                break;
-        }
-        
-        
-    });
 }
 
 // Triggered when media is received on a new stream from remote peer.
@@ -324,30 +370,18 @@
 
 // Triggered when a remote peer close a stream.
 -(void)peerConnection:(RTCPeerConnection *)peerConnection removedStream:(RTCMediaStream *)stream{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-    });
 }
 
 // Triggered when renegotiation is needed, for example the ICE has restarted.
 -(void)peerConnectionOnRenegotiationNeeded:(RTCPeerConnection *)peerConnection{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-    });
 }
 
 // Called any time the ICEConnectionState changes.
 -(void)peerConnection:(RTCPeerConnection *)peerConnection iceConnectionChanged:(RTCICEConnectionState)newState{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-    });
 }
 
 // Called any time the ICEGatheringState changes.
 -(void)peerConnection:(RTCPeerConnection *)peerConnection iceGatheringChanged:(RTCICEGatheringState)newState{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-    });
 }
 
 // New Ice candidate have been found.
@@ -364,9 +398,6 @@
 
 // New data channel has been opened.
 -(void)peerConnection:(RTCPeerConnection*)peerConnection didOpenDataChannel:(RTCDataChannel*)dataChannel{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-    });
 }
 
 #pragma mark RTCSessionDescriptionDelegate
@@ -387,15 +418,13 @@
         [[self peerConnection] setLocalDescriptionWithDelegate:self sessionDescription:fixedDescription];
         KMSWebRTCEndpoint *webRTCSession = [self webRTCEndpoint];
         
-        RACSignal *processSDPOfferAndGatherICECandidates =
-        [[webRTCSession processOffer:sdpFixDescription]
-         flattenMap:^RACStream *(NSString *remoteSDP) {
-             @strongify(self);
-             RTCSessionDescription *remoteDesc = [[RTCSessionDescription alloc] initWithType:@"answer" sdp:remoteSDP];
-             [[self peerConnection] setRemoteDescriptionWithDelegate:self sessionDescription:remoteDesc];
-             return [webRTCSession gatherICECandidates];
-         }];
-        
+        RACSignal *processOfferSignal =
+        [[webRTCSession processOffer:sdpFixDescription] doNext:^(NSString *remoteSDP) {
+            @strongify(self);
+            RTCSessionDescription *remoteDesc = [[RTCSessionDescription alloc] initWithType:@"answer" sdp:remoteSDP];
+            [[self peerConnection] setRemoteDescriptionWithDelegate:self sessionDescription:remoteDesc];
+        }];
+        RACSignal *processSDPOfferAndGatherICECandidates = [[RACSignal concat:@[processOfferSignal,[webRTCSession gatherICECandidates]]] ignoreValues];
         [processSDPOfferAndGatherICECandidates subscribeError:^(NSError *error) {
             @strongify(self);
             [[self delegate] webRTCCall:self didFailWithError:error];

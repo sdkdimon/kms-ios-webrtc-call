@@ -37,6 +37,9 @@
         case KMSEventTypeMediaElementDisconnected:
         case KMSEventTypeMediaElementConnected:
             return [KMSEventDataElementConnection class];
+            
+        case KMSEventTypeMediaStateChanged:
+            return [KMSEventDataMediaStateChanged class];
         default:
             break;
     }
@@ -50,14 +53,12 @@
              @"OnIceCandidate" : @(KMSEventTypeOnICECandidate),
              @"ElementConnected" : @(KMSEventTypeMediaElementConnected),
              @"ElementDisconnected" : @(KMSEventTypeMediaElementDisconnected),
-             @"MediaSessionStarted" : @(KMSEventTypeMediaSessionStarted),
-             @"MediaSessionTerminated" : @(KMSEventTypeMediaSessionTerminated),
-             @"ConnectionStateChanged" : @(KMSEventTypeConnectionStateChanged),
              @"MediaStateChanged" : @(KMSEventTypeMediaStateChanged)};
 }
 
 +(NSDictionary *)JSONKeyPathsByPropertyKey{
-    return @{@"type" : @"type"};
+    return @{@"type" : @"type",
+             @"source" : @"source"};
 }
 
 
@@ -88,9 +89,9 @@
     if(self == nil) return nil;
     
     _elementConnection  = [[KMSElementConnection alloc] init];
-    [_elementConnection setSource:_source];
-    [_elementConnection setSink:_sink];
-    [_elementConnection setMediaType:_mediaType];
+    [_elementConnection setSource:[self source]];
+    [_elementConnection setSink:[self sink]];
+    [_elementConnection setMediaType:[self mediaType]];
     
     return self;
     
@@ -98,21 +99,39 @@
 }
 
 +(NSDictionary *)JSONKeyPathsByPropertyKey{
-    return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{
-                                                                                @"source" : @"source",
-                                                                                @"sink" : @"sink",
-                                                                                @"mediaType" : @"mediaType"
-                                                                                }];
+    return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"sink" : @"sink",
+                                                                              @"mediaType" : @"mediaType"}];
 }
 
 +(NSValueTransformer *)mediaTypeJSONTransformer{
-    return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{[NSNull null] : @(KMSMediaTypeNone),
-                                                                           @"AUDIO" : @(KMSMediaTypeAudio),
+    return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{@"AUDIO" : @(KMSMediaTypeAudio),
                                                                            @"VIDEO" : @(KMSMediaTypeVideo),
-                                                                           @"DATA" : @(KMSMediaTypeData)}];
+                                                                           @"DATA" : @(KMSMediaTypeData)} defaultValue:@(KMSMediaTypeNone) reverseDefaultValue:[NSNull null]];
 }
 
 
 @end
 
+@implementation KMSEventDataMediaStateChanged
 
++(NSDictionary *)JSONKeyPathsByPropertyKey{
+    return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"newState" : @"newState",
+                                                                              @"oldState" : @"oldState"}];
+}
+
+
++(NSDictionary *)mediaStateMap{
+    return @{@"CONNECTED" : @(KMSMediaStateConnected),
+             @"DISCONNECTED" : @(KMSMediaStateDisconnected)};
+}
+
++(NSValueTransformer *)newStateJSONTransformer{
+    return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:[self mediaStateMap] defaultValue:@(KMSMediaStateNone) reverseDefaultValue:[NSNull null]];
+}
+
++(NSValueTransformer *)oldStateJSONTransformer{
+    return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:[self mediaStateMap] defaultValue:@(KMSMediaStateNone) reverseDefaultValue:[NSNull null]];
+}
+
+
+@end

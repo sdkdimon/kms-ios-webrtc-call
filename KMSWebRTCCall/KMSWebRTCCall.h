@@ -26,23 +26,29 @@
 @class RTCMediaStream;
 @class RTCMediaConstraints;
 
+typedef enum{
+    KMSWebRTCCallInitiatorCaller,
+    KMSWebRTCCallInitiatorOperator
+}KMSWebRTCCallInitiator;
+
 @protocol KMSWebRTCCallDataSource <NSObject>
 @required
--(RTCMediaStream *)localMediaSteamForWebRTCCall:(KMSWebRTCCall *)webRTCCall;
--(RTCMediaConstraints *)localMediaSteamConstraintsForWebRTCCall:(KMSWebRTCCall *)webRTCCall;
--(RTCMediaConstraints *)peerConnetionMediaConstraintsForWebRTCCall:(KMSWebRTCCall *)webRTCCall;
+-(nonnull RTCMediaStream *)localMediaSteamForWebRTCCall:(nonnull KMSWebRTCCall *)webRTCCall;
+-(nonnull RTCMediaConstraints *)localMediaSteamConstraintsForWebRTCCall:(nonnull KMSWebRTCCall *)webRTCCall;
+-(nonnull RTCMediaConstraints *)peerConnetionMediaConstraintsForWebRTCCall:(nonnull KMSWebRTCCall *)webRTCCall;
 @optional
--(NSArray *)sinkEndpointsForWebRTCCall:(KMSWebRTCCall *)webRTCCall;
+-(nonnull NSArray *)sinkEndpointsForWebRTCCall:(nonnull KMSWebRTCCall *)webRTCCall;
 
 @end
 
 
 @protocol KMSWebRTCCallDelegate <NSObject>
 @required
--(void)webRTCCall:(KMSWebRTCCall *)webRTCCall didAddLocalMediaStream:(RTCMediaStream *)localMediaStream;
--(void)webRTCCall:(KMSWebRTCCall *)webRTCCall didAddRemoteMediaStream:(RTCMediaStream *)remoteMediaStream;
--(void)webRTCCallDidHangup:(KMSWebRTCCall *)webRTCCall;
--(void)webRTCCall:(KMSWebRTCCall *)webRTCCall didFailWithError:(NSError *)error;
+-(void)webRTCCall:(nonnull KMSWebRTCCall *)webRTCCall didAddLocalMediaStream:(nonnull RTCMediaStream *)localMediaStream;
+-(void)webRTCCall:(nonnull KMSWebRTCCall *)webRTCCall didAddRemoteMediaStream:(nonnull RTCMediaStream *)remoteMediaStream;
+-(void)webRTCCallDidStart:(nonnull KMSWebRTCCall *)webRTCCall;
+-(void)webRTCCall:(nonnull KMSWebRTCCall *)webRTCCall hangupFromInitiator:(KMSWebRTCCallInitiator)inititator;
+-(void)webRTCCall:(nonnull KMSWebRTCCall *)webRTCCall didFailWithError:(nonnull NSError *)error;
 @end
 
 
@@ -51,22 +57,22 @@
     NSMutableArray *_webRTCEndpointConnections;
 }
 
-+(instancetype)callWithServerURL:(NSURL *)serverURL peerConnectionFactory:(RTCPeerConnectionFactory *)peerConnecitonFactory webRTCEndpointId:(NSString *)webRTCEndpointId;
--(instancetype)initWithServerURL:(NSURL *)serverURL peerConnectionFactory:(RTCPeerConnectionFactory *)peerConnecitonFactory webRTCEndpointId:(NSString *)webRTCEndpointId;
++(nonnull instancetype)callWithServerURL:(nonnull NSURL *)serverURL peerConnectionFactory:(nonnull RTCPeerConnectionFactory *)peerConnecitonFactory webRTCEndpointId:(nonnull NSString *)webRTCEndpointId;
+-(nonnull instancetype)initWithServerURL:(nonnull NSURL *)serverURL peerConnectionFactory:(nonnull RTCPeerConnectionFactory *)peerConnecitonFactory webRTCEndpointId:(nonnull NSString *)webRTCEndpointId;
 
-+(instancetype)callWithServerURL:(NSURL *)serverURL peerConnectionFactory:(RTCPeerConnectionFactory *)peerConnecitonFactory mediaPipelineId:(NSString *)mediaPipelineId;
--(instancetype)initWithServerURL:(NSURL *)serverURL peerConnectionFactory:(RTCPeerConnectionFactory *)peerConnecitonFactory mediaPipelineId:(NSString *)mediaPipelineId;
++(nonnull instancetype)callWithServerURL:(nonnull NSURL *)serverURL peerConnectionFactory:(nonnull RTCPeerConnectionFactory *)peerConnecitonFactory mediaPipelineId:(nonnull NSString *)mediaPipelineId;
+-(nonnull instancetype)initWithServerURL:(nonnull NSURL *)serverURL peerConnectionFactory:(nonnull RTCPeerConnectionFactory *)peerConnecitonFactory mediaPipelineId:(nonnull NSString *)mediaPipelineId;
 
-@property(strong,nonatomic,readonly) NSString *webRTCEndpointId;
-@property(strong,nonatomic,readonly) NSString *mediaPipelineId;
-@property(strong,nonatomic,readonly) NSURL *serverURL;
-@property(strong,nonatomic,readonly) RTCPeerConnectionFactory *peerConnectionFactory;
+@property(nonnull,strong,nonatomic,readonly) NSString *webRTCEndpointId;
+@property(nonnull,strong,nonatomic,readonly) NSString *mediaPipelineId;
+@property(nonnull,strong,nonatomic,readonly) NSURL *serverURL;
+@property(nonnull,strong,nonatomic,readonly) RTCPeerConnectionFactory *peerConnectionFactory;
 
 @property(weak,nonatomic,readwrite) id <KMSWebRTCCallDelegate> delegate;
 @property(weak,nonatomic,readwrite) id <KMSWebRTCCallDataSource> dataSource;
 
-@property(strong,nonatomic,readonly) NSDictionary *webRTCEndpointSubscriptions;
-@property(strong,nonatomic,readonly) NSArray *webRTCEndpointConnections;
+@property(nonnull,strong,nonatomic,readonly) NSDictionary *webRTCEndpointSubscriptions;
+@property(nonnull,strong,nonatomic,readonly) NSArray *webRTCEndpointConnections;
 
 
 -(void)makeCall;
@@ -75,7 +81,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // Disallow init and don't add to documentation
-- (id)init __attribute__(
+- (nonnull instancetype)init __attribute__(
                          (unavailable("init is not a supported initializer for this class.")));
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 

@@ -25,8 +25,5 @@ typedef enum {
     KMSEventTypeOnICEGatheringDone,
     KMSEventTypeMediaElementConnected,
     KMSEventTypeMediaElementDisconnected,
-    KMSEventTypeMediaSessionStarted,
-    KMSEventTypeMediaSessionTerminated,
-    KMSEventTypeConnectionStateChanged,
     KMSEventTypeMediaStateChanged
 }KMSEventType;

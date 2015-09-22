@@ -38,6 +38,9 @@
         case KMSEventTypeMediaElementDisconnected:
             return [KMSEventElementConnection class];
         
+        case KMSEventTypeMediaStateChanged:
+            return [KMSEventMediaStateChanged class];
+        
         default:
             return self;
     }
@@ -55,9 +58,6 @@
              @"OnIceCandidate" : @(KMSEventTypeOnICECandidate),
              @"ElementConnected" : @(KMSEventTypeMediaElementConnected),
              @"ElementDisconnected" : @(KMSEventTypeMediaElementDisconnected),
-             @"MediaSessionStarted" : @(KMSEventTypeMediaSessionStarted),
-             @"MediaSessionTerminated" : @(KMSEventTypeMediaSessionTerminated),
-             @"ConnectionStateChanged" : @(KMSEventTypeConnectionStateChanged),
              @"MediaStateChanged" : @(KMSEventTypeMediaStateChanged)};
 }
 
@@ -75,12 +75,16 @@
 @implementation KMSEventICECandidate
 @dynamic data;
 
-
 @end
 
 
 @implementation KMSEventElementConnection
 @dynamic data;
 
+@end
+
+@implementation KMSEventMediaStateChanged
+@dynamic data;
 
 @end
+
