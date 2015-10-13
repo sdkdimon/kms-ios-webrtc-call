@@ -5,6 +5,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 target 'LoopBackCall' do
 pod 'KMSClient', '1.0.5'
 pod 'ReactiveCocoa', '2.5'
+pod 'CGSizeAspectRatioTool', '1.0'
 pod 'libjingle_peerconnection'
 end
 

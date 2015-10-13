@@ -1,5 +1,5 @@
 //
-// CallViewController.h
+// CGSizeAspectRatioTool.c
 // Copyright (c) 2015 Dmitry Lizin (sdkdimon@gmail.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,23 +20,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
 
-@class CallViewController;
-@class RTCMediaStream;
+#include "CGSizeAspectRatioTool.h"
 
-@protocol CallViewControllerDelegate <NSObject>
+CGSize CGSizeMakeWithAspectRatioScaledToMaxSize(CGSize aspectRatio,CGSize maxSize){
+    
+    CGFloat aspectRatioWidth = aspectRatio.width;
+    CGFloat aspectRatioHeight = aspectRatio.height;
+    
+    CGFloat widthScaleFactor = maxSize.width / aspectRatioWidth;
+    CGFloat heightScaleFactor = maxSize.height / aspectRatioHeight;
+    
+    CGFloat scaleFactor = widthScaleFactor < heightScaleFactor ? widthScaleFactor : heightScaleFactor;
+    
+    CGFloat newHeight = aspectRatioHeight * scaleFactor;
+    CGFloat newWidth = aspectRatioWidth * scaleFactor;
+    CGSize newSize = CGSizeMake(newWidth, newHeight);
+    
+    return newSize;
+}
 
--(void)callViewControllerDidHangup:(CallViewController *)callViewController;
+CGFloat CGSizeAspectRatio(CGSize aspectRatio){
+    CGFloat width = aspectRatio.width;
+    CGFloat height = aspectRatio.height;
+    return (width == 0 || height == 0) ? 0 : aspectRatio.width/aspectRatio.height;
+ }
 
-@end
-
-@interface CallViewController : UIViewController
-
-@property(weak,nonatomic,readwrite) id <CallViewControllerDelegate> delegate;
-
-@property(strong,nonatomic,readwrite) RTCMediaStream *localMediaStream;
-@property(strong,nonatomic,readwrite) RTCMediaStream *remoteMediaStream;
-
-
-@end
+bool CGSizeAsectRatioIsEqualToAspectRatio(CGSize aspectRatio1, CGSize aspectRatio2){
+    return CGSizeAspectRatio(aspectRatio1) == CGSizeAspectRatio(aspectRatio2);
+}

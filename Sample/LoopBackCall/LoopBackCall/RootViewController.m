@@ -117,7 +117,7 @@ static NSString * const KMS_URL = @"ws://192.168.2.13:8888/kurento";
     [mediaPipelineMessageFactory setDataSource:_mediaPipeline];
     @weakify(self);
     [[_mediaPipeline create] subscribeError:^(NSError *error) {
-        NSLog(@"error creating meda pipeline object %@",error);
+       // NSLog(@"error creating meda pipeline object %@",error);
     } completed:^{
         @strongify(self);
         [[self callButton] setEnabled:YES];

@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8A04F4641B9065F0000344ED /* CallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A04F4631B9065F0000344ED /* CallView.m */; };
+		8A2CE7EB1BB43910009A99D2 /* CallView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A2CE7EA1BB43910009A99D2 /* CallView.xib */; settings = {ASSET_TAGS = (); }; };
+		8A7B6CDA1BB5B7A800FF6981 /* LoaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7B6CD91BB5B7A800FF6981 /* LoaderView.m */; settings = {ASSET_TAGS = (); }; };
 		8A8E02E41B8F11740086FBF9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A8E02E31B8F11740086FBF9 /* main.m */; };
 		8A8E02EF1B8F11740086FBF9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A8E02EE1B8F11740086FBF9 /* Images.xcassets */; };
 		8ABCA6EC1BA6D3A900434356 /* KMSWebRTCCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ABCA6EB1BA6D3A900434356 /* KMSWebRTCCall.m */; };
@@ -21,8 +22,9 @@
 /* Begin PBXFileReference section */
 		4A1CD2B36E4840187DFCF426 /* Pods-LoopBackCall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoopBackCall.release.xcconfig"; path = "Pods/Target Support Files/Pods-LoopBackCall/Pods-LoopBackCall.release.xcconfig"; sourceTree = "<group>"; };
 		7530A095D9CF3E5B680D1C2A /* libPods-LoopBackCall.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LoopBackCall.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		8A04F4621B9065F0000344ED /* CallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallView.h; sourceTree = "<group>"; };
-		8A04F4631B9065F0000344ED /* CallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallView.m; sourceTree = "<group>"; };
+		8A2CE7EA1BB43910009A99D2 /* CallView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallView.xib; sourceTree = "<group>"; };
+		8A7B6CD81BB5B7A800FF6981 /* LoaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoaderView.h; sourceTree = "<group>"; };
+		8A7B6CD91BB5B7A800FF6981 /* LoaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoaderView.m; sourceTree = "<group>"; };
 		8A8E02DE1B8F11740086FBF9 /* LoopBackCall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoopBackCall.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A8E02E21B8F11740086FBF9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A8E02E31B8F11740086FBF9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -54,20 +56,13 @@
 		8A04F4601B9065D2000344ED /* CallViewController */ = {
 			isa = PBXGroup;
 			children = (
-				8A04F4611B9065DE000344ED /* View */,
 				8AD5B5361B8F1286003D8627 /* CallViewController.h */,
 				8AD5B5371B8F1286003D8627 /* CallViewController.m */,
+				8A2CE7EA1BB43910009A99D2 /* CallView.xib */,
+				8A7B6CD81BB5B7A800FF6981 /* LoaderView.h */,
+				8A7B6CD91BB5B7A800FF6981 /* LoaderView.m */,
 			);
 			name = CallViewController;
-			sourceTree = "<group>";
-		};
-		8A04F4611B9065DE000344ED /* View */ = {
-			isa = PBXGroup;
-			children = (
-				8A04F4621B9065F0000344ED /* CallView.h */,
-				8A04F4631B9065F0000344ED /* CallView.m */,
-			);
-			name = View;
 			sourceTree = "<group>";
 		};
 		8A8E02D51B8F11740086FBF9 = {
@@ -184,7 +179,7 @@
 		8A8E02D61B8F11740086FBF9 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = CSLtd;
 				TargetAttributes = {
 					8A8E02DD1B8F11740086FBF9 = {
@@ -216,6 +211,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A8E02EF1B8F11740086FBF9 /* Images.xcassets in Resources */,
+				8A2CE7EB1BB43910009A99D2 /* CallView.xib in Resources */,
 				8AD5B53E1B8F1286003D8627 /* RootView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -262,7 +258,7 @@
 			files = (
 				8ABCA6EC1BA6D3A900434356 /* KMSWebRTCCall.m in Sources */,
 				8AD5B53D1B8F1286003D8627 /* CallViewController.m in Sources */,
-				8A04F4641B9065F0000344ED /* CallView.m in Sources */,
+				8A7B6CDA1BB5B7A800FF6981 /* LoaderView.m in Sources */,
 				8AD5B53B1B8F1286003D8627 /* AppDelegate.m in Sources */,
 				8AD5B53F1B8F1286003D8627 /* RootViewController.m in Sources */,
 				8A8E02E41B8F11740086FBF9 /* main.m in Sources */,
@@ -292,7 +288,9 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -336,6 +334,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -363,6 +362,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = LoopBackCall/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.daemmon.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -376,6 +376,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = LoopBackCall/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.daemmon.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

@@ -1,4 +1,5 @@
 PODS:
+  - CGSizeAspectRatioTool (1.0)
   - KMSClient (1.0.5):
     - KMSClient/Log (= 1.0.5)
     - KMSClient/MessageFactory (= 1.0.5)
@@ -62,11 +63,13 @@ PODS:
   - SocketRocket (0.4)
 
 DEPENDENCIES:
+  - CGSizeAspectRatioTool (= 1.0)
   - KMSClient (= 1.0.5)
   - libjingle_peerconnection
   - ReactiveCocoa (= 2.5)
 
 SPEC CHECKSUMS:
+  CGSizeAspectRatioTool: f88e95b9ceec43259c29bde52cf5e9a8d3c72123
   KMSClient: 9ded941dc67e04b13ea868be590e98a3388c05bf
   libjingle_peerconnection: f03d6c0532595e8b9b233eccea68ad344e0395ac
   Mantle: d7c75b6fb789b20f7ae30cd0d09435fe545896ff

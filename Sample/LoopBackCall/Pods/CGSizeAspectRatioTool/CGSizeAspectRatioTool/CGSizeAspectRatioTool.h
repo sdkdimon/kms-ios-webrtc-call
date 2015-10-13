@@ -1,5 +1,5 @@
 //
-// CallView.h
+// CGSizeAspectRatioTool.h
 // Copyright (c) 2015 Dmitry Lizin (sdkdimon@gmail.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,18 +18,16 @@
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// THE SOFTWARE
 
-#import <UIKit/UIKit.h>
-@class RTCEAGLVideoView;
-@class CallView;
+#ifndef CGSizeAspectRatioTool_h
+#define CGSizeAspectRatioTool_h
 
-@interface CallView : UIView
+#include <CoreGraphics/CGGeometry.h>
 
-@property (strong,nonatomic,readonly) RTCEAGLVideoView *remoteVideoView;
-@property (strong,nonatomic,readonly) RTCEAGLVideoView *localVideoView;
-@property (strong,nonatomic,readonly) UIButton *hangUpButton;
-@property (strong,nonatomic,readonly) UIButton *camSwitchButton;
-@property (strong,nonatomic,readonly) UIButton *micSwitchButton;
+CGSize CGSizeMakeWithAspectRatioScaledToMaxSize(CGSize aspectRatio,CGSize maxSize);
+CGFloat CGSizeAspectRatio(CGSize aspectRatio);
+bool CGSizeAsectRatioIsEqualToAspectRatio(CGSize aspectRatio1, CGSize aspectRatio2);
 
-@end
+
+#endif /* CGSizeAspectRatioTool_h */

@@ -326,7 +326,11 @@
 }
 
 -(RACSignal *)disposeWebRTCEndpointSignal{
-    return [RACSignal concat:@[[[self webRTCEndpoint] dispose],[[self kurentoSession] close]]];
+    @weakify(self);
+   return [[[[self webRTCEndpoint] dispose] then:^RACSignal *{
+                @strongify(self);
+                return [[self kurentoSession] close];
+           }] ignoreValues];
 }
 
 -(RACSignal *)closePeerConnectionSignal{

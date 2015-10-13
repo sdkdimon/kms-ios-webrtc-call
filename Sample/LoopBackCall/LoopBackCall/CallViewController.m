@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #import "CallViewController.h"
-#import "CallView.h"
+
 #import <libjingle_peerconnection/RTCEAGLVideoView.h>
 #import <libjingle_peerconnection/RTCVideoTrack.h>
 #import <libjingle_peerconnection/RTCAudioTrack.h>
@@ -34,16 +34,34 @@
 #import <ReactiveCocoa/RACTuple.h>
 #import <ReactiveCocoa/UIControl+RACSignalSupport.h>
 
+#import <AVFoundation/AVFoundation.h>
+#import <CGSizeAspectRatioTool/CGSizeAspectRatioTool.h>
+
+typedef enum {
+    RTCEAGLVideoViewTypeNone = 0,
+    RTCEAGLVideoViewTypeLocal,
+    RTCEAGLVideoViewTypeRemote
+
+}RTCEAGLVideoViewType;
 
 @interface CallViewController () <RTCEAGLVideoViewDelegate>
 
-@property (weak, nonatomic) RTCEAGLVideoView *remoteVideoView;
-@property (weak, nonatomic) RTCEAGLVideoView *localVideoView;
-@property (weak, nonatomic) UIButton *hangupButton;
-@property (weak,nonatomic,readwrite) UIButton *camSwitchButton;
-@property (weak,nonatomic,readwrite) UIButton *micSwitchButton;
+@property (weak, nonatomic) IBOutlet UIView *videoControlsContainerConstraintView;
+@property (weak, nonatomic) IBOutlet UIView *videoControlsContainer;
+
+
+@property (weak, nonatomic) IBOutlet RTCEAGLVideoView *remoteVideoView;
+@property (weak, nonatomic) IBOutlet RTCEAGLVideoView *localVideoView;
+@property (weak, nonatomic) IBOutlet UIButton *hangupButton;
+@property (weak,nonatomic,readwrite) IBOutlet UIButton *camSwitchButton;
+@property (weak,nonatomic,readwrite) IBOutlet UIButton *micSwitchButton;
 @property(strong,nonatomic,readwrite) RACSignal *localMediaSreamObserver;
 @property(strong,nonatomic,readwrite) RACSignal *remoteMediaSreamObserver;
+
+@property(assign,nonatomic,readwrite) CGSize currentVideoSize;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *videoControlsContainerHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *videoControlsContainerWidthConstraint;
+@property (weak, nonatomic) IBOutlet UIView *videoContainer;
 
 @end
 
@@ -73,20 +91,6 @@
     }];
 }
 
--(void)loadView{
-    CallView *callView = [[CallView alloc] init];
-    [self setLocalVideoView:[callView localVideoView]];
-    [self setRemoteVideoView:[callView remoteVideoView]];
-    [self setHangupButton:[callView hangUpButton]];
-    [self setCamSwitchButton:[callView camSwitchButton]];
-    [self setMicSwitchButton:[callView micSwitchButton]];
-    [callView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [_localVideoView setDelegate:self];
-    [_remoteVideoView setDelegate:self];
-    [self setView:callView];
-    
-}
-
 -(BOOL)updateSwitchButtonState:(UIButton *)switchButton{
     BOOL newState = ![switchButton tag];
     [switchButton setTag:newState];
@@ -94,6 +98,16 @@
 }
 
 -(void)setupControls{
+    [_videoControlsContainerConstraintView setBackgroundColor:[UIColor clearColor]];
+    [_videoControlsContainer setBackgroundColor:[UIColor clearColor]];
+    
+    
+    [_localVideoView setTag:RTCEAGLVideoViewTypeLocal];
+    [_remoteVideoView setTag:RTCEAGLVideoViewTypeRemote];
+    
+    [_localVideoView setDelegate:self];
+    [_remoteVideoView setDelegate:self];
+    
     @weakify(self);
     RACSignal *camSwitchButtonTapSignal = [_camSwitchButton rac_signalForControlEvents:UIControlEventTouchUpInside];
     [camSwitchButtonTapSignal subscribeNext:^(UIButton *sender) {
@@ -119,13 +133,6 @@
     [_hangupButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
     [[_hangupButton titleLabel] setFont:[UIFont systemFontOfSize:25]];
     [_hangupButton setBackgroundColor:[UIColor redColor]];
-    ////    _hangupButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    //    [_hangupButton setBackgroundColor:[UIColor redColor]];
-    ////    CALayer *hangupButtonLayer = [_hangupButton layer];
-    ////    [hangupButtonLayer setCornerRadius:50/2];
-    ////    [hangupButtonLayer setMasksToBounds:YES];
-    //    UIImage *buttonImage = [[UIImage imageNamed:@"ic_call_end_black"] add_tintedImageWithColor:[UIColor whiteColor] style:ADDImageTintStyleOverAlpha];
-    //    [_hangupButton setImage:buttonImage forState:UIControlStateNormal];
     [_hangupButton addTarget:self
                       action:@selector(onHangup:)
             forControlEvents:UIControlEventTouchUpInside];
@@ -162,8 +169,6 @@
 }
 
 -(void)removeFromParentViewController{
-    _localMediaStream = nil;
-    _remoteMediaStream = nil;
     [_remoteVideoView setDelegate:nil];
     [_localVideoView setDelegate:nil];
     
@@ -172,13 +177,46 @@
     
     RTCVideoTrack *remoteVideoTrack = [[_remoteMediaStream videoTracks] firstObject];
     [remoteVideoTrack removeRenderer:_remoteVideoView];
-    
-    
+    _localMediaStream = nil;
+    _remoteMediaStream = nil;
     [super removeFromParentViewController];
 }
 
 -(void)videoView:(RTCEAGLVideoView *)videoView didChangeVideoSize:(CGSize)size{
-    NSLog(@"videoView didChangeVideoSize %@",NSStringFromCGSize(size));
+        switch ([videoView tag]) {
+            case RTCEAGLVideoViewTypeRemote:
+                [self remoteVideoView:videoView didChangeVideoSize:size];
+                break;
+                
+            case RTCEAGLVideoViewTypeLocal:
+                [self localVideoView:videoView didChangeVideoSize:size];
+                break;
+                
+            default:
+                break;
+        }
 }
+
+-(void)remoteVideoView:(RTCEAGLVideoView *)videoView didChangeVideoSize:(CGSize)size{
+   
+    if(!CGSizeAsectRatioIsEqualToAspectRatio(_currentVideoSize, size)){
+        _currentVideoSize = size;
+        CGSize videoViewMaxSize = [_videoControlsContainerConstraintView bounds].size;
+        
+        CGSize videoControlsContainerSize = CGSizeMakeWithAspectRatioScaledToMaxSize(size, videoViewMaxSize);
+        
+        CGFloat heightDelta =  ceilf(videoControlsContainerSize.height) - videoViewMaxSize.height;
+        CGFloat widthDelta =  ceilf(videoControlsContainerSize.width) - videoViewMaxSize.width;
+        
+        [_videoControlsContainerWidthConstraint setConstant:widthDelta];
+        [_videoControlsContainerHeightConstraint setConstant:heightDelta];
+    }
+}
+
+-(void)localVideoView:(RTCEAGLVideoView *)videoView didChangeVideoSize:(CGSize)size{
+    
+}
+
+
 
 @end
