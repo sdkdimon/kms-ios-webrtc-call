@@ -1,1 +1,5 @@
 xcuserdata
+KMSWebRTCCall_podspec_lint.sh
+KMSWebRTCCall_podspec_push.sh
+Sample/LoopBackCall/LoopBackCall/AudioOutputManager.h
+Sample/LoopBackCall/LoopBackCall/AudioOutputManager.m

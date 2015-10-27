@@ -41,6 +41,7 @@
 #import <KMSClient/KMSLog.h>
 #import <KMSClient/KMSMediaPipeline.h>
 #import "KMSWebRTCCall.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 
 
 @interface KurentoLogger : NSObject <KMSLogger>
@@ -51,7 +52,7 @@
 @implementation KurentoLogger
 
 -(void)logMessage:(NSString *)message level:(KMSLogMessageLevel)level{
-    NSLog(@"%@",message);
+   NSLog(@"%@",message);
 }
 
 @end
@@ -64,7 +65,7 @@ static NSString * const KMS_URL = @"ws://192.168.2.13:8888/kurento";
 @property (weak, nonatomic) IBOutlet UIButton *callButton;
 
 @property(strong,nonatomic,readwrite) KMSWebRTCCall *webRTCCall;
-@property(weak,nonatomic,readwrite) CallViewController *callViewController;
+@property(strong,nonatomic,readwrite) CallViewController *callViewController;
 @property(strong,nonatomic,readwrite) KMSMediaPipeline *mediaPipeline;
 @property(strong,nonatomic,readwrite) KMSSession *kmsAPIService;
 
@@ -130,9 +131,6 @@ static NSString * const KMS_URL = @"ws://192.168.2.13:8888/kurento";
     [self setupControls];
     [self setupBindings];
     [self initializeMediaPipeline];
-    
-    
-    
 }
 
 -(IBAction)makeCall:(UIButton *)sender {
@@ -140,9 +138,14 @@ static NSString * const KMS_URL = @"ws://192.168.2.13:8888/kurento";
 }
 
 -(void)call:(NSString *)webRTCEndpointId{
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[self view] animated:YES];
+    [hud setLabelText:@"Calling...."];
+    [hud setBackgroundColor:[UIColor colorWithWhite:.0f alpha:.5f]];
+    
     CallViewController *callViewController = [[CallViewController alloc] init];
     [callViewController setDelegate:self];
-    [self showCallViewController:callViewController];
+   
     [self setCallViewController:callViewController];
     
     _webRTCCall = [KMSWebRTCCall callWithServerURL:[NSURL URLWithString:KMS_URL] peerConnectionFactory:[[RTCPeerConnectionFactory alloc] init] mediaPipelineId:webRTCEndpointId];
@@ -150,30 +153,6 @@ static NSString * const KMS_URL = @"ws://192.168.2.13:8888/kurento";
     [_webRTCCall setDelegate:self];
     [_webRTCCall setDataSource:self];
     [_webRTCCall makeCall];
-}
-
-
--(void)showCallViewController:(CallViewController *)callViewController{
-    [self addChildViewController:callViewController];
-    UIView *selfView = [self view];
-    UIView *callViewControllerView = [callViewController view];
-    [callViewControllerView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [selfView addSubview:callViewControllerView];
-    
-    NSLayoutConstraint *topCallViewConstraint = [NSLayoutConstraint constraintWithItem:callViewControllerView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:selfView attribute:NSLayoutAttributeTop multiplier:1.0f constant:0];
-    NSLayoutConstraint *leadingCallViewConstraint = [NSLayoutConstraint constraintWithItem:callViewControllerView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:selfView attribute:NSLayoutAttributeLeading multiplier:1.0f constant:0];
-    NSLayoutConstraint *trailingCallViewConstraint = [NSLayoutConstraint constraintWithItem:callViewControllerView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:selfView attribute:NSLayoutAttributeTrailing multiplier:1.0f constant:0];
-    NSLayoutConstraint *bottomCallViewConstraint = [NSLayoutConstraint constraintWithItem:callViewControllerView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:selfView attribute:NSLayoutAttributeBottom multiplier:1.0f constant:0];
-    [selfView addConstraints:@[topCallViewConstraint,leadingCallViewConstraint,trailingCallViewConstraint,bottomCallViewConstraint]];
-    
-    
-    [callViewController didMoveToParentViewController:self];
-}
-
--(void)removeCallViewController{
-    [_callViewController willMoveToParentViewController:nil];
-    [[_callViewController view] removeFromSuperview];
-    [_callViewController removeFromParentViewController];
 }
 
 -(void)callViewControllerDidHangup:(CallViewController *)callViewController{
@@ -218,16 +197,22 @@ static NSString * const KMS_URL = @"ws://192.168.2.13:8888/kurento";
 }
 
 -(void)webRTCCall:(KMSWebRTCCall *)webRTCCall hangupFromInitiator:(KMSWebRTCCallInitiator)inititator{
-    [self removeCallViewController];
+    [_callViewController dismissViewControllerAnimated:NO completion:nil];
+    [self setCallViewController:nil];
     [self setWebRTCCall:nil];
 }
 
 -(void)webRTCCall:(KMSWebRTCCall *)webRTCCall didFailWithError:(NSError *)error{
-    
+    MBProgressHUD *hud = [MBProgressHUD HUDForView:[self view]];
+    [hud setLabelText:@"Error"];
+    [hud setDetailsLabelText:[error localizedDescription]];
+    [hud hide:YES afterDelay:3.0f];
+    [self setCallViewController:nil];
 }
 
 -(void)webRTCCallDidStart:(KMSWebRTCCall *)webRTCCall{
-    
+    [self presentViewController:_callViewController animated:NO completion:nil];
+    [MBProgressHUD hideHUDForView:[self view] animated:YES];
 }
 
 #pragma mark Defaults
@@ -260,8 +245,7 @@ static NSString * const KMS_URL = @"ws://192.168.2.13:8888/kurento";
 
 - (RTCMediaConstraints *)defaultPeerConnectionConstraints {
     
-    
-  return  [[RTCMediaConstraints alloc]
+    return  [[RTCMediaConstraints alloc]
      initWithMandatoryConstraints:nil
      optionalConstraints:
      @[
@@ -270,14 +254,5 @@ static NSString * const KMS_URL = @"ws://192.168.2.13:8888/kurento";
        ]];
 
 }
-
-#pragma mark UITextFieldDelegate
-
-
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    [textField resignFirstResponder];
-    return YES;
-}
-
 
 @end

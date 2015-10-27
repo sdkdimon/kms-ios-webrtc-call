@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8A2CE7EB1BB43910009A99D2 /* CallView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A2CE7EA1BB43910009A99D2 /* CallView.xib */; settings = {ASSET_TAGS = (); }; };
-		8A7B6CDA1BB5B7A800FF6981 /* LoaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7B6CD91BB5B7A800FF6981 /* LoaderView.m */; settings = {ASSET_TAGS = (); }; };
+		509FB9342A4BB6F1DF91D7CD /* libPods-LoopBackCall.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B4FD1806966C967E7921478 /* libPods-LoopBackCall.a */; };
+		8A2CE7EB1BB43910009A99D2 /* CallView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A2CE7EA1BB43910009A99D2 /* CallView.xib */; };
 		8A8E02E41B8F11740086FBF9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A8E02E31B8F11740086FBF9 /* main.m */; };
 		8A8E02EF1B8F11740086FBF9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A8E02EE1B8F11740086FBF9 /* Images.xcassets */; };
 		8ABCA6EC1BA6D3A900434356 /* KMSWebRTCCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ABCA6EB1BA6D3A900434356 /* KMSWebRTCCall.m */; };
@@ -16,15 +16,12 @@
 		8AD5B53D1B8F1286003D8627 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5B5371B8F1286003D8627 /* CallViewController.m */; };
 		8AD5B53E1B8F1286003D8627 /* RootView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8AD5B5381B8F1286003D8627 /* RootView.xib */; };
 		8AD5B53F1B8F1286003D8627 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5B53A1B8F1286003D8627 /* RootViewController.m */; };
-		98F9C2163FEA062269DCD37C /* libPods-LoopBackCall.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7530A095D9CF3E5B680D1C2A /* libPods-LoopBackCall.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1B4FD1806966C967E7921478 /* libPods-LoopBackCall.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LoopBackCall.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A1CD2B36E4840187DFCF426 /* Pods-LoopBackCall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoopBackCall.release.xcconfig"; path = "Pods/Target Support Files/Pods-LoopBackCall/Pods-LoopBackCall.release.xcconfig"; sourceTree = "<group>"; };
-		7530A095D9CF3E5B680D1C2A /* libPods-LoopBackCall.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LoopBackCall.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A2CE7EA1BB43910009A99D2 /* CallView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallView.xib; sourceTree = "<group>"; };
-		8A7B6CD81BB5B7A800FF6981 /* LoaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoaderView.h; sourceTree = "<group>"; };
-		8A7B6CD91BB5B7A800FF6981 /* LoaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoaderView.m; sourceTree = "<group>"; };
 		8A8E02DE1B8F11740086FBF9 /* LoopBackCall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoopBackCall.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A8E02E21B8F11740086FBF9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A8E02E31B8F11740086FBF9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -46,7 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98F9C2163FEA062269DCD37C /* libPods-LoopBackCall.a in Frameworks */,
+				509FB9342A4BB6F1DF91D7CD /* libPods-LoopBackCall.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,8 +56,6 @@
 				8AD5B5361B8F1286003D8627 /* CallViewController.h */,
 				8AD5B5371B8F1286003D8627 /* CallViewController.m */,
 				8A2CE7EA1BB43910009A99D2 /* CallView.xib */,
-				8A7B6CD81BB5B7A800FF6981 /* LoaderView.h */,
-				8A7B6CD91BB5B7A800FF6981 /* LoaderView.m */,
 			);
 			name = CallViewController;
 			sourceTree = "<group>";
@@ -146,7 +141,7 @@
 		A7B88AD332ADAF52D7B797CD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7530A095D9CF3E5B680D1C2A /* libPods-LoopBackCall.a */,
+				1B4FD1806966C967E7921478 /* libPods-LoopBackCall.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -258,7 +253,6 @@
 			files = (
 				8ABCA6EC1BA6D3A900434356 /* KMSWebRTCCall.m in Sources */,
 				8AD5B53D1B8F1286003D8627 /* CallViewController.m in Sources */,
-				8A7B6CDA1BB5B7A800FF6981 /* LoaderView.m in Sources */,
 				8AD5B53B1B8F1286003D8627 /* AppDelegate.m in Sources */,
 				8AD5B53F1B8F1286003D8627 /* RootViewController.m in Sources */,
 				8A8E02E41B8F11740086FBF9 /* main.m in Sources */,
@@ -306,7 +300,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -345,7 +339,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -361,6 +355,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = LoopBackCall/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.daemmon.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -375,6 +370,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = LoopBackCall/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.daemmon.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";

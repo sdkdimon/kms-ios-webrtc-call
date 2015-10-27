@@ -29,6 +29,7 @@
 
 
 #import <ReactiveCocoa/RACSignal.h>
+#import <ReactiveCocoa/RACSignal+Operations.h>
 #import <ReactiveCocoa/NSObject+RACPropertySubscribing.h>
 #import <ReactiveCocoa/RACEXTScope.h>
 #import <ReactiveCocoa/RACTuple.h>
@@ -53,51 +54,95 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet RTCEAGLVideoView *remoteVideoView;
 @property (weak, nonatomic) IBOutlet RTCEAGLVideoView *localVideoView;
 @property (weak, nonatomic) IBOutlet UIButton *hangupButton;
-@property (weak,nonatomic,readwrite) IBOutlet UIButton *camSwitchButton;
+@property (weak, nonatomic) IBOutlet UIButton *audioSwitchButton;
+@property (weak,nonatomic,readwrite) IBOutlet UIButton *videoSwitchButton;
 @property (weak,nonatomic,readwrite) IBOutlet UIButton *micSwitchButton;
-@property(strong,nonatomic,readwrite) RACSignal *localMediaSreamObserver;
-@property(strong,nonatomic,readwrite) RACSignal *remoteMediaSreamObserver;
+@property (weak, nonatomic) IBOutlet UILabel *videoOverlayLabel;
 
 @property(assign,nonatomic,readwrite) CGSize currentVideoSize;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *videoControlsContainerHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *videoControlsContainerWidthConstraint;
 @property (weak, nonatomic) IBOutlet UIView *videoContainer;
 
+@property(strong,nonatomic,readonly) NSDictionary *videoSwitchButtonTitles;
+@property(strong,nonatomic,readonly) NSDictionary *micSwitchButtonTitles;
+
 @end
 
 @implementation CallViewController
 
-
--(instancetype)init{
-    if((self = [super init]) != nil){
-        [self initialize];
-    }
-    return self;
-}
-
-
--(void)initialize{
-    _localMediaSreamObserver =
-    [[[self rac_valuesAndChangesForKeyPath:@keypath(self, localMediaStream) options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial) observer:self] map:^id(RACTuple *args) {
-        return [args first];
-    }] filter:^BOOL(RTCMediaStream *mediaStream) {
-        return mediaStream != nil;
-    }];
-    _remoteMediaSreamObserver =
-    [[[self rac_valuesAndChangesForKeyPath:@keypath(self, remoteMediaStream) options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial) observer:self] map:^id(RACTuple *args) {
-        return [args first];
-    }] filter:^BOOL(RTCMediaStream *mediaStream) {
-        return mediaStream != nil;
-    }];
-}
-
--(BOOL)updateSwitchButtonState:(UIButton *)switchButton{
-    BOOL newState = ![switchButton tag];
-    [switchButton setTag:newState];
-    return newState;
-}
-
 -(void)setupControls{
+    _videoEnabled = NO;
+    _micEnabled = YES;
+    
+    [_videoOverlayLabel setText:@"Video disabled. To enable video press \"Turn on video button\""];
+    
+    @weakify(self);
+    _videoSwitchButtonTitles = @{@(UIControlStateSelected) : @"Turn off video",@(UIControlStateNormal) : @"Turn on video"};
+    _micSwitchButtonTitles = @{@(UIControlStateSelected) : @"Turn off mic",@(UIControlStateNormal) : @"Turn on mic"};
+    for(NSNumber *controlState in _videoSwitchButtonTitles){
+        [_videoSwitchButton setTitle:_videoSwitchButtonTitles[controlState] forState:[controlState integerValue]];
+    }
+    [_videoSwitchButton setSelected:_videoEnabled];
+    for(NSNumber *controlState in _micSwitchButtonTitles){
+        [_micSwitchButton setTitle:_micSwitchButtonTitles[controlState] forState:[controlState integerValue]];
+    }
+    [_micSwitchButton setSelected:_micEnabled];
+    
+    RACSignal *videoSwitchButtonTapSignal =
+    [[[[_videoSwitchButton rac_signalForControlEvents:UIControlEventTouchUpInside]
+      doNext:^(UIButton *sender) {
+           BOOL newState = ![sender isSelected];
+          [sender setSelected:newState];
+    }] map:^id(UIButton *sender) {
+        return @([sender isSelected]);
+    }] startWith:@(_videoEnabled)];
+    
+    
+    
+    [videoSwitchButtonTapSignal subscribeNext:^(NSNumber *isSelected) {
+        @strongify(self);
+        BOOL isVideoTrackEnabed = [isSelected boolValue];
+        [[self videoOverlayLabel] setHidden:isVideoTrackEnabed];
+        RTCVideoTrack *remoteVideoTrack = [[[self remoteMediaStream] videoTracks] firstObject];
+        RTCVideoTrack *localVideoTrack = [[[self localMediaStream] videoTracks] firstObject];
+        [localVideoTrack setEnabled:isVideoTrackEnabed];
+        if(isVideoTrackEnabed){
+            [remoteVideoTrack addRenderer:_remoteVideoView];
+            [localVideoTrack addRenderer:_localVideoView];
+        } else{
+            [remoteVideoTrack removeRenderer:_remoteVideoView];
+            [localVideoTrack removeRenderer:_localVideoView];
+        }
+    }];
+    
+    
+    RACSignal *micSwitchButtonTapSignal =
+    [[[[_micSwitchButton rac_signalForControlEvents:UIControlEventTouchUpInside]
+        doNext:^(UIButton *sender) {
+            BOOL newState = ![sender isSelected];
+            [sender setSelected:newState];
+        }] map:^id(UIButton *sender) {
+            return @([sender isSelected]);
+        }] startWith:@(_micEnabled)];
+    
+    [micSwitchButtonTapSignal subscribeNext:^(NSNumber *isSelected) {
+        @strongify(self);
+        RTCAudioTrack *localAudioTrack = [[[self localMediaStream] audioTracks] firstObject];
+        [localAudioTrack setEnabled:[isSelected boolValue]];
+    }];
+    
+    
+    RACSignal *audioSwitchButtonTapSignal = [_audioSwitchButton rac_signalForControlEvents:UIControlEventTouchUpInside];
+    [audioSwitchButtonTapSignal subscribeNext:^(UIButton *sender) {
+    }];
+    
+    
+
+    [_hangupButton addTarget:self
+                      action:@selector(onHangup:)
+            forControlEvents:UIControlEventTouchUpInside];
+    
     [_videoControlsContainerConstraintView setBackgroundColor:[UIColor clearColor]];
     [_videoControlsContainer setBackgroundColor:[UIColor clearColor]];
     
@@ -108,77 +153,32 @@ typedef enum {
     [_localVideoView setDelegate:self];
     [_remoteVideoView setDelegate:self];
     
-    @weakify(self);
-    RACSignal *camSwitchButtonTapSignal = [_camSwitchButton rac_signalForControlEvents:UIControlEventTouchUpInside];
-    [camSwitchButtonTapSignal subscribeNext:^(UIButton *sender) {
-        @strongify(self);
-        BOOL newButtonState = [self updateSwitchButtonState:sender];
-        RTCVideoTrack *localVideoTrack = [[[self localMediaStream] videoTracks] firstObject];
-        [localVideoTrack setEnabled:newButtonState];
-    }];
     
-    RACSignal *micSwitchButtonTapSignal = [_micSwitchButton rac_signalForControlEvents:UIControlEventTouchUpInside];
-    [micSwitchButtonTapSignal subscribeNext:^(UIButton *sender) {
-        @strongify(self);
-        BOOL newButtonState = [self updateSwitchButtonState:sender];
-        RTCAudioTrack *localAudioTrack = [[[self localMediaStream] audioTracks] firstObject];
-        [localAudioTrack setEnabled:newButtonState];
-    }];
-    
-    
-    [_camSwitchButton setTitle:@"TurnOffCam" forState:UIControlStateNormal];
-    [_micSwitchButton setTitle:@"TurnOffMic" forState:UIControlStateNormal];
-    
-    [_hangupButton setTitle:@"Hang up" forState:UIControlStateNormal];
-    [_hangupButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
-    [[_hangupButton titleLabel] setFont:[UIFont systemFontOfSize:25]];
-    [_hangupButton setBackgroundColor:[UIColor redColor]];
-    [_hangupButton addTarget:self
-                      action:@selector(onHangup:)
-            forControlEvents:UIControlEventTouchUpInside];
+    [_audioSwitchButton setEnabled:NO];
     
 }
 
-- (void)viewDidLoad {
+-(void)enableVideoTracks:(BOOL)enable{
+   
+}
+
+-(void)viewDidLoad {
     [super viewDidLoad];
     [self setupControls];
-    @weakify(self);
-    [_localMediaSreamObserver subscribeNext:^(RTCMediaStream *localMediaStream) {
-        @strongify(self);
-        RTCVideoTrack *localVideoTrack = [[localMediaStream videoTracks] firstObject];
-        [localVideoTrack addRenderer:[self localVideoView]];
-    }];
-    
-    
-    [_remoteMediaSreamObserver subscribeNext:^(RTCMediaStream *remoteMediaStream) {
-        @strongify(self);
-        if(remoteMediaStream){
-            RTCVideoTrack *remoteVideoTrack = [[remoteMediaStream videoTracks] firstObject];
-            [remoteVideoTrack addRenderer:[self remoteVideoView]];
-        }
-    }];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 -(void)onHangup:(UIButton *)button{
     [_delegate callViewControllerDidHangup:self];
 }
 
+-(void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion{
+    [self releaseMediaStreams];
+    [super dismissViewControllerAnimated:flag completion:completion];
+
+}
+
 -(void)removeFromParentViewController{
-    [_remoteVideoView setDelegate:nil];
-    [_localVideoView setDelegate:nil];
-    
-    RTCVideoTrack *localVideoTrack = [[_localMediaStream videoTracks] firstObject];
-    [localVideoTrack removeRenderer:_localVideoView];
-    
-    RTCVideoTrack *remoteVideoTrack = [[_remoteMediaStream videoTracks] firstObject];
-    [remoteVideoTrack removeRenderer:_remoteVideoView];
-    _localMediaStream = nil;
-    _remoteMediaStream = nil;
+    [self releaseMediaStreams];
     [super removeFromParentViewController];
 }
 
@@ -205,8 +205,8 @@ typedef enum {
         
         CGSize videoControlsContainerSize = CGSizeMakeWithAspectRatioScaledToMaxSize(size, videoViewMaxSize);
         
-        CGFloat heightDelta =  ceilf(videoControlsContainerSize.height) - videoViewMaxSize.height;
-        CGFloat widthDelta =  ceilf(videoControlsContainerSize.width) - videoViewMaxSize.width;
+        CGFloat heightDelta = ceilf(videoControlsContainerSize.height) - videoViewMaxSize.height;
+        CGFloat widthDelta = ceilf(videoControlsContainerSize.width) - videoViewMaxSize.width;
         
         [_videoControlsContainerWidthConstraint setConstant:widthDelta];
         [_videoControlsContainerHeightConstraint setConstant:heightDelta];
@@ -217,6 +217,18 @@ typedef enum {
     
 }
 
+#pragma mark Memory Clean
 
+-(void)releaseMediaStreams{
+    [_remoteVideoView setDelegate:nil];
+    [_localVideoView setDelegate:nil];
+    RTCVideoTrack *localVideoTrack = [[_localMediaStream videoTracks] firstObject];
+    [localVideoTrack removeRenderer:_localVideoView];
+    
+    RTCVideoTrack *remoteVideoTrack = [[_remoteMediaStream videoTracks] firstObject];
+    [remoteVideoTrack removeRenderer:_remoteVideoView];
+    _localMediaStream = nil;
+    _remoteMediaStream = nil;
+}
 
 @end

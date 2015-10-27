@@ -38,5 +38,8 @@
 @property(strong,nonatomic,readwrite) RTCMediaStream *localMediaStream;
 @property(strong,nonatomic,readwrite) RTCMediaStream *remoteMediaStream;
 
+@property(assign,nonatomic,readwrite) BOOL videoEnabled;
+@property(assign,nonatomic,readwrite) BOOL micEnabled;
+
 
 @end

@@ -1,0 +1,1 @@
+UIIMAGE_ADDITIONS_OTHER_LDFLAGS = -framework "UIKit"

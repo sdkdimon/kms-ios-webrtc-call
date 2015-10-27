@@ -37,7 +37,6 @@
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [_window setRootViewController:[[RootViewController alloc] initWithNibName:@"RootView" bundle:nil]];
     [_window makeKeyAndVisible];
-    // Override point for customization after application launch.
     return YES;
 }
 

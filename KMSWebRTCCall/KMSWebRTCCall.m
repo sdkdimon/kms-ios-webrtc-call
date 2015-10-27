@@ -414,16 +414,11 @@
             [[self delegate] webRTCCall:self didFailWithError:error];
             return;
         }
-        
         @weakify(self);
-        NSString *sdpDescription = [sdp description];
-        NSString *sdpFixDescription = [sdpDescription stringByReplacingOccurrencesOfString:@"UDP/TLS/RTP/SAVPF" withString:@"RTP/SAVPF"];
-        RTCSessionDescription *fixedDescription = [[RTCSessionDescription alloc] initWithType:[sdp type] sdp:sdpFixDescription];
-        [[self peerConnection] setLocalDescriptionWithDelegate:self sessionDescription:fixedDescription];
+        [[self peerConnection] setLocalDescriptionWithDelegate:self sessionDescription:sdp];
         KMSWebRTCEndpoint *webRTCSession = [self webRTCEndpoint];
-        
         RACSignal *processOfferSignal =
-        [[webRTCSession processOffer:sdpFixDescription] doNext:^(NSString *remoteSDP) {
+        [[webRTCSession processOffer:[sdp description]] doNext:^(NSString *remoteSDP) {
             @strongify(self);
             RTCSessionDescription *remoteDesc = [[RTCSessionDescription alloc] initWithType:@"answer" sdp:remoteSDP];
             [[self peerConnection] setRemoteDescriptionWithDelegate:self sessionDescription:remoteDesc];
