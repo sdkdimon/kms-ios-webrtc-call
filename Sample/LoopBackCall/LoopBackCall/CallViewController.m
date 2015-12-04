@@ -22,10 +22,10 @@
 
 #import "CallViewController.h"
 
-#import <libjingle_peerconnection/RTCEAGLVideoView.h>
-#import <libjingle_peerconnection/RTCVideoTrack.h>
-#import <libjingle_peerconnection/RTCAudioTrack.h>
-#import <libjingle_peerconnection/RTCMediaStream.h>
+#import <WebRTC/RTCEAGLVideoView.h>
+#import <WebRTC/RTCVideoTrack.h>
+#import <WebRTC/RTCAudioTrack.h>
+#import <WebRTC/RTCMediaStream.h>
 
 
 #import <ReactiveCocoa/RACSignal.h>
@@ -37,6 +37,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <CGSizeAspectRatioTool/CGSizeAspectRatioTool.h>
+#import "AudioOutputManager.h"
 
 typedef enum {
     RTCEAGLVideoViewTypeNone = 0,
@@ -67,9 +68,24 @@ typedef enum {
 @property(strong,nonatomic,readonly) NSDictionary *videoSwitchButtonTitles;
 @property(strong,nonatomic,readonly) NSDictionary *micSwitchButtonTitles;
 
+@property(strong,nonatomic,readwrite) AudioOutputManager *soundRouter;
+
 @end
 
 @implementation CallViewController
+
+-(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self != nil){
+        [self setup];
+    }
+    return self;
+}
+
+-(void)setup{
+    _soundRouter = [[AudioOutputManager alloc] initWithAudioSession:[AVAudioSession sharedInstance]];
+}
+
 
 -(void)setupControls{
     _videoEnabled = NO;
@@ -154,7 +170,10 @@ typedef enum {
     [_remoteVideoView setDelegate:self];
     
     
-    [_audioSwitchButton setEnabled:NO];
+    [[_audioSwitchButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
+        @strongify(self);
+        [[self soundRouter] setOutputType:AudioOutputPortBuiltInSpeaker error:nil];
+    }];
     
 }
 

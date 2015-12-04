@@ -22,12 +22,12 @@
 
 #import "RootViewController.h"
 
-#import <libjingle_peerconnection/RTCPeerConnectionFactory.h>
-#import <libjingle_peerconnection/RTCMediaConstraints.h>
-#import <libjingle_peerconnection/RTCPair.h>
-#import <libjingle_peerconnection/RTCAVFoundationVideoSource.h>
-#import <libjingle_peerconnection/RTCVideoTrack.h>
-#import <libjingle_peerconnection/RTCMediaStream.h>
+#import <WebRTC/RTCPeerConnectionFactory.h>
+#import <WebRTC/RTCMediaConstraints.h>
+#import <WebRTC/RTCPair.h>
+#import <WebRTC/RTCAVFoundationVideoSource.h>
+#import <WebRTC/RTCVideoTrack.h>
+#import <WebRTC/RTCMediaStream.h>
 
 #import "CallViewController.h"
 
@@ -42,6 +42,7 @@
 #import <KMSClient/KMSMediaPipeline.h>
 #import "KMSWebRTCCall.h"
 #import <MBProgressHUD/MBProgressHUD.h>
+
 
 
 @interface KurentoLogger : NSObject <KMSLogger>

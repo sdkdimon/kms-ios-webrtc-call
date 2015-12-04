@@ -1,6 +1,6 @@
 #include "MBProgressHUD.xcconfig"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/MBProgressHUD" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/CGSizeAspectRatioTool" "${PODS_ROOT}/Headers/Public/KMSClient" "${PODS_ROOT}/Headers/Public/MBProgressHUD" "${PODS_ROOT}/Headers/Public/MTLJSONAdapterWithoutNil" "${PODS_ROOT}/Headers/Public/Mantle" "${PODS_ROOT}/Headers/Public/NSDictionaryMerge" "${PODS_ROOT}/Headers/Public/RACSRWebSocket" "${PODS_ROOT}/Headers/Public/ReactiveCocoa" "${PODS_ROOT}/Headers/Public/SocketRocket" "${PODS_ROOT}/Headers/Public/UIImage+Additions" "${PODS_ROOT}/Headers/Public/libjingle_peerconnection"
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/MBProgressHUD" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/CGSizeAspectRatioTool" "${PODS_ROOT}/Headers/Public/KMSClient" "${PODS_ROOT}/Headers/Public/MBProgressHUD" "${PODS_ROOT}/Headers/Public/MTLJSONAdapterWithoutNil" "${PODS_ROOT}/Headers/Public/Mantle" "${PODS_ROOT}/Headers/Public/NSDictionaryMerge" "${PODS_ROOT}/Headers/Public/RACSRWebSocket" "${PODS_ROOT}/Headers/Public/ReactiveCocoa" "${PODS_ROOT}/Headers/Public/SocketRocket" "${PODS_ROOT}/Headers/Public/UIImage+Additions" "${PODS_ROOT}/Headers/Public/WebRTC_framework" "${PODS_ROOT}/Headers/Public/WebRTC_framework/WebRTC"
 OTHER_LDFLAGS = ${MBPROGRESSHUD_OTHER_LDFLAGS}
 PODS_ROOT = ${SRCROOT}
 SKIP_INSTALL = YES

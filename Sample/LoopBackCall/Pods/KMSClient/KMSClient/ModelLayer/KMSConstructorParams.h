@@ -19,7 +19,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "MTLModel.h"
+#import <Mantle/MTLModel.h>
 #import <Mantle/MTLJSONAdapter.h>
 
 #pragma mark BaseConstructorParams
