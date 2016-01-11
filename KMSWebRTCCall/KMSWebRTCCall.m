@@ -21,17 +21,17 @@
 
 #import "KMSWebRTCCall.h"
 
-#import <WebRTC/RTCPeerConnectionFactory.h>
-#import <WebRTC/RTCPeerConnection.h>
-#import <WebRTC/RTCPeerConnectionInterface.h>
-#import <WebRTC/RTCSessionDescriptionDelegate.h>
-#import <WebRTC/RTCMediaConstraints.h>
-#import <WebRTC/RTCMediaStream.h>
-#import <WebRTC/RTCAVFoundationVideoSource.h>
-#import <WebRTC/RTCVideoTrack.h>
-#import <WebRTC/RTCPair.h>
-#import <WebRTC/RTCICECandidate.h>
-#import <WebRTC/RTCSessionDescription.h>
+#import <libjingle_peerconnection/RTCPeerConnectionFactory.h>
+#import <libjingle_peerconnection/RTCPeerConnection.h>
+#import <libjingle_peerconnection/RTCPeerConnectionInterface.h>
+#import <libjingle_peerconnection/RTCSessionDescriptionDelegate.h>
+#import <libjingle_peerconnection/RTCMediaConstraints.h>
+#import <libjingle_peerconnection/RTCMediaStream.h>
+#import <libjingle_peerconnection/RTCAVFoundationVideoSource.h>
+#import <libjingle_peerconnection/RTCVideoTrack.h>
+#import <libjingle_peerconnection/RTCPair.h>
+#import <libjingle_peerconnection/RTCICECandidate.h>
+#import <libjingle_peerconnection/RTCSessionDescription.h>
 
 
 #import <KMSClient/KMSWebRTCEndpoint.h>

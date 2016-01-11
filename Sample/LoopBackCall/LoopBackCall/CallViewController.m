@@ -22,10 +22,10 @@
 
 #import "CallViewController.h"
 
-#import <WebRTC/RTCEAGLVideoView.h>
-#import <WebRTC/RTCVideoTrack.h>
-#import <WebRTC/RTCAudioTrack.h>
-#import <WebRTC/RTCMediaStream.h>
+#import <libjingle_peerconnection/RTCEAGLVideoView.h>
+#import <libjingle_peerconnection/RTCVideoTrack.h>
+#import <libjingle_peerconnection/RTCAudioTrack.h>
+#import <libjingle_peerconnection/RTCMediaStream.h>
 
 
 #import <ReactiveCocoa/RACSignal.h>
