@@ -261,8 +261,13 @@
     RACSignal *webRTCEndpointGetSinkConnectionsSignal =
     [[_webRTCEndpoint getSinkConnections] doNext:^(NSArray *connections) {
         @strongify(self);
-        [[self mutableWebRTCEndpointConnections] addObjectsFromArray:connections];
+        //add only Audio and Video connections.
+        NSPredicate *connectionsFilter = [NSPredicate predicateWithFormat:@"self.mediaType==%d || self.mediaType==%d",KMSMediaTypeAudio,KMSMediaTypeVideo];
+        NSArray *connectionsToAdd = [connections filteredArrayUsingPredicate:connectionsFilter];
+        [[self mutableWebRTCEndpointConnections] addObjectsFromArray:connectionsToAdd];
     }];
+    
+    
     
     RACSignal *connectWebRTCEndpointIfNeededSignal =
     [RACSignal if:[webRTCEndpointGetSinkConnectionsSignal map:^id(NSArray *connections) {
@@ -292,7 +297,12 @@
     [_subscriptionDisposables addDisposable:
     [[_webRTCEndpoint eventSignalForEvent:KMSEventTypeMediaElementDisconnected] subscribeNext:^(KMSEventDataElementConnection *elementConnectionEvent) {
         @strongify(self);
-        [[self mutableWebRTCEndpointConnections] removeObject:[elementConnectionEvent elementConnection]];
+        
+        KMSElementConnection *connectionToRemove = [elementConnectionEvent elementConnection];
+        
+        NSPredicate *connectionsFilter = [NSPredicate predicateWithFormat:@"self.source == %@ && self.mediaType == %d",[connectionToRemove source],[connectionToRemove mediaType]];
+        NSArray *connectionsToRemove = [[self webRTCEndpointConnections] filteredArrayUsingPredicate:connectionsFilter];
+        [[self mutableWebRTCEndpointConnections] removeObjectsInArray:connectionsToRemove];
         NSUInteger connectionCount = [[self webRTCEndpointConnections] count];
         if(connectionCount == 0){
             [self hangupFromInitiator:KMSWebRTCCallInitiatorOperator];
