@@ -13,6 +13,6 @@ Pod::Spec.new do |s|
   s.source_files = 'KMSWebRTCCall/*.{h,m}'
   s.dependency 'KMSClient', '1.0.5'
   s.dependency 'ReactiveCocoa', '2.5'
-  s.dependency 'WebRTC_framework', '11177.2.0'
+  s.dependency 'libjingle_peerconnection', '11177.2.0'
 
 end
