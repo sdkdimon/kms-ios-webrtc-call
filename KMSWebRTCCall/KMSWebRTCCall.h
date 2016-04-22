@@ -33,22 +33,22 @@ typedef enum{
 
 @protocol KMSWebRTCCallDataSource <NSObject>
 @required
--(nonnull RTCMediaStream *)localMediaSteamForWebRTCCall:(nonnull KMSWebRTCCall *)webRTCCall;
--(nonnull RTCMediaConstraints *)localMediaSteamConstraintsForWebRTCCall:(nonnull KMSWebRTCCall *)webRTCCall;
--(nonnull RTCMediaConstraints *)peerConnetionMediaConstraintsForWebRTCCall:(nonnull KMSWebRTCCall *)webRTCCall;
+- (nonnull RTCMediaStream *)localMediaSteamForWebRTCCall:(nonnull KMSWebRTCCall *)webRTCCall;
+- (nonnull RTCMediaConstraints *)localMediaSteamConstraintsForWebRTCCall:(nonnull KMSWebRTCCall *)webRTCCall;
+- (nonnull RTCMediaConstraints *)peerConnetionMediaConstraintsForWebRTCCall:(nonnull KMSWebRTCCall *)webRTCCall;
 @optional
--(nonnull NSArray *)sinkEndpointsForWebRTCCall:(nonnull KMSWebRTCCall *)webRTCCall;
+- (nonnull NSArray *)sinkEndpointsForWebRTCCall:(nonnull KMSWebRTCCall *)webRTCCall;
 
 @end
 
 
 @protocol KMSWebRTCCallDelegate <NSObject>
 @required
--(void)webRTCCall:(nonnull KMSWebRTCCall *)webRTCCall didAddLocalMediaStream:(nonnull RTCMediaStream *)localMediaStream;
--(void)webRTCCall:(nonnull KMSWebRTCCall *)webRTCCall didAddRemoteMediaStream:(nonnull RTCMediaStream *)remoteMediaStream;
--(void)webRTCCallDidStart:(nonnull KMSWebRTCCall *)webRTCCall;
--(void)webRTCCall:(nonnull KMSWebRTCCall *)webRTCCall hangupFromInitiator:(KMSWebRTCCallInitiator)inititator;
--(void)webRTCCall:(nonnull KMSWebRTCCall *)webRTCCall didFailWithError:(nonnull NSError *)error;
+- (void)webRTCCall:(nonnull KMSWebRTCCall *)webRTCCall didAddLocalMediaStream:(nonnull RTCMediaStream *)localMediaStream;
+- (void)webRTCCall:(nonnull KMSWebRTCCall *)webRTCCall didAddRemoteMediaStream:(nonnull RTCMediaStream *)remoteMediaStream;
+- (void)webRTCCallDidStart:(nonnull KMSWebRTCCall *)webRTCCall;
+- (void)webRTCCall:(nonnull KMSWebRTCCall *)webRTCCall hangupFromInitiator:(KMSWebRTCCallInitiator)inititator;
+- (void)webRTCCall:(nonnull KMSWebRTCCall *)webRTCCall didFailWithError:(nonnull NSError *)error;
 @end
 
 
@@ -58,25 +58,25 @@ typedef enum{
 }
 
 +(nonnull instancetype)callWithServerURL:(nonnull NSURL *)serverURL peerConnectionFactory:(nonnull RTCPeerConnectionFactory *)peerConnecitonFactory webRTCEndpointId:(nonnull NSString *)webRTCEndpointId;
--(nonnull instancetype)initWithServerURL:(nonnull NSURL *)serverURL peerConnectionFactory:(nonnull RTCPeerConnectionFactory *)peerConnecitonFactory webRTCEndpointId:(nonnull NSString *)webRTCEndpointId;
+- (nonnull instancetype)initWithServerURL:(nonnull NSURL *)serverURL peerConnectionFactory:(nonnull RTCPeerConnectionFactory *)peerConnecitonFactory webRTCEndpointId:(nonnull NSString *)webRTCEndpointId;
 
 +(nonnull instancetype)callWithServerURL:(nonnull NSURL *)serverURL peerConnectionFactory:(nonnull RTCPeerConnectionFactory *)peerConnecitonFactory mediaPipelineId:(nonnull NSString *)mediaPipelineId;
--(nonnull instancetype)initWithServerURL:(nonnull NSURL *)serverURL peerConnectionFactory:(nonnull RTCPeerConnectionFactory *)peerConnecitonFactory mediaPipelineId:(nonnull NSString *)mediaPipelineId;
+- (nonnull instancetype)initWithServerURL:(nonnull NSURL *)serverURL peerConnectionFactory:(nonnull RTCPeerConnectionFactory *)peerConnecitonFactory mediaPipelineId:(nonnull NSString *)mediaPipelineId;
 
 @property(nonnull,strong,nonatomic,readonly) NSString *webRTCEndpointId;
 @property(nonnull,strong,nonatomic,readonly) NSString *mediaPipelineId;
 @property(nonnull,strong,nonatomic,readonly) NSURL *serverURL;
 @property(nonnull,strong,nonatomic,readonly) RTCPeerConnectionFactory *peerConnectionFactory;
 
-@property(weak,nonatomic,readwrite) id <KMSWebRTCCallDelegate> delegate;
-@property(weak,nonatomic,readwrite) id <KMSWebRTCCallDataSource> dataSource;
+@property(nullable,weak,nonatomic,readwrite) id <KMSWebRTCCallDelegate> delegate;
+@property(nullable,weak,nonatomic,readwrite) id <KMSWebRTCCallDataSource> dataSource;
 
 @property(nonnull,strong,nonatomic,readonly) NSDictionary *webRTCEndpointSubscriptions;
 @property(nonnull,strong,nonatomic,readonly) NSArray *webRTCEndpointConnections;
 
 
--(void)makeCall;
--(void)hangup;
+- (void)makeCall;
+- (void)hangup;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

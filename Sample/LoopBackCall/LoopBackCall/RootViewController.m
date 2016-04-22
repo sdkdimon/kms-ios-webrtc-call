@@ -204,11 +204,18 @@ static NSString * const KMS_URL = @"ws://192.168.0.44:8888/kurento";
 }
 
 -(void)webRTCCall:(KMSWebRTCCall *)webRTCCall didFailWithError:(NSError *)error{
-    MBProgressHUD *hud = [MBProgressHUD HUDForView:[self view]];
-    [hud setLabelText:@"Error"];
-    [hud setDetailsLabelText:[error localizedDescription]];
-    [hud hide:YES afterDelay:3.0f];
-    [self setCallViewController:nil];
+    if ([error code] == 57){
+        [_callViewController dismissViewControllerAnimated:NO completion:nil];
+        [self setCallViewController:nil];
+        [self setWebRTCCall:nil];
+    } else{
+        MBProgressHUD *hud = [MBProgressHUD HUDForView:[self view]];
+        [hud setLabelText:@"Error"];
+        [hud setDetailsLabelText:[error localizedDescription]];
+        [hud hide:YES afterDelay:3.0f];
+        [self setCallViewController:nil];
+    }
+    
 }
 
 -(void)webRTCCallDidStart:(KMSWebRTCCall *)webRTCCall{
