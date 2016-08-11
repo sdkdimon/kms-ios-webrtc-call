@@ -25,10 +25,11 @@
 @class KMSWebRTCCall;
 @class RTCMediaStream;
 @class RTCMediaConstraints;
+@class KMSSession;
 
 typedef enum{
     KMSWebRTCCallInitiatorCaller,
-    KMSWebRTCCallInitiatorOperator
+    KMSWebRTCCallInitiatorCallee
 }KMSWebRTCCallInitiator;
 
 @protocol KMSWebRTCCallDataSource <NSObject>
@@ -57,16 +58,18 @@ typedef enum{
     NSMutableArray *_webRTCEndpointConnections;
 }
 
-+(nonnull instancetype)callWithServerURL:(nonnull NSURL *)serverURL peerConnectionFactory:(nonnull RTCPeerConnectionFactory *)peerConnecitonFactory webRTCEndpointId:(nonnull NSString *)webRTCEndpointId;
-- (nonnull instancetype)initWithServerURL:(nonnull NSURL *)serverURL peerConnectionFactory:(nonnull RTCPeerConnectionFactory *)peerConnecitonFactory webRTCEndpointId:(nonnull NSString *)webRTCEndpointId;
-
-+(nonnull instancetype)callWithServerURL:(nonnull NSURL *)serverURL peerConnectionFactory:(nonnull RTCPeerConnectionFactory *)peerConnecitonFactory mediaPipelineId:(nonnull NSString *)mediaPipelineId;
-- (nonnull instancetype)initWithServerURL:(nonnull NSURL *)serverURL peerConnectionFactory:(nonnull RTCPeerConnectionFactory *)peerConnecitonFactory mediaPipelineId:(nonnull NSString *)mediaPipelineId;
++ (nonnull instancetype)callWithKurentoSession:(nonnull KMSSession *)kurentoSession peerConnectionFactory:(nonnull RTCPeerConnectionFactory *)peerConnecitonFactory;
+- (nonnull instancetype)initWithKurentoSession:(nonnull KMSSession *)kurentoSession peerConnectionFactory:(nonnull RTCPeerConnectionFactory *)peerConnecitonFactory;
 
 @property(nonnull,strong,nonatomic,readonly) NSString *webRTCEndpointId;
 @property(nonnull,strong,nonatomic,readonly) NSString *mediaPipelineId;
-@property(nonnull,strong,nonatomic,readonly) NSURL *serverURL;
 @property(nonnull,strong,nonatomic,readonly) RTCPeerConnectionFactory *peerConnectionFactory;
+@property(nonnull,strong,nonatomic,readonly) KMSSession *kurentoSession;
+
+- (void)setUpWebRTCEndpointId:(nullable NSString *)webRTCEndpointId;
+- (void)setUpMediaPipelineId:(nullable NSString *)mediaPipelineId;
+
+
 
 @property(nullable,weak,nonatomic,readwrite) id <KMSWebRTCCallDelegate> delegate;
 @property(nullable,weak,nonatomic,readwrite) id <KMSWebRTCCallDataSource> dataSource;

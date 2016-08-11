@@ -108,46 +108,23 @@
              @(RTCSignalingClosed) : @"RTCSignalingClosed"};
 }
 
-+(instancetype)callWithServerURL:(NSURL *)serverURL peerConnectionFactory:(RTCPeerConnectionFactory *)peerConnecitonFactory webRTCEndpointId:(NSString *)webRTCEndpointId{
-    return [[self alloc] initWithServerURL:serverURL peerConnectionFactory:peerConnecitonFactory webRTCEndpointId:webRTCEndpointId];
+
+
++ (instancetype)callWithKurentoSession:(KMSSession *)kurentoSession peerConnectionFactory:(RTCPeerConnectionFactory *)peerConnecitonFactory{
+    return [[self alloc] initWithKurentoSession:kurentoSession peerConnectionFactory:peerConnecitonFactory];
 }
 
-+(instancetype)callWithServerURL:(NSURL *)serverURL peerConnectionFactory:(RTCPeerConnectionFactory *)peerConnecitonFactory mediaPipelineId:(NSString *)mediaPipelineId;{
-    return [[self alloc] initWithServerURL:serverURL peerConnectionFactory:peerConnecitonFactory mediaPipelineId:mediaPipelineId];
-}
-
-- (instancetype)initWithServerURL:(NSURL *)serverURL peerConnectionFactory:(RTCPeerConnectionFactory *)peerConnecitonFactory webRTCEndpointId:(NSString *)webRTCEndpointId{
+- (instancetype)initWithKurentoSession:(KMSSession *)kurentoSession peerConnectionFactory:(RTCPeerConnectionFactory *)peerConnecitonFactory{
     self = [super init];
     if(self != nil){
-        _webRTCEndpointId = webRTCEndpointId;
-        _serverURL = serverURL;
         _peerConnectionFactory = peerConnecitonFactory;
-        _kurentoSession = [KMSSession sessionWithWebSocketClient:[[RACSRWebSocket alloc] initWithURL:_serverURL]];
-        KMSMessageFactoryWebRTCEndpoint *webRTCEndpointMessageFactory = [[KMSMessageFactoryWebRTCEndpoint alloc] init];
-        _webRTCEndpoint = [KMSWebRTCEndpoint endpointWithKurentoSession:_kurentoSession messageFactory:webRTCEndpointMessageFactory identifier:webRTCEndpointId];
-        [webRTCEndpointMessageFactory setDataSource:_webRTCEndpoint];
-        _mediaPipelineId = [_webRTCEndpoint mediaPipelineId];
-        [self initialize];
+        _kurentoSession = kurentoSession;
+        [self setup];
     }
     return self;
 }
 
-- (instancetype)initWithServerURL:(NSURL *)serverURL peerConnectionFactory:(RTCPeerConnectionFactory *)peerConnecitonFactory mediaPipelineId:(NSString *)mediaPipelineId{
-    self = [super init];
-    if(self != nil){
-        _mediaPipelineId = mediaPipelineId;
-        _serverURL = serverURL;
-        _peerConnectionFactory = peerConnecitonFactory;
-        _kurentoSession = [KMSSession sessionWithWebSocketClient:[[RACSRWebSocket alloc] initWithURL:_serverURL]];
-        KMSMessageFactoryWebRTCEndpoint *webRTCEndpointMessageFactory = [[KMSMessageFactoryWebRTCEndpoint alloc] init];
-        _webRTCEndpoint = [KMSWebRTCEndpoint endpointWithKurentoSession:_kurentoSession messageFactory:webRTCEndpointMessageFactory mediaPipelineId:mediaPipelineId];
-        [webRTCEndpointMessageFactory setDataSource:_webRTCEndpoint];
-        [self initialize];
-    }
-    return self;
-}
-
-- (void)initialize{
+- (void)setup{
     _webRTCEndpointConnections = [[NSMutableArray alloc] init];
     _webRTCEndpointSubscriptions = [[NSMutableDictionary alloc] init];
     _subscriptionDisposables = [RACCompoundDisposable compoundDisposable];
@@ -167,6 +144,25 @@
     
 }
 
+- (void)setUpWebRTCEndpointId:(NSString *)webRTCEndpointId{
+    [self setWebRTCEndpointId:webRTCEndpointId];
+    if (webRTCEndpointId != nil){
+        KMSMessageFactoryWebRTCEndpoint *webRTCEndpointMessageFactory = [[KMSMessageFactoryWebRTCEndpoint alloc] init];
+        _webRTCEndpoint = [KMSWebRTCEndpoint endpointWithKurentoSession:_kurentoSession messageFactory:webRTCEndpointMessageFactory identifier:webRTCEndpointId];
+        [webRTCEndpointMessageFactory setDataSource:_webRTCEndpoint];
+        [self setMediaPipelineId:[_webRTCEndpoint mediaPipelineId]];
+    }
+}
+
+- (void)setUpMediaPipelineId:(NSString *)mediaPipelineId{
+    [self setMediaPipelineId:mediaPipelineId];
+    if (mediaPipelineId != nil){
+        KMSMessageFactoryWebRTCEndpoint *webRTCEndpointMessageFactory = [[KMSMessageFactoryWebRTCEndpoint alloc] init];
+        _webRTCEndpoint = [KMSWebRTCEndpoint endpointWithKurentoSession:_kurentoSession messageFactory:webRTCEndpointMessageFactory mediaPipelineId:mediaPipelineId];
+        [webRTCEndpointMessageFactory setDataSource:_webRTCEndpoint];
+    }
+}
+
 #pragma mark MutableGetters
 
 - (NSMutableDictionary *)mutableWebRTCEndpointSubscriptions{
@@ -179,6 +175,7 @@
 
 
 - (void)makeCall{
+    NSAssert(_webRTCEndpoint != nil, @"webRTCEndpointId or mediaPipelineId can not be nil");
     @weakify(self);
     //Create WebRTCEndpoint signal if it has not created yet;
     RACSignal *createWebRTCEndpointSignal =
@@ -319,7 +316,7 @@
         [[self mutableWebRTCEndpointConnections] removeObjectsInArray:connectionsToRemove];
         NSUInteger connectionCount = [[self webRTCEndpointConnections] count];
         if(connectionCount == 0){
-            [self hangupFromInitiator:KMSWebRTCCallInitiatorOperator];
+            [self hangupFromInitiator:KMSWebRTCCallInitiatorCallee];
         }
     }]];
 }

@@ -149,8 +149,8 @@ static NSString * const KMS_URL = @"ws://192.168.0.44:8888/kurento";
    
     [self setCallViewController:callViewController];
     
-    _webRTCCall = [KMSWebRTCCall callWithServerURL:[NSURL URLWithString:KMS_URL] peerConnectionFactory:[[RTCPeerConnectionFactory alloc] init] mediaPipelineId:webRTCEndpointId];
-    
+    _webRTCCall = [KMSWebRTCCall callWithKurentoSession:_kmsAPIService peerConnectionFactory:[[RTCPeerConnectionFactory alloc] init]];
+    [_webRTCCall setUpMediaPipelineId:webRTCEndpointId];
     [_webRTCCall setDelegate:self];
     [_webRTCCall setDataSource:self];
     [_webRTCCall makeCall];
