@@ -35,6 +35,9 @@
 		8A8E02EE1B8F11740086FBF9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8ABCA6EA1BA6D3A900434356 /* KMSWebRTCCall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMSWebRTCCall.h; sourceTree = "<group>"; };
 		8ABCA6EB1BA6D3A900434356 /* KMSWebRTCCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = KMSWebRTCCall.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		8ACEA5041D5C4D7900F829E1 /* KMSWebRTCCallDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMSWebRTCCallDataSource.h; sourceTree = "<group>"; };
+		8ACEA5051D5C4D8600F829E1 /* KMSWebRTCCallDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMSWebRTCCallDelegate.h; sourceTree = "<group>"; };
+		8ACEA5061D5C4E0400F829E1 /* KMSWebRTCCallInitiator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KMSWebRTCCallInitiator.h; sourceTree = "<group>"; };
 		8AD5B5331B8F1286003D8627 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8AD5B5341B8F1286003D8627 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		8AD5B5361B8F1286003D8627 /* CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallViewController.h; sourceTree = "<group>"; };
@@ -123,6 +126,9 @@
 			children = (
 				8ABCA6EA1BA6D3A900434356 /* KMSWebRTCCall.h */,
 				8ABCA6EB1BA6D3A900434356 /* KMSWebRTCCall.m */,
+				8ACEA5041D5C4D7900F829E1 /* KMSWebRTCCallDataSource.h */,
+				8ACEA5051D5C4D8600F829E1 /* KMSWebRTCCallDelegate.h */,
+				8ACEA5061D5C4E0400F829E1 /* KMSWebRTCCallInitiator.h */,
 			);
 			name = KMSWebRTCCall;
 			path = ../../../KMSWebRTCCall;

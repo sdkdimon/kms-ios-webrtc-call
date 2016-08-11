@@ -20,38 +20,11 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
+#import "KMSWebRTCCallDataSource.h"
+#import "KMSWebRTCCallDelegate.h"
 
 @class RTCPeerConnectionFactory;
-@class KMSWebRTCCall;
-@class RTCMediaStream;
-@class RTCMediaConstraints;
 @class KMSSession;
-
-typedef enum{
-    KMSWebRTCCallInitiatorCaller,
-    KMSWebRTCCallInitiatorCallee
-}KMSWebRTCCallInitiator;
-
-@protocol KMSWebRTCCallDataSource <NSObject>
-@required
-- (nonnull RTCMediaStream *)localMediaSteamForWebRTCCall:(nonnull KMSWebRTCCall *)webRTCCall;
-- (nonnull RTCMediaConstraints *)localMediaSteamConstraintsForWebRTCCall:(nonnull KMSWebRTCCall *)webRTCCall;
-- (nonnull RTCMediaConstraints *)peerConnetionMediaConstraintsForWebRTCCall:(nonnull KMSWebRTCCall *)webRTCCall;
-@optional
-- (nonnull NSArray *)sinkEndpointsForWebRTCCall:(nonnull KMSWebRTCCall *)webRTCCall;
-
-@end
-
-
-@protocol KMSWebRTCCallDelegate <NSObject>
-@required
-- (void)webRTCCall:(nonnull KMSWebRTCCall *)webRTCCall didAddLocalMediaStream:(nonnull RTCMediaStream *)localMediaStream;
-- (void)webRTCCall:(nonnull KMSWebRTCCall *)webRTCCall didAddRemoteMediaStream:(nonnull RTCMediaStream *)remoteMediaStream;
-- (void)webRTCCallDidStart:(nonnull KMSWebRTCCall *)webRTCCall;
-- (void)webRTCCall:(nonnull KMSWebRTCCall *)webRTCCall hangupFromInitiator:(KMSWebRTCCallInitiator)inititator;
-- (void)webRTCCall:(nonnull KMSWebRTCCall *)webRTCCall didFailWithError:(nonnull NSError *)error;
-@end
-
 
 @interface KMSWebRTCCall : NSObject{
     NSMutableDictionary *_webRTCEndpointSubscriptions;
