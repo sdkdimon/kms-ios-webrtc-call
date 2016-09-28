@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
-  s.name             = "KMSWebRTCCall"
-  s.version          = "1.0.7"
+  s.name             = "KMSWebRTC"
+  s.version          = "1.1.0"
   s.summary          = "Kurento Media Server iOS Web RTC Call."
   s.homepage         = "https://github.com/sdkdimon/kms-ios-webrtc-call"
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
@@ -9,10 +9,10 @@ Pod::Spec.new do |s|
 
   s.platform     = :ios, '7.0'
   s.requires_arc = true
-  s.module_name = 'KMSWebRTCCall'
-  s.source_files = 'KMSWebRTCCall/*.{h,m}'
-  s.dependency 'KMSClient', '1.0.5'
+  s.module_name = 'KMSWebRTC'
+  s.source_files = 'KMSWebRTC/KMSWebRTC/*.{h,m}'
+  s.dependency 'KMSClient', '1.1.0'
   s.dependency 'ReactiveCocoa', '2.5'
-  s.dependency 'libjingle_peerconnection', '11177.2.0'
+  s.dependency 'WebRTC', '13869.6.0'
 
 end
