@@ -1,0 +1,28 @@
+# Uncomment this line to define a global platform for your project
+workspace 'KMSWebRTC.xcworkspace'
+platform :ios, '8.0'
+use_frameworks!
+
+def shared_pods
+   pod 'ReactiveCocoa', '2.5'
+   pod 'KMSClient', '1.1.0'
+   pod 'MantleNullValuesOmit', '0.0.1'
+   pod 'RACSRWebSocket', '1.1.3'
+   pod 'NSDictionaryMerge', '1.0'
+   pod 'Mantle', '2.0.7'
+   pod 'WebRTC', '13869.6.0'
+
+end
+
+target 'KMSWebRTC' do
+    shared_pods
+end
+
+target 'LoopBackCall' do
+    project 'Sample/LoopBackCall/LoopBackCall.xcodeproj'
+    pod 'UIImage+Additions', '2.1.0'
+    pod 'MBProgressHUD', '0.9.1'
+    pod 'CGSizeAspectRatioTool', '1.0'
+    
+    shared_pods
+end

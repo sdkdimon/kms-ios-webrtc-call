@@ -1,0 +1,94 @@
+PODS:
+  - CGSizeAspectRatioTool (1.0)
+  - KMSClient (1.1.0):
+    - KMSClient/Log (= 1.1.0)
+    - KMSClient/MessageFactory (= 1.1.0)
+    - KMSClient/ModelLayer (= 1.1.0)
+    - KMSClient/UUID (= 1.1.0)
+    - Mantle (= 2.0.7)
+    - MantleNullValuesOmit (= 0.0.1)
+    - NSDictionaryMerge (= 1.0)
+    - RACSRWebSocket (= 1.1.3)
+    - ReactiveCocoa (= 2.5)
+  - KMSClient/Log (1.1.0):
+    - Mantle (= 2.0.7)
+    - MantleNullValuesOmit (= 0.0.1)
+    - NSDictionaryMerge (= 1.0)
+    - RACSRWebSocket (= 1.1.3)
+    - ReactiveCocoa (= 2.5)
+  - KMSClient/MessageFactory (1.1.0):
+    - KMSClient/ModelLayer
+    - KMSClient/UUID
+    - Mantle (= 2.0.7)
+    - MantleNullValuesOmit (= 0.0.1)
+    - NSDictionaryMerge (= 1.0)
+    - RACSRWebSocket (= 1.1.3)
+    - ReactiveCocoa (= 2.5)
+  - KMSClient/ModelLayer (1.1.0):
+    - KMSClient/ModelLayer/Types (= 1.1.0)
+    - Mantle (= 2.0.7)
+    - MantleNullValuesOmit (= 0.0.1)
+    - NSDictionaryMerge (= 1.0)
+    - RACSRWebSocket (= 1.1.3)
+    - ReactiveCocoa (= 2.5)
+  - KMSClient/ModelLayer/Types (1.1.0):
+    - Mantle (= 2.0.7)
+    - MantleNullValuesOmit (= 0.0.1)
+    - NSDictionaryMerge (= 1.0)
+    - RACSRWebSocket (= 1.1.3)
+    - ReactiveCocoa (= 2.5)
+  - KMSClient/UUID (1.1.0):
+    - Mantle (= 2.0.7)
+    - MantleNullValuesOmit (= 0.0.1)
+    - NSDictionaryMerge (= 1.0)
+    - RACSRWebSocket (= 1.1.3)
+    - ReactiveCocoa (= 2.5)
+  - Mantle (2.0.7):
+    - Mantle/extobjc (= 2.0.7)
+  - Mantle/extobjc (2.0.7)
+  - MantleNullValuesOmit (0.0.1):
+    - Mantle (= 2.0.7)
+  - MBProgressHUD (0.9.1)
+  - NSDictionaryMerge (1.0)
+  - RACSRWebSocket (1.1.3):
+    - ReactiveCocoa (= 2.5)
+    - SocketRocket (= 0.5.1)
+  - ReactiveCocoa (2.5):
+    - ReactiveCocoa/UI (= 2.5)
+  - ReactiveCocoa/Core (2.5):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.5)
+  - ReactiveCocoa/UI (2.5):
+    - ReactiveCocoa/Core
+  - SocketRocket (0.5.1)
+  - UIImage+Additions (2.1.0)
+  - WebRTC (13869.6.0)
+
+DEPENDENCIES:
+  - CGSizeAspectRatioTool (= 1.0)
+  - KMSClient (= 1.1.0)
+  - Mantle (= 2.0.7)
+  - MantleNullValuesOmit (= 0.0.1)
+  - MBProgressHUD (= 0.9.1)
+  - NSDictionaryMerge (= 1.0)
+  - RACSRWebSocket (= 1.1.3)
+  - ReactiveCocoa (= 2.5)
+  - UIImage+Additions (= 2.1.0)
+  - WebRTC (= 13869.6.0)
+
+SPEC CHECKSUMS:
+  CGSizeAspectRatioTool: f88e95b9ceec43259c29bde52cf5e9a8d3c72123
+  KMSClient: 23900d81627e5b1854a26dc5fe1142b017675d5d
+  Mantle: bc40bb061d8c2c6fb48d5083e04d928c3b7f73d9
+  MantleNullValuesOmit: e9c363e6abee04bfaa4373fce80ec66f174fe442
+  MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
+  NSDictionaryMerge: 27071382a60ebf258eaed63f17430a51fb4c0c00
+  RACSRWebSocket: 6c75361f81f57e93c5b81191ba568f0382e54c01
+  ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
+  SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
+  UIImage+Additions: 6181430b139099649e56171d58a52d6c37d57e42
+  WebRTC: ee369681c4f06e868fa45a7a6abbbf2c865c49ae
+
+PODFILE CHECKSUM: e1383fbf80e8071c4bfb34945e979f15d5b23055
+
+COCOAPODS: 1.0.1

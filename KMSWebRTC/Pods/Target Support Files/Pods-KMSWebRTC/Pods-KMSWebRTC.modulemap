@@ -1,0 +1,6 @@
+framework module Pods_KMSWebRTC {
+  umbrella header "Pods-KMSWebRTC-umbrella.h"
+
+  export *
+  module * { export * }
+}
