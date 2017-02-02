@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "KMSWebRTC"
-  s.version          = "1.1.1"
+  s.version          = "1.1.2"
   s.summary          = "Kurento Media Server iOS Web RTC Call."
   s.homepage         = "https://github.com/sdkdimon/kms-ios-webrtc-call"
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
