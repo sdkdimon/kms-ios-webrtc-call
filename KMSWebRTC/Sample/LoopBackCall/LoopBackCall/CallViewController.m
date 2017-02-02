@@ -67,6 +67,7 @@ typedef enum {
 
 @property(strong,nonatomic,readonly) NSDictionary *videoSwitchButtonTitles;
 @property(strong,nonatomic,readonly) NSDictionary *micSwitchButtonTitles;
+@property (strong, nonatomic, readonly) NSDictionary *audioSwitchButtonTitles;
 
 @property(strong,nonatomic,readwrite) AudioOutputManager *soundRouter;
 
@@ -74,13 +75,13 @@ typedef enum {
 
 @implementation CallViewController
 
-- (instancetype)init{
-    self = [super init];
-    if(self != nil){
-        [self setup];
-    }
-    return self;
-}
+//- (instancetype)init{
+//    self = [super init];
+//    if(self != nil){
+//        [self setup];
+//    }
+//    return self;
+//}
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -105,14 +106,25 @@ typedef enum {
     @weakify(self);
     _videoSwitchButtonTitles = @{@(UIControlStateSelected) : @"Turn off video",@(UIControlStateNormal) : @"Turn on video"};
     _micSwitchButtonTitles = @{@(UIControlStateSelected) : @"Turn off mic",@(UIControlStateNormal) : @"Turn on mic"};
-    for(NSNumber *controlState in _videoSwitchButtonTitles){
+    _audioSwitchButtonTitles = @{@(UIControlStateSelected) : @"Turn on reciever",@(UIControlStateNormal) : @"Turn on speaker"};
+    
+    for(NSNumber *controlState in _videoSwitchButtonTitles)
+    {
         [_videoSwitchButton setTitle:_videoSwitchButtonTitles[controlState] forState:[controlState integerValue]];
     }
     [_videoSwitchButton setSelected:_videoEnabled];
-    for(NSNumber *controlState in _micSwitchButtonTitles){
+    
+    for(NSNumber *controlState in _micSwitchButtonTitles)
+    {
         [_micSwitchButton setTitle:_micSwitchButtonTitles[controlState] forState:[controlState integerValue]];
     }
     [_micSwitchButton setSelected:_mIcenabled];
+    
+    for (NSNumber *controlState in _audioSwitchButtonTitles)
+    {
+        [_audioSwitchButton setTitle:_audioSwitchButtonTitles[controlState] forState:[controlState integerValue]];
+    }
+    [_audioSwitchButton setSelected:NO];
     
     RACSignal *videoSwitchButtonTapSignal =
     [[[[_videoSwitchButton rac_signalForControlEvents:UIControlEventTouchUpInside]
@@ -158,8 +170,31 @@ typedef enum {
     }];
     
     
-    RACSignal *audioSwitchButtonTapSignal = [_audioSwitchButton rac_signalForControlEvents:UIControlEventTouchUpInside];
+    RACSignal *audioSwitchButtonTapSignal =
+    [[_audioSwitchButton rac_signalForControlEvents:UIControlEventTouchUpInside] doNext:^(UIButton *sender) {
+        BOOL newState = ![sender isSelected];
+        [sender setSelected:newState];
+    }];
     [audioSwitchButtonTapSignal subscribeNext:^(UIButton *sender) {
+        @strongify(self);
+        
+        AudioOutputPort outputPort = [[self soundRouter] audioSessionAudioOutputType];
+        
+        switch (outputPort) {
+            case AudioOutputPortBuiltInSpeaker:
+                outputPort = AudioOutputPortBuiltInReceiver;
+                break;
+            case AudioOutputPortBuiltInReceiver:
+                outputPort = AudioOutputPortBuiltInSpeaker;
+                break;
+                
+            default:
+                break;
+        }
+        
+        [[self soundRouter] setOutputType:outputPort error:nil];
+        
+        
     }];
     
     
@@ -178,11 +213,6 @@ typedef enum {
     [_localVideoView setDelegate:self];
     [_remoteVideoView setDelegate:self];
     
-    
-    [[_audioSwitchButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
-        @strongify(self);
-        [[self soundRouter] setOutputType:AudioOutputPortBuiltInSpeaker error:nil];
-    }];
     
 }
 

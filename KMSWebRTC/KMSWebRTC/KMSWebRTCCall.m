@@ -449,7 +449,6 @@ didChangeSignalingState:(RTCSignalingState)stateChanged{
 /** Called when a remote peer closes a stream. */
 - (void)peerConnection:(RTCPeerConnection *)peerConnection
        didRemoveStream:(RTCMediaStream *)stream{
-    NSLog(@"");
 }
 
 /** Called when negotiation is needed, for example ICE has restarted. */
@@ -485,7 +484,7 @@ didGenerateIceCandidate:(RTCIceCandidate *)candidate{
 /** Called when a group of local Ice candidates have been removed. */
 - (void)peerConnection:(RTCPeerConnection *)peerConnection
 didRemoveIceCandidates:(NSArray<RTCIceCandidate *> *)candidates{
-    NSLog(@"");
+
 }
 
 /** New data channel has been opened. */

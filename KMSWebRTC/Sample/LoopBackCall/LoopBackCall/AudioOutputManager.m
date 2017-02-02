@@ -71,10 +71,10 @@
     
     switch (outputType) {
         case AudioOutputPortBuiltInReceiver:
-            if(_canUseBuiltInReceiverPort){
+           // if(_canUseBuiltInReceiverPort){
                 portOverride = AVAudioSessionPortOverrideNone;
                  break;
-            }
+            //}
             return;
        case AudioOutputPortBuiltInSpeaker:
             portOverride = AVAudioSessionPortOverrideSpeaker;
@@ -91,7 +91,8 @@
 - (AudioOutputPort)audioSessionAudioOutputType{
     AVAudioSessionRouteDescription *routeDescription = [_audioSession currentRoute];
     AVAudioSessionPortDescription *outputPortDescription = [[routeDescription outputs] firstObject];
-    NSNumber *audioPortNum = _audioOutputPorts[[outputPortDescription portType]];
+    NSString *port = [outputPortDescription portType];
+    NSNumber *audioPortNum = _audioOutputPorts[port];
     return [audioPortNum integerValue];
 }
 
@@ -139,5 +140,9 @@
     
 }
 
+- (void)dealloc
+{
+    [_defaultNotificationCenter removeObserver:self];
+}
 
 @end

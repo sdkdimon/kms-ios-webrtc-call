@@ -84,6 +84,7 @@
 		74653C758ECA3267EEFB7609 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8AE3601E1D9C17AE00E9E910 /* KMSWebRTC.framework */,
 				594A6AEBA4D46247C67CBD03 /* Pods_LoopBackCall.framework */,
 			);
 			name = Frameworks;
@@ -111,7 +112,6 @@
 		8A8E02D51B8F11740086FBF9 = {
 			isa = PBXGroup;
 			children = (
-				8AE3601E1D9C17AE00E9E910 /* KMSWebRTC.framework */,
 				8A8E02E01B8F11740086FBF9 /* LoopBackCall */,
 				8A8E02DF1B8F11740086FBF9 /* Products */,
 				2012FBED283C9152521851C8 /* Pods */,
@@ -255,7 +255,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		6E5D677C81C1EA58A69C2021 /* [CP] Embed Pods Frameworks */ = {
@@ -411,7 +411,7 @@
 				INFOPLIST_FILE = LoopBackCall/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sdkdimon.LoopBackCall;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sdkdimon.LoopBackCall2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -430,7 +430,7 @@
 				INFOPLIST_FILE = LoopBackCall/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sdkdimon.LoopBackCall;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sdkdimon.LoopBackCall2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

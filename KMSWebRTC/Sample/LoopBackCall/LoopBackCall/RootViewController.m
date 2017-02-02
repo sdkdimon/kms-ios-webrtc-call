@@ -43,6 +43,9 @@
 #import <KMSWebRTC/KMSWebRTCCall.h>
 #import <MBProgressHUD/MBProgressHUD.h>
 
+#import <AVFoundation/AVCaptureSession.h>
+#import <AVFoundation/AVCaptureOutput.h>
+#import <AVFoundation/AVMediaFormat.h>
 
 
 @interface KurentoLogger : NSObject <KMSLogger>
@@ -58,8 +61,7 @@
 
 @end
 
-
-static NSString * const KMS_URL = @"ws://192.168.0.55:8888/kurento";
+static NSString * const KMS_URL = @"";
 
 
 @interface RootViewController () <CallViewControllerDelegate,KMSWebRTCCallDataSource,KMSWebRTCCallDelegate>
@@ -100,8 +102,6 @@ static NSString * const KMS_URL = @"ws://192.168.0.55:8888/kurento";
 
 - (void)initialize{
     [[KMSLog sharedInstance] setLogger:[[KurentoLogger alloc] init]];
-    RACSRWebSocket *wsClient = [[RACSRWebSocket alloc] initWithURL:[NSURL URLWithString:KMS_URL]];
-    _kmsAPIServIce = [KMSSession sessionWithWebSocketClient:wsClient];
 }
 
 - (void)setupControls{
@@ -114,6 +114,8 @@ static NSString * const KMS_URL = @"ws://192.168.0.55:8888/kurento";
 
 - (void)initializeMediaPipeline{
     [_callButton setEnabled:NO];
+    RACSRWebSocket *wsClient = [[RACSRWebSocket alloc] initWithURL:[NSURL URLWithString:KMS_URL]];
+    _kmsAPIServIce = [KMSSession sessionWithWebSocketClient:wsClient];
     KMSMessageFactoryMediaPipeline *mediaPipelineMessageFactory = [[KMSMessageFactoryMediaPipeline alloc] init];
     _mediaPipeline = [KMSMediaPipeline pipelineWithKurentoSession:_kmsAPIServIce messageFactory:mediaPipelineMessageFactory];
     [mediaPipelineMessageFactory setDataSource:_mediaPipeline];
@@ -122,6 +124,7 @@ static NSString * const KMS_URL = @"ws://192.168.0.55:8888/kurento";
         NSLog(@"error creating meda pipeline object %@",error);
     } completed:^{
         @strongify(self);
+        [self call:[_mediaPipeline identifier]];
         [[self callButton] setEnabled:YES];
         
     }];
@@ -131,11 +134,11 @@ static NSString * const KMS_URL = @"ws://192.168.0.55:8888/kurento";
     [super viewDidLoad];
     [self setupControls];
     [self setupBindings];
-    [self initializeMediaPipeline];
+ 
 }
 
 - (IBAction)makeCall:(UIButton *)sender {
-    [self call:[_mediaPipeline identifier]];
+    [self initializeMediaPipeline];
 }
 
 - (void)call:(NSString *)webRTCEndpointId{
@@ -168,6 +171,20 @@ static NSString * const KMS_URL = @"ws://192.168.0.55:8888/kurento";
     RTCMediaStream *localStream = [peerConnectionFactory mediaStreamWithStreamId:@"ARDAMS"];
     RTCMediaConstraints *mediaConstraints = [self defaultMediaStreamConstraints];
     RTCAVFoundationVideoSource *source = [peerConnectionFactory avFoundationVideoSourceWithConstraints:mediaConstraints];
+    
+//    AVCaptureSession *sourceCaptureSession = [source captureSession];
+//    
+//    NSArray <AVCaptureOutput *> *sourceCaptureSessionInputs = [sourceCaptureSession outputs];
+//    for (AVCaptureOutput *input in sourceCaptureSessionInputs)
+//    {
+//        AVCaptureConnection *connection = [input connectionWithMediaType:AVMediaTypeVideo];
+//        if ([connection isVideoOrientationSupported])
+//        {
+//            [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
+//        }
+//        
+//    }
+    
     RTCVideoTrack *localVideoTrack = [peerConnectionFactory videoTrackWithSource:source trackId:@"ARDAMSv0"];
     if(localVideoTrack){
         [localStream addVideoTrack:localVideoTrack];

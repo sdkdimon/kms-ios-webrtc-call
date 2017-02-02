@@ -7,17 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4023C788A15B1F57EFBAFE2F /* Pods_KMSWebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9956A1B8EC9EA910C62D834 /* Pods_KMSWebRTC.framework */; };
 		8AE3600E1D9C152D00E9E910 /* KMSWebRTC.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AE3600C1D9C152D00E9E910 /* KMSWebRTC.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AE360191D9C154500E9E910 /* KMSWebRTCCallInitiator.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AE360141D9C154500E9E910 /* KMSWebRTCCallInitiator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AE3601A1D9C154500E9E910 /* KMSWebRTCCallDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AE360151D9C154500E9E910 /* KMSWebRTCCallDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AE3601B1D9C154500E9E910 /* KMSWebRTCCallDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AE360161D9C154500E9E910 /* KMSWebRTCCallDataSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AE3601C1D9C154500E9E910 /* KMSWebRTCCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AE360171D9C154500E9E910 /* KMSWebRTCCall.m */; };
 		8AE3601D1D9C154500E9E910 /* KMSWebRTCCall.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AE360181D9C154500E9E910 /* KMSWebRTCCall.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		95F2E8D90607B0BDBD3827A3 /* Pods_KMSWebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 441EA70F37FD31CDFA1F451D /* Pods_KMSWebRTC.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		6F4F0187D668B942BA46A83B /* Pods-KMSWebRTC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KMSWebRTC.release.xcconfig"; path = "Pods/Target Support Files/Pods-KMSWebRTC/Pods-KMSWebRTC.release.xcconfig"; sourceTree = "<group>"; };
+		1C2FC28EA91E662CEF633EB3 /* Pods-KMSWebRTC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KMSWebRTC.release.xcconfig"; path = "Pods/Target Support Files/Pods-KMSWebRTC/Pods-KMSWebRTC.release.xcconfig"; sourceTree = "<group>"; };
+		441EA70F37FD31CDFA1F451D /* Pods_KMSWebRTC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KMSWebRTC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AE360091D9C152D00E9E910 /* KMSWebRTC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KMSWebRTC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AE3600C1D9C152D00E9E910 /* KMSWebRTC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KMSWebRTC.h; sourceTree = "<group>"; };
 		8AE3600D1D9C152D00E9E910 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -26,8 +27,7 @@
 		8AE360161D9C154500E9E910 /* KMSWebRTCCallDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMSWebRTCCallDataSource.h; sourceTree = "<group>"; };
 		8AE360171D9C154500E9E910 /* KMSWebRTCCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMSWebRTCCall.m; sourceTree = "<group>"; };
 		8AE360181D9C154500E9E910 /* KMSWebRTCCall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMSWebRTCCall.h; sourceTree = "<group>"; };
-		A9956A1B8EC9EA910C62D834 /* Pods_KMSWebRTC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KMSWebRTC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DEC7986C3ACD8E07D4EA4A1D /* Pods-KMSWebRTC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KMSWebRTC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KMSWebRTC/Pods-KMSWebRTC.debug.xcconfig"; sourceTree = "<group>"; };
+		98EF9CB98F360AED6E924B13 /* Pods-KMSWebRTC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KMSWebRTC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KMSWebRTC/Pods-KMSWebRTC.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,28 +35,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4023C788A15B1F57EFBAFE2F /* Pods_KMSWebRTC.framework in Frameworks */,
+				95F2E8D90607B0BDBD3827A3 /* Pods_KMSWebRTC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3A5B903CA3B76097725AEA72 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				A9956A1B8EC9EA910C62D834 /* Pods_KMSWebRTC.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		8AE35FFF1D9C152D00E9E910 = {
 			isa = PBXGroup;
 			children = (
 				8AE3600B1D9C152D00E9E910 /* KMSWebRTC */,
 				8AE3600A1D9C152D00E9E910 /* Products */,
-				E19A0606DEC41681C5915454 /* Pods */,
-				3A5B903CA3B76097725AEA72 /* Frameworks */,
+				F60DE2478F98E70C18474170 /* Pods */,
+				963F53ED174415DB9A72D43F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -82,11 +74,19 @@
 			path = KMSWebRTC;
 			sourceTree = "<group>";
 		};
-		E19A0606DEC41681C5915454 /* Pods */ = {
+		963F53ED174415DB9A72D43F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				DEC7986C3ACD8E07D4EA4A1D /* Pods-KMSWebRTC.debug.xcconfig */,
-				6F4F0187D668B942BA46A83B /* Pods-KMSWebRTC.release.xcconfig */,
+				441EA70F37FD31CDFA1F451D /* Pods_KMSWebRTC.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F60DE2478F98E70C18474170 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				98EF9CB98F360AED6E924B13 /* Pods-KMSWebRTC.debug.xcconfig */,
+				1C2FC28EA91E662CEF633EB3 /* Pods-KMSWebRTC.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -113,12 +113,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8AE360111D9C152D00E9E910 /* Build configuration list for PBXNativeTarget "KMSWebRTC" */;
 			buildPhases = (
-				3E844EB5D5DE090784DD084A /* [CP] Check Pods Manifest.lock */,
+				5E3AF3E3CAF1006C62AB84C8 /* [CP] Check Pods Manifest.lock */,
 				8AE360041D9C152D00E9E910 /* Sources */,
 				8AE360051D9C152D00E9E910 /* Frameworks */,
 				8AE360061D9C152D00E9E910 /* Headers */,
 				8AE360071D9C152D00E9E910 /* Resources */,
-				E362B59C3438414383C626CB /* [CP] Copy Pods Resources */,
+				5A99BD1D45AE2D88303406DC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -173,22 +173,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3E844EB5D5DE090784DD084A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		E362B59C3438414383C626CB /* [CP] Copy Pods Resources */ = {
+		5A99BD1D45AE2D88303406DC /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -201,6 +186,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-KMSWebRTC/Pods-KMSWebRTC-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5E3AF3E3CAF1006C62AB84C8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -315,7 +315,7 @@
 		};
 		8AE360121D9C152D00E9E910 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DEC7986C3ACD8E07D4EA4A1D /* Pods-KMSWebRTC.debug.xcconfig */;
+			baseConfigurationReference = 98EF9CB98F360AED6E924B13 /* Pods-KMSWebRTC.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
@@ -335,7 +335,7 @@
 		};
 		8AE360131D9C152D00E9E910 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6F4F0187D668B942BA46A83B /* Pods-KMSWebRTC.release.xcconfig */;
+			baseConfigurationReference = 1C2FC28EA91E662CEF633EB3 /* Pods-KMSWebRTC.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;

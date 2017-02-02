@@ -37,6 +37,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 </string>
+			<key>License</key>
+			<string>MIT</string>
 			<key>Title</key>
 			<string>KMSClient</string>
 			<key>Type</key>
@@ -66,6 +68,8 @@ Redistribution and use in source and binary forms, with or without modification,
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </string>
+			<key>License</key>
+			<string>MIT</string>
 			<key>Title</key>
 			<string>Mantle</string>
 			<key>Type</key>
@@ -96,6 +100,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 </string>
+			<key>License</key>
+			<string>MIT</string>
 			<key>Title</key>
 			<string>MantleNullValuesOmit</string>
 			<key>Type</key>
@@ -123,6 +129,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 </string>
+			<key>License</key>
+			<string>MIT</string>
 			<key>Title</key>
 			<string>NSDictionaryMerge</string>
 			<key>Type</key>
@@ -153,6 +161,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 </string>
+			<key>License</key>
+			<string>MIT</string>
 			<key>Title</key>
 			<string>RACSRWebSocket</string>
 			<key>Type</key>
@@ -180,6 +190,8 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </string>
+			<key>License</key>
+			<string>MIT</string>
 			<key>Title</key>
 			<string>ReactiveCocoa</string>
 			<key>Type</key>
@@ -203,6 +215,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
    limitations under the License.
 
 </string>
+			<key>License</key>
+			<string>Apache License, Version 2.0</string>
 			<key>Title</key>
 			<string>SocketRocket</string>
 			<key>Type</key>
@@ -579,24 +593,24 @@ Source:
 http://msdn.microsoft.com/en-us/cc300389.aspx#P
 
 License:
-This license governs use of code marked as &#8220;sample&#8221; or &#8220;example&#8221; available on
+This license governs use of code marked as “sample” or “example” available on
 this web site without a license agreement, as provided under the section above
-titled &#8220;NOTICE SPECIFIC TO SOFTWARE AVAILABLE ON THIS WEB SITE.&#8221; If you use
-such code (the &#8220;software&#8221;), you accept this license. If you do not accept the
+titled “NOTICE SPECIFIC TO SOFTWARE AVAILABLE ON THIS WEB SITE.” If you use
+such code (the “software”), you accept this license. If you do not accept the
 license, do not use the software.
 
 1. Definitions
 
-The terms &#8220;reproduce,&#8221; &#8220;reproduction,&#8221; &#8220;derivative works,&#8221; and &#8220;distribution&#8221;
+The terms “reproduce,” “reproduction,” “derivative works,” and “distribution”
 have the same meaning here as under U.S. copyright law.
 
-A &#8220;contribution&#8221; is the original software, or any additions or changes to the
+A “contribution” is the original software, or any additions or changes to the
 software.
 
-A &#8220;contributor&#8221; is any person that distributes its contribution under this
+A “contributor” is any person that distributes its contribution under this
 license.
 
-&#8220;Licensed patents&#8221; are a contributor&#8217;s patent claims that read directly on its
+“Licensed patents” are a contributor’s patent claims that read directly on its
 contribution.
 
 2. Grant of Rights
@@ -617,7 +631,7 @@ the software.
 3. Conditions and Limitations
 
 (A) No Trademark License- This license does not grant you rights to use any
-contributors&#8217; name, logo, or trademarks.
+contributors’ name, logo, or trademarks.
 
 (B) If you bring a patent claim against any contributor over patents that you
 claim are infringed by the software, your patent license from such contributor
@@ -633,7 +647,7 @@ with your distribution. If you distribute any portion of the software in
 compiled or object code form, you may only do so under a license that complies
 with this license.
 
-(E) The software is licensed &#8220;as-is.&#8221; You bear the risk of using it. The
+(E) The software is licensed “as-is.” You bear the risk of using it. The
 contributors give no express warranties, guarantees or conditions. You may
 have additional consumer rights under your local laws which this license
 cannot change. To the extent permitted under your local laws, the contributors
@@ -1166,6 +1180,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 &lt;/pre&gt;
 &lt;/body&gt;
 &lt;/html&gt;</string>
+			<key>License</key>
+			<string>BSD</string>
 			<key>Title</key>
 			<string>WebRTC</string>
 			<key>Type</key>

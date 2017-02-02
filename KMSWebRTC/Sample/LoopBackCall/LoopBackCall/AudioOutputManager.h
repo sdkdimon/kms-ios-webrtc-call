@@ -37,6 +37,6 @@ typedef NS_ENUM(NSUInteger,AudioOutputPort) {
 @property(assign,nonatomic,readonly) AudioOutputPort outputPort;
 
 - (void)setOutputType:(AudioOutputPort)outputType error:(NSError **)error;
-
+- (AudioOutputPort)audioSessionAudioOutputType;
 
 @end
