@@ -1,6 +1,0 @@
-framework module RACSRWebSocket {
-  umbrella header "RACSRWebSocket-umbrella.h"
-
-  export *
-  module * { export * }
-}
