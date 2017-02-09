@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "KMSWebRTC"
-  s.version          = "1.1.2"
+  s.version          = "1.1.3"
   s.summary          = "Kurento Media Server iOS Web RTC Call."
   s.homepage         = "https://github.com/sdkdimon/kms-ios-webrtc-call"
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
@@ -12,8 +12,8 @@ Pod::Spec.new do |s|
   s.pod_target_xcconfig = { 'ENABLE_BITCODE' => 'NO' }
   s.module_name = 'KMSWebRTC'
   s.source_files = 'KMSWebRTC/KMSWebRTC/*.{h,m}'
-  s.dependency 'KMSClient', '1.1.0'
-  s.dependency 'ReactiveCocoa', '2.5'
-  s.dependency 'WebRTC', '54.6.13869'
+  s.dependency 'KMSClient', '1.1.1'
+  s.dependency 'ReactiveObjC', '2.1.2'
+  s.dependency 'WebRTC', '57.2.16123'
 
 end

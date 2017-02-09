@@ -20,17 +20,14 @@
 // THE SOFTWARE.
 
 #import "KMSWebRTCEndpoint.h"
+#import "KMSMessageFactoryWebRTCEndpoint.h"
 #import "KMSSession.h"
 #import "KMSResponseMessageResult.h"
 #import "KMSEvent.h"
-#import <ReactiveCocoa/RACEXTScope.h>
-#import <ReactiveCocoa/RACSignal+Operations.h>
-#import <ReactiveCocoa/RACSignal.h>
-
 #import "KMSElementConnection.h"
 
 
-@interface KMSWebRTCEndpoint ()
+@interface KMSWebRTCEndpoint () <KMSMessageFactoryDataSource>
 
 @property(strong,nonatomic,readwrite) KMSSession *kurentoSession;
 
@@ -42,18 +39,22 @@
 
 @implementation KMSWebRTCEndpoint
 
-+(instancetype)endpointWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryWebRTCEndpoint *)messageFactory identifier:(NSString *)identifier{
-    return [[self alloc] initWithKurentoSession:kurentoSession messageFactory:messageFactory identifier:identifier];
++ (instancetype)endpointWithKurentoSession:(KMSSession *)kurentoSession identifier:(NSString *)identifier
+{
+    return [[self alloc] initWithKurentoSession:kurentoSession identifier:identifier];
 }
 
-+(instancetype)endpointWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryWebRTCEndpoint *)messageFactory mediaPipelineId:(NSString *)mediaPipelineId;{
-    return [[self alloc] initWithKurentoSession:kurentoSession messageFactory:messageFactory mediaPipelineId:mediaPipelineId];
++ (instancetype)endpointWithKurentoSession:(KMSSession *)kurentoSession mediaPipelineId:(NSString *)mediaPipelineId
+{
+    return [[self alloc] initWithKurentoSession:kurentoSession mediaPipelineId:mediaPipelineId];
 }
 
--(instancetype)initWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryWebRTCEndpoint *)messageFactory identifier:(NSString *)identifier{
+- (instancetype)initWithKurentoSession:(KMSSession *)kurentoSession identifier:(NSString *)identifier
+{
      if((self = [super init]) != nil){
          _kurentoSession = kurentoSession;
-         _messageFactory = messageFactory;
+         _messageFactory = [[KMSMessageFactoryWebRTCEndpoint alloc] init];
+         [_messageFactory setDataSource:self];
          _identifier = identifier;
          _mediaPipelineId = [[identifier pathComponents] firstObject];
          [self initialize];
@@ -61,10 +62,12 @@
     return self;
 }
 
--(instancetype)initWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryWebRTCEndpoint *)messageFactory mediaPipelineId:(NSString *)mediaPipelineId;{
+- (instancetype)initWithKurentoSession:(KMSSession *)kurentoSession mediaPipelineId:(NSString *)mediaPipelineId
+{
     if((self = [super init]) != nil){
         _kurentoSession = kurentoSession;
-        _messageFactory = messageFactory;
+        _messageFactory = [[KMSMessageFactoryWebRTCEndpoint alloc] init];
+        [_messageFactory setDataSource:self];
         _identifier = nil;
         _mediaPipelineId = mediaPipelineId;
         [self initialize];
@@ -74,72 +77,85 @@
 }
 
 
--(void)initialize{
+- (void)initialize
+{
     @weakify(self);
-    _eventSignal = [[_kurentoSession eventSignal] filter:^BOOL(KMSEvent *event) {
+    _eventSignal = [[_kurentoSession eventSignal] filter:^BOOL(KMSEvent *event){
         @strongify(self);
         return [[event object] isEqualToString:[self identifier]];
     }];
 }
 
 
--(RACSignal *)create{
+- (RACSignal *)create
+{
     @weakify(self);
-    return _identifier == nil ? [[_kurentoSession sendMessage:[_messageFactory createWithMediaPipeline:_mediaPipelineId]] doNext:^(NSString *webRTCEndpointId) {
+    return _identifier == nil ? [[_kurentoSession sendMessageSignal:[_messageFactory createWithMediaPipeline:_mediaPipelineId]] doNext:^(NSString *webRTCEndpointId){
                                     @strongify(self);
                                     [self setIdentifier:webRTCEndpointId];
                                 }] : [RACSignal return:_identifier];
 }
 
--(RACSignal *)dispose{
+- (RACSignal *)dispose
+{
     @weakify(self);
-    return _identifier != nil ? [[_kurentoSession sendMessage:[_messageFactory disposeObject:_identifier]] doCompleted:^{
+    return _identifier != nil ? [[_kurentoSession sendMessageSignal:[_messageFactory disposeObject:_identifier]] doCompleted:^{
         @strongify(self);
         [self setIdentifier:nil];
     }] : [RACSignal return:nil];
 }
 
--(RACSignal *)connect:(NSString *)endpointId{
-    return [_kurentoSession sendMessage:[_messageFactory connectSourceEndpoint:_identifier sinkEndpoint:endpointId]];
+- (RACSignal *)connect:(NSString *)endpointId
+{
+    return [_kurentoSession sendMessageSignal:[_messageFactory connectSourceEndpoint:_identifier sinkEndpoint:endpointId]];
 }
 
--(RACSignal *)disconnect:(NSString *)endpointId{
-    return [_kurentoSession sendMessage:[_messageFactory disconnectSourceEndpoint:_identifier sinkEndpoint:endpointId]];
+- (RACSignal *)disconnect:(NSString *)endpointId
+{
+    return [_kurentoSession sendMessageSignal:[_messageFactory disconnectSourceEndpoint:_identifier sinkEndpoint:endpointId]];
 }
 
--(RACSignal *)getSinkConnections{
-   return [[_kurentoSession sendMessage:[_messageFactory getSinkConnectionsForEndpoint:_identifier]] map:^id(NSArray *jsonArray) {
+- (RACSignal *)getSinkConnections
+{
+   return [[_kurentoSession sendMessageSignal:[_messageFactory getSinkConnectionsForEndpoint:_identifier]] map:^id(NSArray *jsonArray) {
         return [MTLJSONAdapter modelsOfClass:[KMSElementConnection class] fromJSONArray:jsonArray error:nil];
     }];
 }
 
--(RACSignal *)getSourceConnections{
-    return [[_kurentoSession sendMessage:[_messageFactory getSourceConnectionsForEndpoint:_identifier]] map:^id(NSArray *jsonArray) {
+- (RACSignal *)getSourceConnections
+{
+    return [[_kurentoSession sendMessageSignal:[_messageFactory getSourceConnectionsForEndpoint:_identifier]] map:^id(NSArray *jsonArray) {
         return [MTLJSONAdapter modelsOfClass:[KMSElementConnection class] fromJSONArray:jsonArray error:nil];
     }];
 }
 
--(RACSignal *)processOffer:(NSString *)offer{
-    return [_kurentoSession sendMessage:[_messageFactory processOffer:offer endpoint:_identifier]];
+- (RACSignal *)processOffer:(NSString *)offer
+{
+    return [_kurentoSession sendMessageSignal:[_messageFactory processOffer:offer endpoint:_identifier]];
 }
 
--(RACSignal *)gatherICECandidates{
-    return [_kurentoSession sendMessage:[_messageFactory gatherICECandidatesForEndpoint:_identifier]];
+- (RACSignal *)gatherICECandidates
+{
+    return [_kurentoSession sendMessageSignal:[_messageFactory gatherICECandidatesForEndpoint:_identifier]];
 }
 
--(RACSignal *)addICECandidate:(KMSICECandidate *)candidate{
-    return [_kurentoSession sendMessage:[_messageFactory addICECandidate:candidate endpoint:_identifier]];
+- (RACSignal *)addICECandidate:(KMSICECandidate *)candidate
+{
+    return [_kurentoSession sendMessageSignal:[_messageFactory addICECandidate:candidate endpoint:_identifier]];
 }
 
--(RACSignal *)subscribe:(KMSEventType)event{
-    return [_kurentoSession sendMessage:[_messageFactory subscribeEndpoint:_identifier event:event]];
+- (RACSignal *)subscribe:(KMSEventType)event
+{
+    return [_kurentoSession sendMessageSignal:[_messageFactory subscribeEndpoint:_identifier event:event]];
 }
 
--(RACSignal *)unsubscribeSubscriptionId:(NSString *)subscriptionId{
-    return [_kurentoSession sendMessage:[_messageFactory unsubscribeEndpoint:_identifier subscription:subscriptionId]];
+- (RACSignal *)unsubscribeSubscriptionId:(NSString *)subscriptionId
+{
+    return [_kurentoSession sendMessageSignal:[_messageFactory unsubscribeEndpoint:_identifier subscription:subscriptionId]];
 }
 
--(RACSignal *)eventSignalForEvent:(KMSEventType)event{
+- (RACSignal *)eventSignalForEvent:(KMSEventType)event
+{
     return [[_eventSignal filter:^BOOL(KMSEvent *value) {
         return [value type] == event;
     }] map:^id(KMSEvent *value) {
@@ -149,7 +165,8 @@
 
 #pragma mark KMSRequestMessageFactoryDataSource
 
--(NSString *)messageFactory:(KMSRequestMessageFactory *)messageFactory sessionIdForMessage:(KMSRequestMessage *)message{
+- (NSString *)messageFactory:(KMSRequestMessageFactory *)messageFactory sessionIdForMessage:(KMSRequestMessage *)message
+{
     return [_kurentoSession sessionId];
 }
 

@@ -26,14 +26,14 @@
 
 @implementation KMSMessageParams
 
-+(Class)classForParsingJSONDictionary:(NSDictionary *)JSONDictionary{
++ (Class)classForParsingJSONDictionary:(NSDictionary *)JSONDictionary{
     if([JSONDictionary[@"method"] isEqualToString:@"onEvent"]){
         return [KMSMessageParamsEvent class];
     }
     return self;
 }
 
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     return @{@"sessionId" : @"sessionId"};
 }
 
@@ -43,12 +43,12 @@
 
 @implementation KMSMessageParamsCreate
 
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"type" : @"type",
                                                                                 @"constructorParams" : @"constructorParams"}];
 }
 
-+(NSValueTransformer *)typeJSONTransformer{
++ (NSValueTransformer *)typeJSONTransformer{
     return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{@"WebRtcEndpoint" : @(KMSCreationTypeWebRTCEndpoint),
                                                                            @"MediaPipeline" : @(KMSCreationTypeMediaPipeline)}];
 }
@@ -60,7 +60,7 @@
 @implementation KMSMessageParamsCreateWebRTC
 @dynamic constructorParams;
 
-+(NSValueTransformer *)constructorParamsJSONTransformer{
++ (NSValueTransformer *)constructorParamsJSONTransformer{
     return [MTLJSONAdapter dictionaryTransformerWithModelClass:[KMSConstructorParamsWebRTC class]];
 }
 
@@ -69,7 +69,7 @@
 
 @implementation KMSMessageParamsInvoke
 @synthesize operationParams;
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     
     return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"object" : @"object",
                                                                                 @"operation" : @"operation",
@@ -77,7 +77,7 @@
     
 }
 
-+(NSValueTransformer *)operationJSONTransformer{
++ (NSValueTransformer *)operationJSONTransformer{
     return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{@"connect" : @(KMSInvocationOperationConnect),
                                                                            @"disconnect" : @(KMSInvocationOperationDisconnect),
                                                                            @"processOffer" : @(KMSInvocationOperationProcessOffer),
@@ -92,7 +92,7 @@
 @implementation KMSMessageParamsAddICECandidate
 @dynamic operationParams;
 
-+(NSValueTransformer *)operationParamsJSONTransformer{
++ (NSValueTransformer *)operationParamsJSONTransformer{
     return [MTLJSONAdapter dictionaryTransformerWithModelClass:[KMSOperationParamsAddICECandidate class]];
 }
 
@@ -102,7 +102,7 @@
 @dynamic operationParams;
 
 
-+(NSValueTransformer *)operationParamsJSONTransformer{
++ (NSValueTransformer *)operationParamsJSONTransformer{
     return [MTLJSONAdapter dictionaryTransformerWithModelClass:[KMSOperationParamsConnect class]];
 }
 
@@ -111,7 +111,7 @@
 @implementation KMSMessageParamsProcessOffer
 @dynamic operationParams;
 
-+(NSValueTransformer *)operationParamsJSONTransformer{
++ (NSValueTransformer *)operationParamsJSONTransformer{
     return [MTLJSONAdapter dictionaryTransformerWithModelClass:[KMSOperationParamsProcessOffer class]];
 }
 
@@ -119,11 +119,11 @@
 
 @implementation KMSMessageParamsEvent
 
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"value" : @"value"}];
 }
 
-+(NSValueTransformer *)valueJSONTransformer{
++ (NSValueTransformer *)valueJSONTransformer{
     return [MTLJSONAdapter dictionaryTransformerWithModelClass:[KMSEvent class]];
 }
 
@@ -132,7 +132,7 @@
 
 @implementation KMSMessageParamsRelease
 
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"object" : @"object"}];
 }
 
@@ -140,13 +140,13 @@
 
 
 @implementation KMSMessageParamsSubscribe
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     
     return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"object" : @"object",
                                                                                 @"type" : @"type"}];
 }
 
-+(NSValueTransformer *)typeJSONTransformer{
++ (NSValueTransformer *)typeJSONTransformer{
     return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{@"OnIceGatheringDone" :@(KMSEventTypeOnICEGatheringDone),
                                                                            @"OnIceCandidate" : @(KMSEventTypeOnICECandidate),
                                                                            @"ElementConnected" : @(KMSEventTypeMediaElementConnected),
@@ -159,7 +159,7 @@
 
 @implementation KMSMessageParamsUnsubscribe
 
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"object" : @"object",
                                                                                 @"subscription" : @"subscription"}];
 }

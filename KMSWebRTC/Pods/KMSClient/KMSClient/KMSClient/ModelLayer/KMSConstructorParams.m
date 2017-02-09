@@ -25,7 +25,7 @@
 
 @implementation KMSConstructorParams
 
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     return nil;
 }
 
@@ -35,7 +35,7 @@
 
 @implementation KMSConstructorParamsWebRTC
 
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     return @{@"mediaPipeline" : @"mediaPipeline"};
 }
 

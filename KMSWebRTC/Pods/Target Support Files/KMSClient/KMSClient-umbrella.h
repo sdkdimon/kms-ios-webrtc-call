@@ -12,6 +12,7 @@
 
 #import "KMSClient.h"
 #import "KMSMediaPipeline.h"
+#import "KMSRACSubject.h"
 #import "KMSSession.h"
 #import "KMSWebRTCEndpoint.h"
 #import "KMSLog.h"

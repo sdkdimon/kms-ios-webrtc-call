@@ -34,9 +34,9 @@
  *
  *  @return message instance with pre generated UUID identifier and jsonrpc properties.
  */
-+(instancetype)messageWithMethod:(KMSMethod)method;
++ (instancetype)messageWithMethod:(KMSMethod)method;
 
-+(Class)classForParamsJSONTransformer;
++ (Class)classForParamsJSONTransformer;
 
 /**
  *  Request parameters.

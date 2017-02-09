@@ -36,16 +36,16 @@
 
 @interface KMSOperationParamsConnect : KMSOperationParams
 
-+(instancetype)modelWithSink:(NSString *)sink;
--(instancetype)initWithSink:(NSString *)sink;
++ (instancetype)modelWithSink:(NSString *)sink;
+- (instancetype)initWithSink:(NSString *)sink;
 
 @property(strong,nonatomic,readwrite) NSString *sink;
 
 @end
 
 @interface KMSOperationParamsProcessOffer : KMSOperationParams
-+(instancetype)paramsWithOffer:(NSString *)offer;
--(instancetype)initWithOffer:(NSString *)offer;
++ (instancetype)paramsWithOffer:(NSString *)offer;
+- (instancetype)initWithOffer:(NSString *)offer;
 
 @property(strong,nonatomic,readwrite) NSString *offer;
 @end

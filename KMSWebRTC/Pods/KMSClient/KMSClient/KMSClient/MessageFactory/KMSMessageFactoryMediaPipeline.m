@@ -23,14 +23,14 @@
 #import "KMSRequestMessage.h"
 @implementation KMSMessageFactoryMediaPipeline
 
--(KMSRequestMessage *)create{
+- (KMSRequestMessage *)create{
     KMSMessageParamsCreate *messageParams = [[KMSMessageParamsCreate alloc] init];
     [messageParams setType:KMSCreationTypeMediaPipeline];
     return [self messageWithParams:messageParams method:KMSMethodCreate];
 }
 
 
--(KMSRequestMessage *)disposeObject:(NSString *)object{
+- (KMSRequestMessage *)disposeObject:(NSString *)object{
     KMSMessageParamsRelease *messageParams = [[KMSMessageParamsRelease alloc] init];
     [messageParams setObject:object];
     return [self messageWithParams:messageParams method:KMSMethodRelease];

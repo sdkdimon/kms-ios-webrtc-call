@@ -30,7 +30,7 @@
 
 @implementation KMSICECandidate
 
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     return @{@"candidate" : @"candidate",
              @"sdpMid" : @"sdpMid",
              @"sdpMLineIndex" : @"sdpMLineIndex"};

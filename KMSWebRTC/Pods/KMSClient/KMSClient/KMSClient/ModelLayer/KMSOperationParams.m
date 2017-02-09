@@ -23,7 +23,7 @@
 
 @implementation KMSOperationParams
 
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     return nil;
 }
 
@@ -31,11 +31,11 @@
 
 @implementation KMSOperationParamsAddICECandidate
 
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     return @{@"candidate" : @"candidate" };
 }
 
-+(NSValueTransformer *)candidateJSONTransformer{
++ (NSValueTransformer *)candidateJSONTransformer{
     return [MTLJSONAdapter dictionaryTransformerWithModelClass:[KMSICECandidate class]];
 }
 
@@ -43,15 +43,15 @@
 
 @implementation KMSOperationParamsConnect
 
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     return @{@"sink" : @"sink"};
 }
 
-+(instancetype)modelWithSink:(NSString *)sink{
++ (instancetype)modelWithSink:(NSString *)sink{
     return [[self alloc] initWithSink:sink];
 }
 
--(instancetype)initWithSink:(NSString *)sink{
+- (instancetype)initWithSink:(NSString *)sink{
     if((self = [super init]) != nil){
         _sink = sink;
     }
@@ -63,16 +63,16 @@
 
 @implementation KMSOperationParamsProcessOffer
 
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     return @{@"offer" : @"offer"};
 }
 
 
-+(instancetype)paramsWithOffer:(NSString *)offer{
++ (instancetype)paramsWithOffer:(NSString *)offer{
     return [[self alloc] initWithOffer:offer];
 }
 
--(instancetype)initWithOffer:(NSString *)offer{
+- (instancetype)initWithOffer:(NSString *)offer{
     if((self = [super init]) != nil){
         _offer = offer;
     }

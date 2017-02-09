@@ -20,34 +20,30 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import <ReactiveCocoa/RACSignal.h>
-#import "KMSEventType.h"
+#import <ReactiveObjC/ReactiveObjC.h>
 
-@class RACSRWebSocket;
-@class KMSRequestMessageFactory;
 @class KMSRequestMessage;
-@class KMSICECandidate;
 
 typedef enum {
-    KMSSessionStateConnecting = 0,
-    KMSSessionStateOpen,
-    KMSSessionStateClosed
+    KMSSessioStateClosed = 0,
+    KMSSessioStateClosing,
+    KMSSessioStateOpen,
+    KMSSessioStateOpening
 }KMSSessionState;
 
 @interface KMSSession : NSObject
 
-+(instancetype)sessionWithWebSocketClient:(RACSRWebSocket *)wsClient;
--(instancetype)initWithWebSocketClient:(RACSRWebSocket *)wsClient;
+- (instancetype)initWithURL:(NSURL *)url;
 
+@property (strong, nonatomic, readonly) NSURL *url;
+@property (strong, nonatomic, readonly) RACSignal *eventSignal;
 
-@property(strong,nonatomic,readonly) RACSRWebSocket *wsClient;
-@property(strong,nonatomic,readonly) RACSignal *eventSignal;
+@property (strong, nonatomic, readonly) RACSignal *errorSignal;
+@property (assign, nonatomic, readonly) KMSSessionState state;
+@property (strong, nonatomic, readonly) NSString *sessionId;
 
-@property(assign,nonatomic,readonly) KMSSessionState state;
-
-@property(strong,nonatomic,readonly) NSString *sessionId;
-
--(RACSignal *)sendMessage:(KMSRequestMessage *)requestMessage;
--(RACSignal *)close;
+- (RACSignal *)sendMessageSignal:(KMSRequestMessage *)requestMessage;
+- (RACSignal *)openSignal;
+- (RACSignal *)closeSignal;
 
 @end

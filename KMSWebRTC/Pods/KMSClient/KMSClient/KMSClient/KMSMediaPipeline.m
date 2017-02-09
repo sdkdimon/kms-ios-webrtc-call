@@ -22,49 +22,56 @@
 #import "KMSMediaPipeline.h"
 #import "KMSSession.h"
 #import "KMSMessageFactoryMediaPipeline.h"
-#import <ReactiveCocoa/RACEXTScope.h>
-#import <ReactiveCocoa/RACSignal+Operations.h>
-#import <ReactiveCocoa/RACSignal.h>
 
-@interface KMSMediaPipeline () 
+@interface KMSMediaPipeline () <KMSMessageFactoryDataSource>
+
 @property(strong,nonatomic,readwrite) NSString *identifier;
+@property(strong,nonatomic,readonly) KMSMessageFactoryMediaPipeline *messageFactory;
+
 @end
 
 
 @implementation KMSMediaPipeline
 
-+(instancetype)pipelineWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryMediaPipeline *)messageFactory identifier:(NSString *)identifier{
-    return [[self alloc] initWithKurentoSession:kurentoSession messageFactory:messageFactory identifier:identifier];
++ (instancetype)pipelineWithKurentoSession:(KMSSession *)kurentoSession identifier:(NSString *)identifier
+{
+    return [[self alloc] initWithKurentoSession:kurentoSession identifier:identifier];
 }
 
-+(instancetype)pipelineWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryMediaPipeline *)messageFactory{
-    return [[self alloc] initWithKurentoSession:kurentoSession messageFactory:messageFactory];
++ (instancetype)pipelineWithKurentoSession:(KMSSession *)kurentoSession
+{
+    return [[self alloc] initWithKurentoSession:kurentoSession];
 }
 
--(instancetype)initWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryMediaPipeline *)messageFactory identifier:(NSString *)identifier{
+- (instancetype)initWithKurentoSession:(KMSSession *)kurentoSession identifier:(NSString *)identifier
+{
     if((self = [super init]) != nil){
         _kurentoSession = kurentoSession;
-        _messageFactory = messageFactory;
+        _messageFactory = [[KMSMessageFactoryMediaPipeline alloc] init];
+        [_messageFactory setDataSource:self];
         _identifier = identifier;
     }
     return self;
 }
 
--(instancetype)initWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryMediaPipeline *)messageFactory{
-    return [self initWithKurentoSession:kurentoSession messageFactory:messageFactory identifier:nil];
+- (instancetype)initWithKurentoSession:(KMSSession *)kurentoSession
+{
+    return [self initWithKurentoSession:kurentoSession identifier:nil];
 }
 
--(RACSignal *)create{
+- (RACSignal *)create
+{
     @weakify(self);
-    return _identifier == nil ? [[_kurentoSession sendMessage:[_messageFactory create]] doNext:^void(NSString *identifier) {
+    return _identifier == nil ? [[_kurentoSession sendMessageSignal:[_messageFactory create]] doNext:^void(NSString *identifier) {
                                     @strongify(self);
                                     [self setIdentifier:identifier];
                                 }] : [RACSignal return:_identifier];
 }
 
--(RACSignal *)dispose{
+- (RACSignal *)dispose
+{
     @weakify(self);
-    return _identifier != nil ? [[_kurentoSession sendMessage:[_messageFactory disposeObject:_identifier]] doCompleted:^{
+    return _identifier != nil ? [[_kurentoSession sendMessageSignal:[_messageFactory disposeObject:_identifier]] doCompleted:^{
                                     @strongify(self);
                                     [self setIdentifier:nil];
                                 }] : [RACSignal return:nil];
@@ -72,7 +79,8 @@
 
 #pragma mark KMSRequestMessageFactoryDataSource
 
--(NSString *)messageFactory:(KMSRequestMessageFactory *)messageFactory sessionIdForMessage:(KMSRequestMessage *)message{
+- (NSString *)messageFactory:(KMSRequestMessageFactory *)messageFactory sessionIdForMessage:(KMSRequestMessage *)message
+{
     return [_kurentoSession sessionId];
 }
 

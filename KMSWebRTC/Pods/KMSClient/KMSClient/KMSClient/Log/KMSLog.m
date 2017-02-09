@@ -23,7 +23,7 @@
 
 @implementation KMSLog
 
-+(instancetype)sharedInstance{
++ (instancetype)sharedInstance{
     
     static dispatch_once_t once;
     static id sharedInstance;
@@ -37,7 +37,7 @@
 
 
 
--(void)logLevel:(KMSLogMessageLevel)level format:(NSString *)format, ...{
+- (void)logLevel:(KMSLogMessageLevel)level format:(NSString *)format, ...{
     if(_logger != nil && [_logger respondsToSelector:@selector(logMessage:level:)]){
         va_list args;
         va_start(args, format);

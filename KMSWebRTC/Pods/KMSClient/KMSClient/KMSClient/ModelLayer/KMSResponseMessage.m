@@ -29,18 +29,18 @@
 
 
 
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"result" : @"result",
                                                                                 @"error" : @"error"}];
 }
 
-+(NSValueTransformer *)resultJSONTransformer{
++ (NSValueTransformer *)resultJSONTransformer{
     return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
         return [MTLJSONAdapter modelOfClass:[KMSResponseMessageResult class] fromJSONDictionary:value error:error];
     }];
 }
 
-+(NSValueTransformer *)errorJSONTransformer{
++ (NSValueTransformer *)errorJSONTransformer{
     return [MTLValueTransformer transformerUsingForwardBlock:^id(NSDictionary *errorJSONValue, BOOL *success, NSError *__autoreleasing *err) {
         NSNumber *code = errorJSONValue[@"code"];
         NSString *message = errorJSONValue[@"message"];

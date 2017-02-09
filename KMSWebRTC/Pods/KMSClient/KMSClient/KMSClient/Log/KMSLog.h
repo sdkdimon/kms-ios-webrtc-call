@@ -32,10 +32,10 @@
 
 @interface KMSLog : NSObject
 
-+(instancetype)sharedInstance;
++ (instancetype)sharedInstance;
 
 @property(strong,nonatomic,readwrite) id <KMSLogger> logger;
 
--(void)logLevel:(KMSLogMessageLevel)level format:(NSString *)format,...;
+- (void)logLevel:(KMSLogMessageLevel)level format:(NSString *)format,...;
 
 @end

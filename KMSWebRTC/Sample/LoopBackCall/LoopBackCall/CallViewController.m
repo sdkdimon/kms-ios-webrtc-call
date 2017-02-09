@@ -28,12 +28,7 @@
 #import <WebRTC/RTCMediaStream.h>
 
 
-#import <ReactiveCocoa/RACSignal.h>
-#import <ReactiveCocoa/RACSignal+Operations.h>
-#import <ReactiveCocoa/NSObject+RACPropertySubscribing.h>
-#import <ReactiveCocoa/RACEXTScope.h>
-#import <ReactiveCocoa/RACTuple.h>
-#import <ReactiveCocoa/UIControl+RACSignalSupport.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 
 #import <AVFoundation/AVFoundation.h>
 #import <CGSizeAspectRatioTool/CGSizeAspectRatioTool.h>

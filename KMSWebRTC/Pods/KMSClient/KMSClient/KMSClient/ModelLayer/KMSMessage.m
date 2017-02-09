@@ -26,7 +26,7 @@
 
 @implementation KMSMessage
 
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     NSDictionary *jsonKeyPathsByPropertyKey = @{@"jsonrpc" : @"jsonrpc",
                                                 @"identifier" : @"id"};
     return jsonKeyPathsByPropertyKey;
@@ -34,7 +34,7 @@
 
 #pragma mark MTLJSONSerializing
 
-+(Class)classForParsingJSONDictionary:(NSDictionary *)JSONDictionary{
++ (Class)classForParsingJSONDictionary:(NSDictionary *)JSONDictionary{
     
     if(JSONDictionary[@"id"] == nil){
         return [KMSRequestMessage class];

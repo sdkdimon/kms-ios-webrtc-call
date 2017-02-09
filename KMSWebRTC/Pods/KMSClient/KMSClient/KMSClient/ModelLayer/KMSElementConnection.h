@@ -25,7 +25,7 @@
 
 @interface KMSElementConnection : MTLModel <MTLJSONSerializing>
 
-+(NSValueTransformer *)mediaTypeJSONTransformer;
++ (NSValueTransformer *)mediaTypeJSONTransformer;
 
 @property(strong,nonatomic,readwrite) NSString *source;
 @property(strong,nonatomic,readwrite) NSString *sink;

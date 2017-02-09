@@ -27,7 +27,7 @@
 @implementation KMSEventData
 
 
-+(Class)classForParsingJSONDictionary:(NSDictionary *)JSONDictionary{
++ (Class)classForParsingJSONDictionary:(NSDictionary *)JSONDictionary{
     NSString *typeString = JSONDictionary[@"type"];
     KMSEventType type = (KMSEventType)[[self kmsEventTypesMap][typeString] integerValue];
     
@@ -47,7 +47,7 @@
     return self;
 }
 
-+(NSDictionary *)kmsEventTypesMap{
++ (NSDictionary *)kmsEventTypesMap{
     
     return @{@"OnIceGatheringDone" :@(KMSEventTypeOnICEGatheringDone),
              @"OnIceCandidate" : @(KMSEventTypeOnICECandidate),
@@ -56,13 +56,13 @@
              @"MediaStateChanged" : @(KMSEventTypeMediaStateChanged)};
 }
 
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     return @{@"type" : @"type",
              @"source" : @"source"};
 }
 
 
-+(NSValueTransformer *)typeJSONTransformer{
++ (NSValueTransformer *)typeJSONTransformer{
     return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:[self kmsEventTypesMap]];
 }
 
@@ -71,11 +71,11 @@
 
 @implementation KMSEventDataICECandidate
 
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:  @{@"candidate" : @"candidate"}];
 }
 
-+(NSValueTransformer *)candidateJSONTransformer{
++ (NSValueTransformer *)candidateJSONTransformer{
     return [MTLJSONAdapter dictionaryTransformerWithModelClass:[KMSICECandidate class]];
 }
 
@@ -84,7 +84,7 @@
 
 @implementation KMSEventDataElementConnection
 
--(instancetype)initWithDictionary:(NSDictionary *)dictionaryValue error:(NSError *__autoreleasing *)error{
+- (instancetype)initWithDictionary:(NSDictionary *)dictionaryValue error:(NSError *__autoreleasing *)error{
     self = [super initWithDictionary:dictionaryValue error:error];
     if(self == nil) return nil;
     
@@ -98,12 +98,12 @@
     
 }
 
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"sink" : @"sink",
                                                                               @"mediaType" : @"mediaType"}];
 }
 
-+(NSValueTransformer *)mediaTypeJSONTransformer{
++ (NSValueTransformer *)mediaTypeJSONTransformer{
     return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{@"AUDIO" : @(KMSMediaTypeAudio),
                                                                            @"VIDEO" : @(KMSMediaTypeVideo),
                                                                            @"DATA" : @(KMSMediaTypeData)} defaultValue:@(KMSMediaTypeNone) reverseDefaultValue:[NSNull null]];
@@ -114,22 +114,22 @@
 
 @implementation KMSEventDataMediaStateChanged
 
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"newState" : @"newState",
                                                                               @"oldState" : @"oldState"}];
 }
 
 
-+(NSDictionary *)mediaStateMap{
++ (NSDictionary *)mediaStateMap{
     return @{@"CONNECTED" : @(KMSMediaStateConnected),
              @"DISCONNECTED" : @(KMSMediaStateDisconnected)};
 }
 
-+(NSValueTransformer *)newStateJSONTransformer{
++ (NSValueTransformer *)newStateJSONTransformer{
     return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:[self mediaStateMap] defaultValue:@(KMSMediaStateNone) reverseDefaultValue:[NSNull null]];
 }
 
-+(NSValueTransformer *)oldStateJSONTransformer{
++ (NSValueTransformer *)oldStateJSONTransformer{
     return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:[self mediaStateMap] defaultValue:@(KMSMediaStateNone) reverseDefaultValue:[NSNull null]];
 }
 

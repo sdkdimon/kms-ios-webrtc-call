@@ -23,7 +23,7 @@
 #import <Mantle/NSValueTransformer+MTLPredefinedTransformerAdditions.h>
 
 @implementation KMSElementConnection
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     return @{
              @"source" : @"source",
              @"sink" : @"sink",
@@ -31,7 +31,7 @@
              };
 }
 
-+(NSValueTransformer *)mediaTypeJSONTransformer{
++ (NSValueTransformer *)mediaTypeJSONTransformer{
     return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{[NSNull null] : @(KMSMediaTypeNone),
                                                                            @"AUDIO" : @(KMSMediaTypeAudio),
                                                                            @"VIDEO" : @(KMSMediaTypeVideo),

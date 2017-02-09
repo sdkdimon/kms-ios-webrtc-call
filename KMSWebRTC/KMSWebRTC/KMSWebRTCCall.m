@@ -33,22 +33,10 @@
 #import <WebRTC/RTCSessionDescription.h>
 #import <WebRTC/RTCConfiguration.h>
 
-
 #import <KMSClient/KMSWebRTCEndpoint.h>
 #import <KMSClient/KMSEvent.h>
-
-#import <ReactiveCocoa/RACSignal.h>
-#import <ReactiveCocoa/RACSignal+Operations.h>
-#import <ReactiveCocoa/RACEXTScope.h>
-#import <ReactiveCocoa/RACCompoundDisposable.h>
-#import <ReactiveCocoa/NSObject+RACSelectorSignal.h>
-#import <ReactiveCocoa/RACSubscriber.h>
-#import <ReactiveCocoa/RACTuple.h>
-#import <ReactiveCocoa/RACScheduler.h>
-
-#import <RACSRWebSocket/RACSRWebSocket.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 #import <KMSClient/KMSSession.h>
-#import <KMSClient/KMSMessageFactoryWebRTCEndpoint.h>
 #import <KMSClient/KMSLog.h>
 
 @interface RTCIceCandidate (KMSIceCandidate)
@@ -93,6 +81,8 @@
 @property(strong,nonatomic,readwrite) NSString *webRTCEndpointId;
 @property(strong,nonatomic,readwrite) NSString *mediaPipelineId;
 
+@property (strong, nonatomic, readwrite) RACSubject *peerConnectionSignalingStateChangeSubject;
+
 @end
 
 @implementation KMSWebRTCCall
@@ -128,28 +118,23 @@
     _webRTCEndpointConnections = [[NSMutableArray alloc] init];
     _webRTCEndpointSubscriptions = [[NSMutableDictionary alloc] init];
     _subscriptionDisposables = [RACCompoundDisposable compoundDisposable];
+    _peerConnectionSignalingStateChangeSubject = [RACSubject subject];
     
-    
-    RACSignal *connectionErrorSignal = [[_kurentoSession wsClient] webSocketDidFailSignal];
+    RACSignal *connectionErrorSignal = [_kurentoSession errorSignal];
     @weakify(self);
     RACDisposable *connectionErrorSignalDisposable =
-    [connectionErrorSignal subscribeNext:^(RACTuple *x) {
+    [connectionErrorSignal subscribeNext:^(NSError *error) {
         @strongify(self);
-        [[self delegate] webRTCCall:self didFailWithError:[x second]];
+        [self kurentoSession:[self kurentoSession] didFailWithError:error];
     }];
     
     [_subscriptionDisposables addDisposable:connectionErrorSignalDisposable];
-    
-    
-    
 }
 
 - (void)setUpWebRTCEndpointId:(NSString *)webRTCEndpointId{
     [self setWebRTCEndpointId:webRTCEndpointId];
     if (webRTCEndpointId != nil){
-        KMSMessageFactoryWebRTCEndpoint *webRTCEndpointMessageFactory = [[KMSMessageFactoryWebRTCEndpoint alloc] init];
-        _webRTCEndpoint = [KMSWebRTCEndpoint endpointWithKurentoSession:_kurentoSession messageFactory:webRTCEndpointMessageFactory identifier:webRTCEndpointId];
-        [webRTCEndpointMessageFactory setDataSource:_webRTCEndpoint];
+        _webRTCEndpoint = [KMSWebRTCEndpoint endpointWithKurentoSession:_kurentoSession identifier:webRTCEndpointId];
         [self setMediaPipelineId:[_webRTCEndpoint mediaPipelineId]];
     }
 }
@@ -157,9 +142,7 @@
 - (void)setUpMediaPipelineId:(NSString *)mediaPipelineId{
     [self setMediaPipelineId:mediaPipelineId];
     if (mediaPipelineId != nil){
-        KMSMessageFactoryWebRTCEndpoint *webRTCEndpointMessageFactory = [[KMSMessageFactoryWebRTCEndpoint alloc] init];
-        _webRTCEndpoint = [KMSWebRTCEndpoint endpointWithKurentoSession:_kurentoSession messageFactory:webRTCEndpointMessageFactory mediaPipelineId:mediaPipelineId];
-        [webRTCEndpointMessageFactory setDataSource:_webRTCEndpoint];
+        _webRTCEndpoint = [KMSWebRTCEndpoint endpointWithKurentoSession:_kurentoSession mediaPipelineId:mediaPipelineId];
     }
 }
 
@@ -211,7 +194,7 @@
                     [RTCDispatcher dispatchAsyncOnType:RTCDispatcherTypeMain block:^{
                         KMSWebRTCEndpoint *webRTCSession = [self webRTCEndpoint];
                         RACSignal *processOfferSignal =
-                        [[[webRTCSession processOffer:[sdp sdp]] flattenMap:^RACStream *(NSString *remoteSDP) {
+                        [[[webRTCSession processOffer:[sdp sdp]] flattenMap:^RACSignal *(NSString *remoteSDP) {
                             @strongify(self);
                             RACSignal *remoteDescriptionSetSignal =
                             [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
@@ -229,7 +212,7 @@
                             
                             
                             return remoteDescriptionSetSignal;
-                        }] flattenMap:^RACStream *(id value) {
+                        }] flattenMap:^RACSignal *(id value) {
                             return [webRTCSession gatherICECandidates];
                         }];
                         [processOfferSignal subscribeError:^(NSError *error) {
@@ -375,6 +358,11 @@
     _peerConnection = [[self peerConnectionFactory] peerConnectionWithConfiguration:config constraints:[[self dataSource] peerConnetionMediaConstraintsForWebRTCCall:self] delegate:self];
 }
 
+- (void)disposePeerConnection
+{
+    _peerConnection = nil;
+}
+
 - (RACSignal *)unsubscribeWebRTCEventsSignal{
     
     if([_webRTCEndpointSubscriptions count] > 0){
@@ -399,7 +387,7 @@
     @weakify(self);
    return [[[[self webRTCEndpoint] dispose] then:^RACSignal *{
                 @strongify(self);
-                return [[self kurentoSession] close];
+                return [[self kurentoSession] closeSignal];
            }] ignoreValues];
 }
 
@@ -409,14 +397,15 @@
     [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
             RACSignal *peerConnectionSignalingStateChanged =
-            [[[self rac_signalForSelector:@selector(peerConnection:didChangeSignalingState:) fromProtocol:@protocol(RTCPeerConnectionDelegate)] filter:^BOOL(RACTuple *args) {
-                RTCSignalingState signalingState = (RTCSignalingState)[[args second] integerValue];
+            [[[self peerConnectionSignalingStateChangeSubject] filter:^BOOL(NSNumber *state) {
+                RTCSignalingState signalingState = (RTCSignalingState)[state integerValue];
                 return signalingState == RTCSignalingStateClosed;
             }] deliverOn:[RACScheduler mainThreadScheduler]];
             
             
             RACDisposable *disposable =
             [peerConnectionSignalingStateChanged subscribeNext:^(RACTuple *args) {
+                [self disposePeerConnection];
                 [subscriber sendNext:nil];
                 [subscriber sendCompleted];
             }];
@@ -435,7 +424,7 @@
 /** Called when the SignalingState changed. */
 - (void)peerConnection:(RTCPeerConnection *)peerConnection
 didChangeSignalingState:(RTCSignalingState)stateChanged{
-    
+    [_peerConnectionSignalingStateChangeSubject sendNext:@(stateChanged)];
 }
 
 /** Called when media is received on a new stream from remote peer. */
@@ -492,5 +481,18 @@ didRemoveIceCandidates:(NSArray<RTCIceCandidate *> *)candidates{
     didOpenDataChannel:(RTCDataChannel *)dataChannel{
     
 }
+
+#pragma mark KMSSessionErrorHandling
+
+- (void)kurentoSession:(KMSSession *)session didFailWithError:(NSError *)error
+{
+    @weakify(self);
+    [[self closePeerConnectionSignal] subscribeCompleted:^{
+        @strongify(self);
+        [[self delegate] webRTCCall:self didFailWithError:error];
+    }];
+}
+
+
 
 @end

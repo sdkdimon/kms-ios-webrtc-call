@@ -23,7 +23,7 @@
 
 @interface KMSMessageFactoryMediaPipeline : KMSRequestMessageFactory
 
--(KMSRequestMessage *)create;
--(KMSRequestMessage *)disposeObject:(NSString *)object;
+- (KMSRequestMessage *)create;
+- (KMSRequestMessage *)disposeObject:(NSString *)object;
 
 @end

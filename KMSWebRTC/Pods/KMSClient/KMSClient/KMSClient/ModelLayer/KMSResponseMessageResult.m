@@ -23,7 +23,7 @@
 
 @implementation KMSResponseMessageResult
 
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     return @{@"value" : @"value",
              @"sessionId" : @"sessionId"};
 }

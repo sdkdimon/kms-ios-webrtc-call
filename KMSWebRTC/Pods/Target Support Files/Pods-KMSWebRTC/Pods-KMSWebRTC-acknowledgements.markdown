@@ -101,35 +101,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-## RACSRWebSocket
+## ReactiveObjC
 
-The MIT License (MIT)
-
-Copyright (c) 2015 Dmitry
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-
-
-## ReactiveCocoa
-
-**Copyright (c) 2012 - 2015, GitHub, Inc.**
+**Copyright (c) 2012 - 2016, GitHub, Inc.**
 **All rights reserved.**
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -218,6 +192,14 @@ This source tree contains third party source code which is governed by third
 party licenses. Paths to the files and associated licenses are collected here.
 
 Files governed by third party licenses:
+base/base64.cc
+base/base64.h
+base/md5.cc
+base/md5.h
+base/sha1.cc
+base/sha1.h
+base/sigslot.cc
+base/sigslot.h
 common_audio/fft4g.c
 common_audio/signal_processing/spl_sqrt_floor.c
 common_audio/signal_processing/spl_sqrt_floor_arm.S
@@ -237,6 +219,67 @@ system_wrappers/source/spreadsortlib/constants.hpp
 system_wrappers/source/spreadsortlib/spreadsort.hpp
 
 Individual licenses for each file:
+-------------------------------------------------------------------------------
+Files:
+base/base64.cc
+base/base64.h
+
+License:
+//*********************************************************************
+//* Base64 - a simple base64 encoder and decoder.
+//*
+//*     Copyright (c) 1999, Bob Withers - bwit@pobox.com
+//*
+//* This code may be freely used for any purpose, either personal
+//* or commercial, provided the authors copyright notice remains
+//* intact.
+//*
+//* Enhancements by Stanley Yamane:
+//*     o reverse lookup table for the decode function
+//*     o reserve string buffer space in advance
+//*
+//*********************************************************************
+-------------------------------------------------------------------------------
+Files:
+base/md5.cc
+base/md5.h
+
+License:
+/*
+ * This code implements the MD5 message-digest algorithm.
+ * The algorithm is due to Ron Rivest.  This code was
+ * written by Colin Plumb in 1993, no copyright is claimed.
+ * This code is in the public domain; do with it what you wish.
+ *
+-------------------------------------------------------------------------------
+Files:
+base/sha1.cc
+base/sha1.h
+
+License:
+/*
+ * SHA-1 in C
+ * By Steve Reid &lt;sreid@sea-to-sky.net&gt;
+ * 100% Public Domain
+ *
+ * -----------------
+ * Modified 7/98
+ * By James H. Brown &lt;jbrown@burgoyne.com&gt;
+ * Still 100% Public Domain
+ *
+-------------------------------------------------------------------------------
+Files:
+base/sigslot.cc
+base/sigslot.h
+
+License:
+// sigslot.h: Signal/Slot classes
+//
+// Written by Sarah Thompson (sarah@telergy.com) 2002.
+//
+// License: Public domain. You are free to use this code however you like, with
+// the proviso that the author takes on no responsibility or liability for any
+// use.
 -------------------------------------------------------------------------------
 Files:
 common_audio/signal_processing/spl_sqrt_floor.c

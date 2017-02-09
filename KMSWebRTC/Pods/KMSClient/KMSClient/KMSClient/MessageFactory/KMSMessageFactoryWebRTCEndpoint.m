@@ -24,7 +24,7 @@
 
 @implementation KMSMessageFactoryWebRTCEndpoint
 
--(KMSRequestMessage *)createWithMediaPipeline:(NSString *)mediaPipeline{
+- (KMSRequestMessage *)createWithMediaPipeline:(NSString *)mediaPipeline{
     KMSMessageParamsCreateWebRTC *messageParams = [[KMSMessageParamsCreateWebRTC alloc] init];
     [messageParams setType:KMSCreationTypeWebRTCEndpoint];
     KMSConstructorParamsWebRTC *messageConstructorParams = [[KMSConstructorParamsWebRTC alloc] init];
@@ -32,13 +32,13 @@
     [messageParams setConstructorParams:messageConstructorParams];
     return [self messageWithParams:messageParams method:KMSMethodCreate];
 }
--(KMSRequestMessage *)disposeObject:(NSString *)object{
+- (KMSRequestMessage *)disposeObject:(NSString *)object{
     KMSMessageParamsRelease *messageParams = [[KMSMessageParamsRelease alloc] init];
     [messageParams setObject:object];
     return [self messageWithParams:messageParams method:KMSMethodRelease];
 }
 
--(KMSRequestMessage *)connectSourceEndpoint:(NSString *)sourceEndpoint sinkEndpoint:(NSString *)sinkEndpoint{
+- (KMSRequestMessage *)connectSourceEndpoint:(NSString *)sourceEndpoint sinkEndpoint:(NSString *)sinkEndpoint{
     KMSOperationParamsConnect *operationParams = [[KMSOperationParamsConnect alloc] init];
     [operationParams setSink:sinkEndpoint];
     
@@ -49,7 +49,7 @@
     
     return [self messageWithParams:messageParams method:KMSMethodInvoke];
 }
--(KMSRequestMessage *)disconnectSourceEndpoint:(NSString *)sourceEndpoint sinkEndpoint:(NSString *)sinkEndpoint{
+- (KMSRequestMessage *)disconnectSourceEndpoint:(NSString *)sourceEndpoint sinkEndpoint:(NSString *)sinkEndpoint{
     KMSOperationParamsConnect *operationParams = [[KMSOperationParamsConnect alloc] init];
     [operationParams setSink:sinkEndpoint];
     
@@ -60,20 +60,20 @@
     
     return [self messageWithParams:messageParams method:KMSMethodInvoke];
 }
--(KMSRequestMessage *)getSourceConnectionsForEndpoint:(NSString *)endpoint{
+- (KMSRequestMessage *)getSourceConnectionsForEndpoint:(NSString *)endpoint{
     KMSMessageParamsInvoke *messageParams = [[KMSMessageParamsInvoke alloc] init];
     [messageParams setOperation:KMSInvocationOperationGetSourceConnections];
     [messageParams setObject:endpoint];
     return [self messageWithParams:messageParams method:KMSMethodInvoke];;
 }
--(KMSRequestMessage *)getSinkConnectionsForEndpoint:(NSString *)endpoint{
+- (KMSRequestMessage *)getSinkConnectionsForEndpoint:(NSString *)endpoint{
     KMSMessageParamsInvoke *messageParams = [[KMSMessageParamsInvoke alloc] init];
     [messageParams setOperation:KMSInvocationOperationGetSinkConnections];
     [messageParams setObject:endpoint];
     return [self messageWithParams:messageParams method:KMSMethodInvoke];
 
 }
--(KMSRequestMessage *)processOffer:(NSString *)offer endpoint:(NSString *)endpoint{
+- (KMSRequestMessage *)processOffer:(NSString *)offer endpoint:(NSString *)endpoint{
     KMSMessageParamsProcessOffer *messageParams = [[KMSMessageParamsProcessOffer alloc] init];
     [messageParams setOperation:KMSInvocationOperationProcessOffer];
     [messageParams setObject:endpoint];
@@ -81,7 +81,7 @@
     
     return [self messageWithParams:messageParams method:KMSMethodInvoke];;
 }
--(KMSRequestMessage *)gatherICECandidatesForEndpoint:(NSString *)endpoint{
+- (KMSRequestMessage *)gatherICECandidatesForEndpoint:(NSString *)endpoint{
     KMSMessageParamsInvoke *messageParams = [[KMSMessageParamsInvoke alloc] init];
     [messageParams setObject:endpoint];
     [messageParams setOperation:KMSInvocationOperationGatherCandidates];
@@ -89,7 +89,7 @@
     
     return [self messageWithParams:messageParams method:KMSMethodInvoke];
 }
--(KMSRequestMessage *)addICECandidate:(KMSICECandidate *)candidate endpoint:(NSString *)endpoint{
+- (KMSRequestMessage *)addICECandidate:(KMSICECandidate *)candidate endpoint:(NSString *)endpoint{
     KMSMessageParamsAddICECandidate *messageParams = [[KMSMessageParamsAddICECandidate alloc] init];
     
     KMSOperationParamsAddICECandidate *messageOperationParams = [[KMSOperationParamsAddICECandidate alloc] init];
@@ -100,13 +100,13 @@
     
     return [self messageWithParams:messageParams method:KMSMethodInvoke];
 }
--(KMSRequestMessage *)subscribeEndpoint:(NSString *)endpoint event:(KMSEventType)event{
+- (KMSRequestMessage *)subscribeEndpoint:(NSString *)endpoint event:(KMSEventType)event{
     KMSMessageParamsSubscribe *messageParams =[[KMSMessageParamsSubscribe alloc] init];
     [messageParams setObject:endpoint];
     [messageParams setType:event];
     return [self messageWithParams:messageParams method:KMSMethodSubscribe];
 }
--(KMSRequestMessage *)unsubscribeEndpoint:(NSString *)endpoint subscription:(NSString *)subscription{
+- (KMSRequestMessage *)unsubscribeEndpoint:(NSString *)endpoint subscription:(NSString *)subscription{
     KMSMessageParamsUnsubscribe *messageParams = [[KMSMessageParamsUnsubscribe alloc] init];
     [messageParams setSubscription:subscription];
     [messageParams setObject:endpoint];

@@ -4,13 +4,12 @@ platform :ios, '8.0'
 use_frameworks!
 
 def shared_pods
-   pod 'ReactiveCocoa', '2.5'
-   pod 'KMSClient', '1.1.0'
-   pod 'MantleNullValuesOmit', '0.0.1'
-   pod 'RACSRWebSocket', '1.1.3'
+   pod 'ReactiveObjC', '2.1.2'
+   pod 'KMSClient', '1.1.1'
+   pod 'MantleNullValuesOmit', '0.0.2'
    pod 'NSDictionaryMerge', '1.0'
-   pod 'Mantle', '2.0.7'
-   pod 'WebRTC', '54.6.13869'
+   pod 'Mantle', '2.1.0'
+   pod 'WebRTC', '57.2.16123'
 
 end
 

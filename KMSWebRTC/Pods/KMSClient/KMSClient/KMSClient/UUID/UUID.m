@@ -22,7 +22,7 @@
 #import "UUID.h"
 
 @implementation UUID
-+(NSString *)uuid
++ (NSString *)uuid
 {
     //also known as uuid/universallyUniqueIdentifier
     

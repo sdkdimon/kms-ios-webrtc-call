@@ -25,7 +25,7 @@
 
 @implementation KMSEvent
 
-+(Class)classForParsingJSONDictionary:(NSDictionary *)JSONDictionary{
++ (Class)classForParsingJSONDictionary:(NSDictionary *)JSONDictionary{
     NSString *eventTypeString = JSONDictionary[@"type"];
     
     KMSEventType eventType = (KMSEventType)[[self typePropertyMap][eventTypeString] integerValue];
@@ -47,13 +47,13 @@
     
 }
 
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     return @{@"data" : @"data",
              @"object" : @"object",
              @"type" : @"type"};
 }
 
-+(NSDictionary *)typePropertyMap{
++ (NSDictionary *)typePropertyMap{
     return @{@"OnIceGatheringDone" :@(KMSEventTypeOnICEGatheringDone),
              @"OnIceCandidate" : @(KMSEventTypeOnICECandidate),
              @"ElementConnected" : @(KMSEventTypeMediaElementConnected),
@@ -61,12 +61,12 @@
              @"MediaStateChanged" : @(KMSEventTypeMediaStateChanged)};
 }
 
-+(NSValueTransformer *)typeJSONTransformer{
++ (NSValueTransformer *)typeJSONTransformer{
     
    return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:[self typePropertyMap]];
 }
 
-+(NSValueTransformer *)dataJSONTransformer{
++ (NSValueTransformer *)dataJSONTransformer{
     return [MTLJSONAdapter dictionaryTransformerWithModelClass:[KMSEventData class]];
 }
 

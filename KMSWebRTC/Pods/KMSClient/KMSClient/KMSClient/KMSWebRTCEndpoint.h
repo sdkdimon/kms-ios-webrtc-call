@@ -20,7 +20,7 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import "KMSMessageFactoryWebRTCEndpoint.h"
+#import <ReactiveObjC/ReactiveObjC.h>
 #import "KMSEventType.h"
 
 @class RACSignal;
@@ -28,13 +28,13 @@
 @class KMSICECandidate;
 @class KMSMessageFactoryWebRTCEndpoint;
 
-@interface KMSWebRTCEndpoint : NSObject <KMSMessageFactoryDataSource>
+@interface KMSWebRTCEndpoint : NSObject 
 
-+(instancetype)endpointWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryWebRTCEndpoint *)messageFactory mediaPipelineId:(NSString *)mediaPipelineId;
--(instancetype)initWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryWebRTCEndpoint *)messageFactory mediaPipelineId:(NSString *)mediaPipelineId;
++ (instancetype)endpointWithKurentoSession:(KMSSession *)kurentoSession mediaPipelineId:(NSString *)mediaPipelineId;
+- (instancetype)initWithKurentoSession:(KMSSession *)kurentoSession mediaPipelineId:(NSString *)mediaPipelineId;
 
-+(instancetype)endpointWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryWebRTCEndpoint *)messageFactory identifier:(NSString *)identifier;
--(instancetype)initWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryWebRTCEndpoint *)messageFactory identifier:(NSString *)identifier;
++ (instancetype)endpointWithKurentoSession:(KMSSession *)kurentoSession identifier:(NSString *)identifier;
+- (instancetype)initWithKurentoSession:(KMSSession *)kurentoSession identifier:(NSString *)identifier;
 
 @property(strong,nonatomic,readonly) KMSSession *kurentoSession;
 @property(strong,nonatomic,readonly) KMSMessageFactoryWebRTCEndpoint *messageFactory;
@@ -43,23 +43,23 @@
 @property(strong,nonatomic,readonly) NSString *identifier;
 @property(strong,nonatomic,readonly) NSString *mediaPipelineId;
 
--(RACSignal *)create;
--(RACSignal *)dispose;
--(RACSignal *)connect:(NSString *)endpointId;
--(RACSignal *)disconnect:(NSString *)endpointId;
--(RACSignal *)getSourceConnections;
--(RACSignal *)getSinkConnections;
--(RACSignal *)gatherICECandidates;
--(RACSignal *)addICECandidate:(KMSICECandidate *)candidate;
--(RACSignal *)processOffer:(NSString *)offer;
--(RACSignal *)subscribe:(KMSEventType)event;
--(RACSignal *)unsubscribeSubscriptionId:(NSString *)subscriptionId;
+- (RACSignal *)create;
+- (RACSignal *)dispose;
+- (RACSignal *)connect:(NSString *)endpointId;
+- (RACSignal *)disconnect:(NSString *)endpointId;
+- (RACSignal *)getSourceConnections;
+- (RACSignal *)getSinkConnections;
+- (RACSignal *)gatherICECandidates;
+- (RACSignal *)addICECandidate:(KMSICECandidate *)candidate;
+- (RACSignal *)processOffer:(NSString *)offer;
+- (RACSignal *)subscribe:(KMSEventType)event;
+- (RACSignal *)unsubscribeSubscriptionId:(NSString *)subscriptionId;
 
--(RACSignal *)eventSignalForEvent:(KMSEventType)event;
+- (RACSignal *)eventSignalForEvent:(KMSEventType)event;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // Disallow init and don't add to documentation
-- (id)init __attribute__(
+- (instancetype)init __attribute__(
                          (unavailable("init is not a supported initializer for this class.")));
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 

@@ -27,13 +27,13 @@
 
 @protocol KMSMessageFactoryDataSource <NSObject>
 @required
--(NSString *)messageFactory:(KMSRequestMessageFactory *)messageFactory sessionIdForMessage:(KMSRequestMessage *)message;
+- (NSString *)messageFactory:(KMSRequestMessageFactory *)messageFactory sessionIdForMessage:(KMSRequestMessage *)message;
 
 @end
 
 @interface KMSRequestMessageFactory : NSObject
 
 @property(weak,nonatomic,readwrite) id <KMSMessageFactoryDataSource> dataSource;
--(KMSRequestMessage *)messageWithParams:(KMSMessageParams *)params method:(KMSMethod)method;
+- (KMSRequestMessage *)messageWithParams:(KMSMessageParams *)params method:(KMSMethod)method;
 
 @end

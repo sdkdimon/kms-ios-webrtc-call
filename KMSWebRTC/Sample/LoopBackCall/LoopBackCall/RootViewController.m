@@ -31,8 +31,7 @@
 
 #import "CallViewController.h"
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
-#import <RACSRWebSocket/RACSRWebSocket.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 #import <KMSClient/KMSSession.h>
 #import <KMSClient/KMSMediaPipeline.h>
 #import <KMSClient/KMSWebRTCEndpoint.h>
@@ -61,7 +60,7 @@
 
 @end
 
-static NSString * const KMS_URL = @"";
+static NSString * const KMS_URL = @"ws://192.168.0.89:8888/kurento";
 
 
 @interface RootViewController () <CallViewControllerDelegate,KMSWebRTCCallDataSource,KMSWebRTCCallDelegate>
@@ -114,14 +113,13 @@ static NSString * const KMS_URL = @"";
 
 - (void)initializeMediaPipeline{
     [_callButton setEnabled:NO];
-    RACSRWebSocket *wsClient = [[RACSRWebSocket alloc] initWithURL:[NSURL URLWithString:KMS_URL]];
-    _kmsAPIServIce = [KMSSession sessionWithWebSocketClient:wsClient];
-    KMSMessageFactoryMediaPipeline *mediaPipelineMessageFactory = [[KMSMessageFactoryMediaPipeline alloc] init];
-    _mediaPipeline = [KMSMediaPipeline pipelineWithKurentoSession:_kmsAPIServIce messageFactory:mediaPipelineMessageFactory];
-    [mediaPipelineMessageFactory setDataSource:_mediaPipeline];
+    _kmsAPIServIce = [[KMSSession alloc] initWithURL:[NSURL URLWithString:KMS_URL]];
+    _mediaPipeline = [KMSMediaPipeline pipelineWithKurentoSession:_kmsAPIServIce];
     @weakify(self);
     [[_mediaPipeline create] subscribeError:^(NSError *error) {
+        @strongify(self);
         NSLog(@"error creating meda pipeline object %@",error);
+        [[self callButton] setEnabled:YES];
     } completed:^{
         @strongify(self);
         [self call:[_mediaPipeline identifier]];
@@ -222,17 +220,25 @@ static NSString * const KMS_URL = @"";
 }
 
 - (void)webRTCCall:(KMSWebRTCCall *)webRTCCall didFailWithError:(NSError *)error{
-    if ([error code] == 57){
-        [_callViewController dismissViewControllerAnimated:NO completion:nil];
-        [self setCallViewController:nil];
-        [self setWebRTCCall:nil];
-    } else{
-        MBProgressHUD *hud = [MBProgressHUD HUDForView:[self view]];
+//    if ([error code] == 57){
+//        [_callViewController dismissViewControllerAnimated:NO completion:nil];
+//        [self setCallViewController:nil];
+//        [self setWebRTCCall:nil];
+//    } else{
+    
+    [_callViewController dismissViewControllerAnimated:NO completion:^{
+        
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[self view] animated:YES];
         [hud setLabelText:@"Error"];
         [hud setDetailsLabelText:[error localizedDescription]];
-        [hud hide:YES afterDelay:3.0f];
+        
         [self setCallViewController:nil];
-    }
+        [hud show:YES];
+        [hud hide:YES afterDelay:3.0f];
+    }];
+    
+    
+//    }
     
 }
 

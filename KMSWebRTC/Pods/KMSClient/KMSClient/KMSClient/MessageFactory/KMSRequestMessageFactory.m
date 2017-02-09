@@ -27,7 +27,7 @@ static NSString * const JSONRPC = @"2.0";
 
 @implementation KMSRequestMessageFactory
 
--(void)authorizeMessage:(KMSRequestMessage *)message{
+- (void)authorizeMessage:(KMSRequestMessage *)message{
     
     @try {
         if(_dataSource == nil){
@@ -52,7 +52,7 @@ static NSString * const JSONRPC = @"2.0";
     
 }
 
--(KMSRequestMessage *)messageWithParams:(KMSMessageParams *)params method:(KMSMethod)method{
+- (KMSRequestMessage *)messageWithParams:(KMSMessageParams *)params method:(KMSMethod)method{
     KMSRequestMessage *message = [KMSRequestMessage messageWithMethod:method];
     [message setJsonrpc:JSONRPC];
     [message setIdentifier:[UUID uuid]];

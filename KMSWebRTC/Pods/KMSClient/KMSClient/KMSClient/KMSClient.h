@@ -17,7 +17,6 @@ FOUNDATION_EXPORT const unsigned char KMSClientVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import <KMSClient/PublicHeader.h>
 
 
-//<KMSClient/KMSSession.h>
 #import <KMSClient/KMSSession.h>
 #import <KMSClient/KMSMediaPipeline.h>
 #import <KMSClient/KMSWebRTCEndpoint.h>

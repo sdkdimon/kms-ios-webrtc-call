@@ -31,6 +31,6 @@ typedef enum {
 
 @protocol KMSLogger <NSObject>
 
--(void)logMessage:(NSString *)message level:(KMSLogMessageLevel)level;
+- (void)logMessage:(NSString *)message level:(KMSLogMessageLevel)level;
 
 @end

@@ -20,31 +20,32 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import "KMSMessageFactoryMediaPipeline.h"
+#import <ReactiveObjC/ReactiveObjC.h>
+
 @class RACSignal;
 @class KMSSession;
 
-@interface KMSMediaPipeline : NSObject <KMSMessageFactoryDataSource>
+@interface KMSMediaPipeline : NSObject 
 
-+(instancetype)pipelineWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryMediaPipeline *)messageFactory identifier:(NSString *)identifier;
--(instancetype)initWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryMediaPipeline *)messageFactory identifier:(NSString *)identifier;
++ (instancetype)pipelineWithKurentoSession:(KMSSession *)kurentoSession identifier:(NSString *)identifier;
+- (instancetype)initWithKurentoSession:(KMSSession *)kurentoSession identifier:(NSString *)identifier;
 
-+(instancetype)pipelineWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryMediaPipeline *)messageFactory;
--(instancetype)initWithKurentoSession:(KMSSession *)kurentoSession messageFactory:(KMSMessageFactoryMediaPipeline *)messageFactory;
++ (instancetype)pipelineWithKurentoSession:(KMSSession *)kurentoSession;
+- (instancetype)initWithKurentoSession:(KMSSession *)kurentoSession;
 
 @property(strong,nonatomic,readonly) NSString *identifier;
 @property(strong,nonatomic,readonly) KMSSession *kurentoSession;
-@property(strong,nonatomic,readonly) KMSMessageFactoryMediaPipeline *messageFactory;
 
 
--(RACSignal *)create;
--(RACSignal *)dispose;
+
+- (RACSignal *)create;
+- (RACSignal *)dispose;
 
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // Disallow init and don't add to documentation
-- (id)init __attribute__(
+- (instancetype)init __attribute__(
                          (unavailable("init is not a supported initializer for this class.")));
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 

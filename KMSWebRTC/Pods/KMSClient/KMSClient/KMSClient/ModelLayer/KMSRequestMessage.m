@@ -34,7 +34,7 @@
 @synthesize method = _method;
 @synthesize params = _params;
 
-+(Class)classForMessageMethod:(KMSMethod)method{
++ (Class)classForMessageMethod:(KMSMethod)method{
     switch (method) {
         case KMSMethodCreate:
             return [KMSRequestMessageCreate class];
@@ -57,36 +57,36 @@
 
 }
 
-+(instancetype)messageWithMethod:(KMSMethod)method{
++ (instancetype)messageWithMethod:(KMSMethod)method{
     return [[[self classForMessageMethod:method] alloc] init];
 }
 
-+(Class)classForParamsJSONTransformer{
++ (Class)classForParamsJSONTransformer{
     return [KMSMessageParams class];
 }
 
 
 #pragma mark JSONKeyPathsByPropertyKey
 
-+(NSDictionary *)JSONKeyPathsByPropertyKey{
++ (NSDictionary *)JSONKeyPathsByPropertyKey{
     return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"method" : @"method",
                                                                                 @"params" : @"params"}];
 }
 
 #pragma mark MTLJSONSerializing
-+(Class)classForParsingJSONDictionary:(NSDictionary *)JSONDictionary{
++ (Class)classForParsingJSONDictionary:(NSDictionary *)JSONDictionary{
     return [KMSRequestMessageEvent class];
 }
 
-+(NSValueTransformer *)paramsJSONTransformer{
++ (NSValueTransformer *)paramsJSONTransformer{
     return [MTLJSONAdapter dictionaryTransformerWithModelClass:[self classForParamsJSONTransformer]];
 }
 
-+(NSValueTransformer *)methodJSONTransformer{
++ (NSValueTransformer *)methodJSONTransformer{
     return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:[self kmsMehtodMap]];
 }
 
-+(NSDictionary *)kmsMehtodMap{
++ (NSDictionary *)kmsMehtodMap{
     return @{@"create" :@(KMSMethodCreate),
              @"invoke" :@(KMSMethodInvoke),
              @"subscribe" :@(KMSMethodSubscribe),
@@ -101,14 +101,14 @@
 @implementation KMSRequestMessageCreate
 @dynamic params;
 
--(instancetype)init{
+- (instancetype)init{
     if((self = [super init]) != nil){
         _method = KMSMethodCreate;
     }
     return self;
 }
 
-+(Class)classForParamsJSONTransformer{
++ (Class)classForParamsJSONTransformer{
     return [KMSMessageParamsCreate class];
 }
 
@@ -117,7 +117,7 @@
 @implementation KMSRequestMessageCreateWebRTC
 @dynamic params;
 
-+(Class)classForParamsJSONTransformer{
++ (Class)classForParamsJSONTransformer{
     return [KMSMessageParamsCreateWebRTC class];
 }
 
@@ -126,7 +126,7 @@
 @implementation KMSRequestMessageInvoke
 @dynamic params;
 
--(instancetype)init{
+- (instancetype)init{
     if((self = [super init]) != nil){
         
         _method = KMSMethodInvoke;
@@ -134,7 +134,7 @@
     return self;
 }
 
-+(Class)classForParamsJSONTransformer{
++ (Class)classForParamsJSONTransformer{
     return [KMSMessageParamsInvoke class];
 }
 
@@ -143,7 +143,7 @@
 @implementation KMSRequestMessageProcessOffer
 @dynamic params;
 
-+(Class)classForParamsJSONTransformer{
++ (Class)classForParamsJSONTransformer{
     return [KMSRequestMessageProcessOffer class];
 }
 @end
@@ -151,7 +151,7 @@
 @implementation KMSRequestMessageConnect
 @dynamic params;
 
-+(Class)classForParamsJSONTransformer{
++ (Class)classForParamsJSONTransformer{
     return [KMSRequestMessageConnect class];
 }
 
@@ -160,7 +160,7 @@
 @implementation KMSRequestMessageAddICECandidate
 @dynamic params;
 
-+(Class)classForParamsJSONTransformer{
++ (Class)classForParamsJSONTransformer{
     return [KMSMessageParamsAddICECandidate class];
 }
 
@@ -169,14 +169,14 @@
 @implementation KMSRequestMessageSubscribe
 @dynamic params;
 
--(instancetype)init{
+- (instancetype)init{
     if((self = [super init]) != nil){
         _method = KMSMethodSubscribe;
     }
     return self;
 }
 
-+(Class)classForParamsJSONTransformer{
++ (Class)classForParamsJSONTransformer{
     return [KMSMessageParamsSubscribe class];
 }
 
@@ -185,14 +185,14 @@
 @implementation KMSRequestMessageUnsubscribe
 @dynamic params;
 
--(instancetype)init{
+- (instancetype)init{
     if((self = [super init]) != nil){
         _method = KMSMethodUnsubscribe;
     }
     return self;
 }
 
-+(Class)classForParamsJSONTransformer{
++ (Class)classForParamsJSONTransformer{
     return [KMSMessageParamsUnsubscribe class];
 }
 
@@ -202,14 +202,14 @@
 @implementation KMSRequestMessageRelease
 @dynamic params;
 
--(instancetype)init{
+- (instancetype)init{
     if((self = [super init]) != nil){
         _method = KMSMethodRelease;
     }
     return self;
 }
 
-+(Class)classForParamsJSONTransformer{
++ (Class)classForParamsJSONTransformer{
     return [KMSMessageParamsRelease class];
 }
 
@@ -219,7 +219,7 @@
 @implementation KMSRequestMessageEvent
 @dynamic params;
 
-+(Class)classForParamsJSONTransformer{
++ (Class)classForParamsJSONTransformer{
     return [KMSMessageParamsEvent class];
 }
 

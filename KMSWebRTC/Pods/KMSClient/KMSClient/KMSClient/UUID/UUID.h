@@ -22,5 +22,5 @@
 #import <Foundation/Foundation.h>
 
 @interface UUID : NSObject
-+(NSString *)uuid;
++ (NSString *)uuid;
 @end

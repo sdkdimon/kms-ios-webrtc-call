@@ -25,16 +25,16 @@
 
 @interface KMSMessageFactoryWebRTCEndpoint : KMSRequestMessageFactory
 
--(KMSRequestMessage *)createWithMediaPipeline:(NSString *)mediaPipeline;
--(KMSRequestMessage *)disposeObject:(NSString *)object;
--(KMSRequestMessage *)connectSourceEndpoint:(NSString *)sourceEndpoint sinkEndpoint:(NSString *)sinkEndpoint;
--(KMSRequestMessage *)disconnectSourceEndpoint:(NSString *)sourceEndpoint sinkEndpoint:(NSString *)sinkEndpoint;
--(KMSRequestMessage *)getSourceConnectionsForEndpoint:(NSString *)endpoint;
--(KMSRequestMessage *)getSinkConnectionsForEndpoint:(NSString *)endpoint;
--(KMSRequestMessage *)processOffer:(NSString *)offer endpoint:(NSString *)endpoint;
--(KMSRequestMessage *)gatherICECandidatesForEndpoint:(NSString *)endpoint;
--(KMSRequestMessage *)addICECandidate:(KMSICECandidate *)candidate endpoint:(NSString *)endpoint;
--(KMSRequestMessage *)subscribeEndpoint:(NSString *)endpoint event:(KMSEventType)event;
--(KMSRequestMessage *)unsubscribeEndpoint:(NSString *)endpoint subscription:(NSString *)subscription;
+- (KMSRequestMessage *)createWithMediaPipeline:(NSString *)mediaPipeline;
+- (KMSRequestMessage *)disposeObject:(NSString *)object;
+- (KMSRequestMessage *)connectSourceEndpoint:(NSString *)sourceEndpoint sinkEndpoint:(NSString *)sinkEndpoint;
+- (KMSRequestMessage *)disconnectSourceEndpoint:(NSString *)sourceEndpoint sinkEndpoint:(NSString *)sinkEndpoint;
+- (KMSRequestMessage *)getSourceConnectionsForEndpoint:(NSString *)endpoint;
+- (KMSRequestMessage *)getSinkConnectionsForEndpoint:(NSString *)endpoint;
+- (KMSRequestMessage *)processOffer:(NSString *)offer endpoint:(NSString *)endpoint;
+- (KMSRequestMessage *)gatherICECandidatesForEndpoint:(NSString *)endpoint;
+- (KMSRequestMessage *)addICECandidate:(KMSICECandidate *)candidate endpoint:(NSString *)endpoint;
+- (KMSRequestMessage *)subscribeEndpoint:(NSString *)endpoint event:(KMSEventType)event;
+- (KMSRequestMessage *)unsubscribeEndpoint:(NSString *)endpoint subscription:(NSString *)subscription;
 
 @end
