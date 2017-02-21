@@ -88,34 +88,40 @@
 
 - (RACSignal *)openIfNeededSignal
 {
-    switch (_state) {
-            
-        case KMSSessioStateClosed:
-        {
-            return [self openSignal];
-            
+    @weakify(self);
+    return [RACSignal defer:^RACSignal * _Nonnull{
+        @strongify(self);
+        switch ([self state]) {
+                
+            case KMSSessioStateClosed:
+            {
+                return [self openSignal];
+            }
+                
+            case KMSSessioStateClosing:
+            {
+                return [RACSignal error:nil];
+            }
+                
+            case KMSSessioStateOpen:
+            {
+                return [RACSignal return:nil];
+            }
+                
+            case KMSSessioStateOpening:
+            {
+                return [RACSignal error:nil];
+            }
+                
+            default:
+            {
+                return [RACSignal error:nil];
+            }
         }
-            
-        case KMSSessioStateClosing:
-        {
-            return [RACSignal error:nil];
-        }
-            
-        case KMSSessioStateOpen:
-        {
-            return [RACSignal return:nil];
-        }
-            
-        case KMSSessioStateOpening:
-        {
-            return [RACSignal error:nil];
-        }
-            
-        default:
-        {
-            return [RACSignal error:nil];
-        }
-    }
+        
+    }];
+    
+    
     
 }
 
@@ -139,10 +145,19 @@
                 NSString *responseMessageId = [responseMessage identifier];
                 if (responseMessageId != nil  && [responseMessageId isEqualToString:[message identifier]])
                 {
-                    KMSResponseMessageResult *responseMessageResult = [responseMessage result];
-                    [self setSessionId:[responseMessageResult sessionId]];
-                    [subscriber sendNext:[responseMessageResult value]];
-                    [subscriber sendCompleted];
+                    NSError *responseMessageError = [responseMessage error];
+                    if (responseMessageError == nil)
+                    {
+                        KMSResponseMessageResult *responseMessageResult = [responseMessage result];
+                        [self setSessionId:[responseMessageResult sessionId]];
+                        [subscriber sendNext:[responseMessageResult value]];
+                        [subscriber sendCompleted];
+                    }
+                    else
+                    {
+                        [subscriber sendError:responseMessageError];
+                    }
+                    
                 }
             }];
             RACDisposable *webSocketDidFailWithErrorSignalDisposable =

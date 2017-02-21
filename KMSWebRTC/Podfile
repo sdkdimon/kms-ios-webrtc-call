@@ -9,16 +9,15 @@ def shared_pods
    pod 'MantleNullValuesOmit', '0.0.2'
    pod 'NSDictionaryMerge', '1.0'
    pod 'Mantle', '2.1.0'
-   pod 'WebRTC', '57.2.16123'
-
 end
 
 target 'KMSWebRTC' do
+    project 'KMSWebRTC.xcodeproj'
     shared_pods
 end
 
 target 'LoopBackCall' do
-    project 'Sample/LoopBackCall/LoopBackCall.xcodeproj'
+    project 'LoopBackCall.xcodeproj'
     pod 'UIImage+Additions', '2.1.0'
     pod 'MBProgressHUD', '0.9.1'
     pod 'CGSizeAspectRatioTool', '1.0'

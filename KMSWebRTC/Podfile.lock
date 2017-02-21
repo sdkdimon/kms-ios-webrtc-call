@@ -53,7 +53,6 @@ PODS:
   - ReactiveObjC (2.1.2)
   - SocketRocket (0.5.1)
   - UIImage+Additions (2.1.0)
-  - WebRTC (57.2.16123)
 
 DEPENDENCIES:
   - CGSizeAspectRatioTool (= 1.0)
@@ -64,7 +63,6 @@ DEPENDENCIES:
   - NSDictionaryMerge (= 1.0)
   - ReactiveObjC (= 2.1.2)
   - UIImage+Additions (= 2.1.0)
-  - WebRTC (= 57.2.16123)
 
 SPEC CHECKSUMS:
   CGSizeAspectRatioTool: f88e95b9ceec43259c29bde52cf5e9a8d3c72123
@@ -76,8 +74,7 @@ SPEC CHECKSUMS:
   ReactiveObjC: 7b6782ae39f9ac0f57205c3b0c0b69b9dd7048c0
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   UIImage+Additions: 6181430b139099649e56171d58a52d6c37d57e42
-  WebRTC: b6ed56bffdf157a40495dff1b00c67111f7b899a
 
-PODFILE CHECKSUM: 9bf53f5edbdbc375e3f71eca128f0639f174e348
+PODFILE CHECKSUM: 2342a1d3f2534b2d03758f70e0fcf173927d3802
 
 COCOAPODS: 1.2.0

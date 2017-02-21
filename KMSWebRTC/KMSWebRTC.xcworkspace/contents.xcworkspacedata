@@ -5,7 +5,7 @@
       location = "group:KMSWebRTC.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Sample/LoopBackCall/LoopBackCall.xcodeproj">
+      location = "group:LoopBackCall.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
