@@ -24,7 +24,6 @@
 
 #import <WebRTC/RTCPeerConnectionFactory.h>
 #import <WebRTC/RTCMediaConstraints.h>
-//#import <WebRTC/RTCPair.h>
 #import <WebRTC/RTCAVFoundationVideoSource.h>
 #import <WebRTC/RTCVideoTrack.h>
 #import <WebRTC/RTCMediaStream.h>
@@ -60,7 +59,7 @@
 
 @end
 
-static NSString * const KMS_URL = @"ws://192.168.0.90:8888/kurento";
+static NSString * const KMS_URL = @"ws://192.168.3.234:8888/kurento";
 
 
 @interface RootViewController () <CallViewControllerDelegate,KMSWebRTCCallDataSource,KMSWebRTCCallDelegate>
@@ -70,6 +69,7 @@ static NSString * const KMS_URL = @"ws://192.168.0.90:8888/kurento";
 @property(strong,nonatomic,readwrite) CallViewController *callViewController;
 @property(strong,nonatomic,readwrite) KMSMediaPipeline *mediaPipeline;
 @property(strong,nonatomic,readwrite) KMSSession *kmsAPIServIce;
+
 
 @end
 
@@ -101,6 +101,7 @@ static NSString * const KMS_URL = @"ws://192.168.0.90:8888/kurento";
 
 - (void)initialize{
     [[KMSLog sharedInstance] setLogger:[[KurentoLogger alloc] init]];
+    
 }
 
 - (void)setupControls{
@@ -132,7 +133,6 @@ static NSString * const KMS_URL = @"ws://192.168.0.90:8888/kurento";
     [super viewDidLoad];
     [self setupControls];
     [self setupBindings];
- 
 }
 
 - (IBAction)makeCall:(UIButton *)sender {
@@ -151,15 +151,20 @@ static NSString * const KMS_URL = @"ws://192.168.0.90:8888/kurento";
    
     [self setCallViewController:callViewController];
     
-    _webRTCCall = [KMSWebRTCCall callWithKurentoSession:_kmsAPIServIce peerConnectionFactory:[[RTCPeerConnectionFactory alloc] init]];
-    [_webRTCCall setUpMediaPipelineId:webRTCEndpointId];
+    _webRTCCall = [KMSWebRTCCall callWithKurentoSession:_kmsAPIServIce];
+    //[_webRTCCall setUpMediaPipelineId:webRTCEndpointId];
     [_webRTCCall setDelegate:self];
     [_webRTCCall setDataSource:self];
-    [_webRTCCall makeCall];
+  //  [_webRTCCall makeCall];
+    [[_webRTCCall callSignalWithMediaPipelineId:webRTCEndpointId] subscribeError:^(NSError * _Nullable error) {
+        NSLog(@"");
+    } completed:^{
+        NSLog(@"");
+    }];
 }
 
 - (void)callViewControllerDidHangup:(CallViewController *)callViewController{
-    [_webRTCCall hangup];
+    [[_webRTCCall hangupSignal] subscribeCompleted:^{}];
 }
 
 #pragma mark KMSWebRTCCallDataSource

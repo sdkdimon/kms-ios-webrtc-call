@@ -20,3 +20,4 @@ FOUNDATION_EXPORT const unsigned char KMSWebRTCVersionString[];
 #import <KMSWebRTC/KMSWebRTCCallDelegate.h>
 #import <KMSWebRTC/KMSWebRTCCallDataSource.h>
 #import <KMSWebRTC/KMSWebRTCCallInitiator.h>
+#import <KMSWebRTC/RTCPeerConnection+RAC.h>

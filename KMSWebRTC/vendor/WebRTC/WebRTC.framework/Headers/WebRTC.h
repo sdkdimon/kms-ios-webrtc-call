@@ -45,3 +45,5 @@
 #import <WebRTC/RTCVideoSource.h>
 #import <WebRTC/RTCVideoTrack.h>
 #import <WebRTC/UIDevice+RTCDevice.h>
+#import <WebRTC/RTCAudioSessionConfiguration.h>
+#import <WebRTC/RTCAudioSession.h>

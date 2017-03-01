@@ -20,28 +20,24 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 #import "KMSWebRTCCallDataSource.h"
 #import "KMSWebRTCCallDelegate.h"
 
 @class RTCPeerConnectionFactory;
 @class KMSSession;
 
-@interface KMSWebRTCCall : NSObject{
+@interface KMSWebRTCCall : NSObject
+{
     NSMutableDictionary *_webRTCEndpointSubscriptions;
     NSMutableArray *_webRTCEndpointConnections;
 }
 
-+ (nonnull instancetype)callWithKurentoSession:(nonnull KMSSession *)kurentoSession peerConnectionFactory:(nonnull RTCPeerConnectionFactory *)peerConnecitonFactory;
-- (nonnull instancetype)initWithKurentoSession:(nonnull KMSSession *)kurentoSession peerConnectionFactory:(nonnull RTCPeerConnectionFactory *)peerConnecitonFactory;
++ (nonnull instancetype)callWithKurentoSession:(nonnull KMSSession *)kurentoSession;
+- (nonnull instancetype)initWithKurentoSession:(nonnull KMSSession *)kurentoSession;
 
-@property(nonnull,strong,nonatomic,readonly) NSString *webRTCEndpointId;
-@property(nonnull,strong,nonatomic,readonly) NSString *mediaPipelineId;
 @property(nonnull,strong,nonatomic,readonly) RTCPeerConnectionFactory *peerConnectionFactory;
 @property(nonnull,strong,nonatomic,readonly) KMSSession *kurentoSession;
-
-- (void)setUpWebRTCEndpointId:(nullable NSString *)webRTCEndpointId;
-- (void)setUpMediaPipelineId:(nullable NSString *)mediaPipelineId;
-
 
 
 @property(nullable,weak,nonatomic,readwrite) id <KMSWebRTCCallDelegate> delegate;
@@ -51,9 +47,12 @@
 @property(nonnull,strong,nonatomic,readonly) NSArray *webRTCEndpointConnections;
 
 
-- (void)makeCall;
-- (void)hangup;
+- (nonnull RACSignal *)callSignalWithWebRTCEndpointId:(nonnull NSString *)webRTCEndpointId;
+- (nonnull RACSignal *)callSignalWithMediaPipelineId:(nonnull NSString *)mediaPipelineEndpointId;
 
+- (nonnull RACSignal *)hangupSignal;
+
+- (nullable NSString *)webRTCEndpointId;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // Disallow init and don't add to documentation

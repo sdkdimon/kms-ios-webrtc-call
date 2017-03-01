@@ -26,6 +26,7 @@
 #import <WebRTC/RTCVideoTrack.h>
 #import <WebRTC/RTCAudioTrack.h>
 #import <WebRTC/RTCMediaStream.h>
+#import <WebRTC/RTCAudioSession.h>
 
 
 #import <ReactiveObjC/ReactiveObjC.h>
@@ -66,6 +67,8 @@ typedef enum {
 
 @property(strong,nonatomic,readwrite) AudioOutputManager *soundRouter;
 
+@property (strong, nonatomic, readwrite) RTCAudioSession *audioSession;
+@property (assign, nonatomic, readwrite) AVAudioSessionPortOverride portOverride;
 @end
 
 @implementation CallViewController
@@ -87,7 +90,9 @@ typedef enum {
 }
 
 - (void)setup{
-    _soundRouter = [[AudioOutputManager alloc] initWithAudioSession:[AVAudioSession sharedInstance]];
+    _audioSession = [RTCAudioSession sharedInstance];
+    _portOverride = AVAudioSessionPortOverrideNone;
+    //_soundRouter = [[AudioOutputManager alloc] initWithAudioSession:[AVAudioSession sharedInstance]];
     _videoEnabled = NO;
     _mIcenabled = YES;
 }
@@ -175,6 +180,8 @@ typedef enum {
         
         AudioOutputPort outputPort = [[self soundRouter] audioSessionAudioOutputType];
         
+        
+        
         switch (outputPort) {
             case AudioOutputPortBuiltInSpeaker:
                 outputPort = AudioOutputPortBuiltInReceiver;
@@ -186,6 +193,17 @@ typedef enum {
             default:
                 break;
         }
+        
+        AVAudioSessionPortOverride newPort = [self portOverride] == AVAudioSessionPortOverrideNone ? AVAudioSessionPortOverrideSpeaker : AVAudioSessionPortOverrideNone;
+        
+        [[self audioSession] lockForConfiguration];
+        NSError *overrideOutputAudioPortError = nil;
+        if ([[self audioSession] overrideOutputAudioPort:newPort error:&overrideOutputAudioPortError])
+        {
+            [self setPortOverride:newPort];
+        }
+        
+        [[self audioSession] unlockForConfiguration];
         
         [[self soundRouter] setOutputType:outputPort error:nil];
         
