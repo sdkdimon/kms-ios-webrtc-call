@@ -45,7 +45,7 @@
 
 @interface KMSEventDataMediaStateChanged : KMSEventData
 
-@property(assign,nonatomic,readwrite) KMSMediaState newState;
+@property(assign,nonatomic,readwrite) KMSMediaState state;
 @property(assign,nonatomic,readwrite) KMSMediaState oldState;
 
 @end

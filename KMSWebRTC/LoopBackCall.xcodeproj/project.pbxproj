@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00BD0A97A03767BE8B977B2D /* Pods_LoopBackCall.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B65BDB3D9FC62B49D80EC81 /* Pods_LoopBackCall.framework */; };
 		8A08F1831C05D4220002E64C /* AudioOutputManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A08F1821C05D4220002E64C /* AudioOutputManager.m */; };
 		8A08F1881C05DC410002E64C /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A08F1871C05DC410002E64C /* Launch Screen.storyboard */; };
 		8A1683101C0DFECC00F60164 /* View.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A16830F1C0DFECC00F60164 /* View.xib */; };
@@ -20,6 +19,7 @@
 		8AD5B53E1B8F1286003D8627 /* RootView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8AD5B5381B8F1286003D8627 /* RootView.xib */; };
 		8AD5B53F1B8F1286003D8627 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5B53A1B8F1286003D8627 /* RootViewController.m */; };
 		8AE360201D9C17AE00E9E910 /* KMSWebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE3601E1D9C17AE00E9E910 /* KMSWebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A87525E9D60234578EB6BC4F /* Pods_LoopBackCall.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1FCC60CF0B86700A5C862B7 /* Pods_LoopBackCall.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -38,8 +38,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5B65BDB3D9FC62B49D80EC81 /* Pods_LoopBackCall.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LoopBackCall.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5FD9D6A582779C908022B178 /* Pods-LoopBackCall.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoopBackCall.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LoopBackCall/Pods-LoopBackCall.debug.xcconfig"; sourceTree = "<group>"; };
 		8A08F1811C05D4220002E64C /* AudioOutputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioOutputManager.h; sourceTree = "<group>"; };
 		8A08F1821C05D4220002E64C /* AudioOutputManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioOutputManager.m; sourceTree = "<group>"; };
 		8A08F1871C05DC410002E64C /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
@@ -59,7 +57,9 @@
 		8AD5B5391B8F1286003D8627 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		8AD5B53A1B8F1286003D8627 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RootViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		8AE3601E1D9C17AE00E9E910 /* KMSWebRTC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KMSWebRTC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F9C68822ED626A41009C92BA /* Pods-LoopBackCall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoopBackCall.release.xcconfig"; path = "Pods/Target Support Files/Pods-LoopBackCall/Pods-LoopBackCall.release.xcconfig"; sourceTree = "<group>"; };
+		B08F025A75BF8B3CAB1259A3 /* Pods-LoopBackCall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoopBackCall.release.xcconfig"; path = "Pods/Target Support Files/Pods-LoopBackCall/Pods-LoopBackCall.release.xcconfig"; sourceTree = "<group>"; };
+		C1FCC60CF0B86700A5C862B7 /* Pods_LoopBackCall.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LoopBackCall.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D069A4AFFDEFFBC6D180B6D2 /* Pods-LoopBackCall.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoopBackCall.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LoopBackCall/Pods-LoopBackCall.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,18 +67,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00BD0A97A03767BE8B977B2D /* Pods_LoopBackCall.framework in Frameworks */,
+				A87525E9D60234578EB6BC4F /* Pods_LoopBackCall.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		04F2CC600E7A4DE3943D056C /* Pods */ = {
+		20D3CE78121C230FD4F056CD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5FD9D6A582779C908022B178 /* Pods-LoopBackCall.debug.xcconfig */,
-				F9C68822ED626A41009C92BA /* Pods-LoopBackCall.release.xcconfig */,
+				D069A4AFFDEFFBC6D180B6D2 /* Pods-LoopBackCall.debug.xcconfig */,
+				B08F025A75BF8B3CAB1259A3 /* Pods-LoopBackCall.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -89,7 +89,7 @@
 				8A7D31931E5CBA2100663FFD /* WebRTC.framework */,
 				8A7D31181E5CB49400663FFD /* WebRTC.framework */,
 				8AE3601E1D9C17AE00E9E910 /* KMSWebRTC.framework */,
-				5B65BDB3D9FC62B49D80EC81 /* Pods_LoopBackCall.framework */,
+				C1FCC60CF0B86700A5C862B7 /* Pods_LoopBackCall.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -119,7 +119,7 @@
 				8A8E02E01B8F11740086FBF9 /* LoopBackCall */,
 				8A8E02DF1B8F11740086FBF9 /* Products */,
 				74653C758ECA3267EEFB7609 /* Frameworks */,
-				04F2CC600E7A4DE3943D056C /* Pods */,
+				20D3CE78121C230FD4F056CD /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -181,13 +181,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8A8E03011B8F11740086FBF9 /* Build configuration list for PBXNativeTarget "LoopBackCall" */;
 			buildPhases = (
-				57E25D5D7F6131D61C6EE107 /* [CP] Check Pods Manifest.lock */,
+				ABBBDF34163CB0BB799E61F3 /* [CP] Check Pods Manifest.lock */,
 				8A8E02DA1B8F11740086FBF9 /* Sources */,
 				8A8E02DB1B8F11740086FBF9 /* Frameworks */,
 				8A8E02DC1B8F11740086FBF9 /* Resources */,
 				8AE360211D9C17AF00E9E910 /* Embed Frameworks */,
-				5B03880F0F7915F81F318A0A /* [CP] Embed Pods Frameworks */,
-				2FFA385EB4BC6079E298AF83 /* [CP] Copy Pods Resources */,
+				7A4F39507C9B45D8265F5AA9 /* [CP] Embed Pods Frameworks */,
+				508FAE2DB63180E6195E82E9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -252,7 +252,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2FFA385EB4BC6079E298AF83 /* [CP] Copy Pods Resources */ = {
+		508FAE2DB63180E6195E82E9 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -267,22 +267,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LoopBackCall/Pods-LoopBackCall-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		57E25D5D7F6131D61C6EE107 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		5B03880F0F7915F81F318A0A /* [CP] Embed Pods Frameworks */ = {
+		7A4F39507C9B45D8265F5AA9 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -295,6 +280,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LoopBackCall/Pods-LoopBackCall-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ABBBDF34163CB0BB799E61F3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -408,7 +408,7 @@
 		};
 		8A8E03021B8F11740086FBF9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5FD9D6A582779C908022B178 /* Pods-LoopBackCall.debug.xcconfig */;
+			baseConfigurationReference = D069A4AFFDEFFBC6D180B6D2 /* Pods-LoopBackCall.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = N7KJYZ955Q;
@@ -428,7 +428,7 @@
 		};
 		8A8E03031B8F11740086FBF9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F9C68822ED626A41009C92BA /* Pods-LoopBackCall.release.xcconfig */;
+			baseConfigurationReference = B08F025A75BF8B3CAB1259A3 /* Pods-LoopBackCall.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = N7KJYZ955Q;

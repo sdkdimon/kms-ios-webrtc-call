@@ -191,11 +191,16 @@
         [[self peerConnection] addStream:localMediaStream];
         [[self delegate] webRTCCall:self didAddLocalMediaStream:localMediaStream];
         return [[[self peerConnection] offerSignalForConstraints:[[self dataSource] localMediaSteamConstraintsForWebRTCCall:self]] flattenMap:^__kindof RACSignal * _Nullable(RTCSessionDescription  *localSessionDescription) {
+            @strongify(self);
             return [[[self peerConnection] setLocalDescriptionSignal:localSessionDescription] then:^RACSignal * _Nonnull{
+                @strongify(self);
                 return [[[self webRTCEndpoint] processOffer:[localSessionDescription sdp]] flattenMap:^__kindof RACSignal * _Nullable(NSString *remoteSessionDescription) {
+                    @strongify(self);
                     RTCSessionDescription *remoteDesc = [[RTCSessionDescription alloc] initWithType:RTCSdpTypeAnswer sdp:remoteSessionDescription];
                     return [[[self peerConnection] setRemoteDescriptionSignal:remoteDesc] then:^RACSignal * _Nonnull{
+                        @strongify(self);
                         return [[[self webRTCEndpoint] gatherICECandidates] then:^RACSignal * _Nonnull{
+                            @strongify(self);
                             return [self callBeginSignal];
                         }];
                     }];
@@ -207,22 +212,17 @@
 
 - (RACSignal *)callBeginSignal
 {
+    RACSignal *mediaStateChangedSignal =
+    [[[[[self webRTCEndpoint] eventSignalForEvent:KMSEventTypeMediaStateChanged] filter:^BOOL(KMSEventDataMediaStateChanged *mediaStateChangedEvent) {
+        return [mediaStateChangedEvent state] == KMSMediaStateConnected;
+    }] take:1] map:^id _Nullable(id  _Nullable value) {
+        return nil;
+    }];
+    
     @weakify(self);
-    return [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber>  _Nonnull subscriber) {
+    return [mediaStateChangedSignal doCompleted:^{
         @strongify(self);
-        RACSignal *mediaStateChangedSignal =
-        [[[[self webRTCEndpoint] eventSignalForEvent:KMSEventTypeMediaStateChanged] filter:^BOOL(KMSEventDataMediaStateChanged *mediaStateChangedEvent) {
-            return [mediaStateChangedEvent newState] == KMSMediaStateConnected;
-        }] take:1];
-        
-        RACDisposable *disposable =
-        [mediaStateChangedSignal subscribeNext:^(id  _Nullable x) {
-            [subscriber sendNext:nil];
-            [[self delegate] webRTCCallDidStart:self];
-            [subscriber sendCompleted];
-        }];
-        
-        return disposable;
+        [[self delegate] webRTCCallDidStart:self];
     }];
 }
 
@@ -311,6 +311,7 @@
         [[self mutableWebRTCEndpointSubscriptions] setObject:subscriptionId forKey:@(KMSEventTypeOnICECandidate)];
         [[self subscriptionDisposables] addDisposable:
         [eventSignal subscribeNext:^(KMSEventDataICECandidate *iceCandidateEvent) {
+            @strongify(self);
             [[self peerConnection] addIceCandidate:[[iceCandidateEvent candidate] rtcIceCandidate]];
         }]];
     }];
@@ -354,6 +355,22 @@
         NSString *subscriptionId = [values first];
         RACSignal *eventSignal = [values second];
         [[self mutableWebRTCEndpointSubscriptions] setObject:subscriptionId forKey:@(KMSEventTypeMediaStateChanged)];
+        [[self subscriptionDisposables] addDisposable:
+         [eventSignal subscribeNext:^(KMSEventDataMediaStateChanged *event) {
+            @strongify(self);
+            switch ([event state]) {
+                case KMSMediaStateConnected:
+                    NSLog(@"KMSMediaStateConnected");
+                    break;
+                case KMSMediaStateDisconnected:
+                    NSLog(@"KMSMediaStateDisconnected");
+                    break;
+                    
+                default:
+                    break;
+            }
+        }]];
+
         
     }];
     
@@ -417,21 +434,22 @@
     return _peerConnection != nil ?
     [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
-            RACSignal *peerConnectionSignalingStateChanged =
-            [[self peerConnectionSignalingStateChangeSubject] filter:^BOOL(NSNumber *state) {
-                RTCSignalingState signalingState = (RTCSignalingState)[state integerValue];
-                return signalingState == RTCSignalingStateClosed;
-            }];
+        RACSignal *peerConnectionSignalingStateChanged =
+        [[self peerConnectionSignalingStateChangeSubject] filter:^BOOL(NSNumber *state) {
+            RTCSignalingState signalingState = (RTCSignalingState)[state integerValue];
+            return signalingState == RTCSignalingStateClosed;
+        }];
+    
+        RACDisposable *disposable =
+        [peerConnectionSignalingStateChanged subscribeNext:^(RACTuple *args) {
+            @strongify(self);
+            [self disposePeerConnection];
+            [subscriber sendNext:nil];
+            [subscriber sendCompleted];
+        }];
+        [[self peerConnection] close];
         
-            RACDisposable *disposable =
-            [peerConnectionSignalingStateChanged subscribeNext:^(RACTuple *args) {
-                [self disposePeerConnection];
-                [subscriber sendNext:nil];
-                [subscriber sendCompleted];
-            }];
-            [[self peerConnection] close];
-            
-            return disposable;
+        return disposable;
         
     }] : [RACSignal empty];
     
@@ -445,7 +463,7 @@
 - (void)peerConnection:(RTCPeerConnection *)peerConnection didChangeSignalingState:(RTCSignalingState)stateChanged
 {
     [RTCDispatcher dispatchAsyncOnType:RTCDispatcherTypeMain block:^{
-        [_peerConnectionSignalingStateChangeSubject sendNext:@(stateChanged)];
+        [[self peerConnectionSignalingStateChangeSubject] sendNext:@(stateChanged)];
     }];
 }
 

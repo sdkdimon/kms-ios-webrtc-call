@@ -115,7 +115,7 @@
 @implementation KMSEventDataMediaStateChanged
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey{
-    return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"newState" : @"newState",
+    return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"state" : @"newState",
                                                                               @"oldState" : @"oldState"}];
 }
 
@@ -125,12 +125,16 @@
              @"DISCONNECTED" : @(KMSMediaStateDisconnected)};
 }
 
-+ (NSValueTransformer *)newStateJSONTransformer{
++ (NSValueTransformer *)mediaStateValueTransformer {
     return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:[self mediaStateMap] defaultValue:@(KMSMediaStateNone) reverseDefaultValue:[NSNull null]];
 }
 
++ (NSValueTransformer *)stateJSONTransformer{
+    return [self mediaStateValueTransformer];
+}
+
 + (NSValueTransformer *)oldStateJSONTransformer{
-    return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:[self mediaStateMap] defaultValue:@(KMSMediaStateNone) reverseDefaultValue:[NSNull null]];
+    return [self mediaStateValueTransformer];
 }
 
 
