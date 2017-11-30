@@ -19,8 +19,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Mantle/MTLModel.h>
-#import <Mantle/MTLJSONAdapter.h>
+#import <Mantle/Mantle.h>
 
 /**
  *  KMSMessage is a shared request/response model.

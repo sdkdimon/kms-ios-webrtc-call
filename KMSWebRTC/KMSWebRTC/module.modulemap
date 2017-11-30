@@ -1,7 +1,0 @@
-framework module KMSWebRTC {
-    umbrella header "KMSWebRTC.h"
-    export *
-    module * {export *}
-}
-
-

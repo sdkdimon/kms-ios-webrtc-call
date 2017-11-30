@@ -20,7 +20,7 @@
 // THE SOFTWARE.
 
 #import "KMSResponseMessage.h"
-#import "NSDictionary+Merge.h"
+
 #import <Mantle/MTLValueTransformer.h>
 
 @implementation KMSResponseMessage
@@ -30,8 +30,8 @@
 
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey{
-    return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"result" : @"result",
-                                                                                @"error" : @"error"}];
+    return [[super JSONKeyPathsByPropertyKey] mtl_dictionaryByAddingEntriesFromDictionary:@{@"result" : @"result",
+                                                                                     @"error" : @"error"}];
 }
 
 + (NSValueTransformer *)resultJSONTransformer{

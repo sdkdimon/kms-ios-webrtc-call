@@ -20,9 +20,6 @@
 // THE SOFTWARE.
 
 #import "KMSEventData.h"
-#import "NSDictionary+Merge.h"
-#import <Mantle/NSValueTransformer+MTLPredefinedTransformerAdditions.h>
-
 
 @implementation KMSEventData
 
@@ -72,7 +69,7 @@
 @implementation KMSEventDataICECandidate
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey{
-    return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:  @{@"candidate" : @"candidate"}];
+    return [[super JSONKeyPathsByPropertyKey] mtl_dictionaryByAddingEntriesFromDictionary:  @{@"candidate" : @"candidate"}];
 }
 
 + (NSValueTransformer *)candidateJSONTransformer{
@@ -99,7 +96,7 @@
 }
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey{
-    return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"sink" : @"sink",
+    return [[super JSONKeyPathsByPropertyKey] mtl_dictionaryByAddingEntriesFromDictionary:@{@"sink" : @"sink",
                                                                               @"mediaType" : @"mediaType"}];
 }
 
@@ -115,7 +112,7 @@
 @implementation KMSEventDataMediaStateChanged
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey{
-    return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"state" : @"newState",
+    return [[super JSONKeyPathsByPropertyKey] mtl_dictionaryByAddingEntriesFromDictionary:@{@"state" : @"newState",
                                                                               @"oldState" : @"oldState"}];
 }
 

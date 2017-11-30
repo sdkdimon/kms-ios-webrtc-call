@@ -20,9 +20,6 @@
 // THE SOFTWARE.
 
 #import "KMSMessageParams.h"
-#import "NSDictionary+Merge.h"
-#import <Mantle/NSValueTransformer+MTLPredefinedTransformerAdditions.h>
-
 
 @implementation KMSMessageParams
 
@@ -44,7 +41,7 @@
 @implementation KMSMessageParamsCreate
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey{
-    return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"type" : @"type",
+    return [[super JSONKeyPathsByPropertyKey] mtl_dictionaryByAddingEntriesFromDictionary:@{@"type" : @"type",
                                                                                 @"constructorParams" : @"constructorParams"}];
 }
 
@@ -71,7 +68,7 @@
 @synthesize operationParams;
 + (NSDictionary *)JSONKeyPathsByPropertyKey{
     
-    return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"object" : @"object",
+    return [[super JSONKeyPathsByPropertyKey] mtl_dictionaryByAddingEntriesFromDictionary:@{@"object" : @"object",
                                                                                 @"operation" : @"operation",
                                                                                 @"operationParams" : @"operationParams"}];
     
@@ -120,7 +117,7 @@
 @implementation KMSMessageParamsEvent
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey{
-    return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"value" : @"value"}];
+    return [[super JSONKeyPathsByPropertyKey] mtl_dictionaryByAddingEntriesFromDictionary:@{@"value" : @"value"}];
 }
 
 + (NSValueTransformer *)valueJSONTransformer{
@@ -133,7 +130,7 @@
 @implementation KMSMessageParamsRelease
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey{
-    return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"object" : @"object"}];
+    return [[super JSONKeyPathsByPropertyKey] mtl_dictionaryByAddingEntriesFromDictionary:@{@"object" : @"object"}];
 }
 
 @end
@@ -142,7 +139,7 @@
 @implementation KMSMessageParamsSubscribe
 + (NSDictionary *)JSONKeyPathsByPropertyKey{
     
-    return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"object" : @"object",
+    return [[super JSONKeyPathsByPropertyKey] mtl_dictionaryByAddingEntriesFromDictionary:@{@"object" : @"object",
                                                                                 @"type" : @"type"}];
 }
 
@@ -160,7 +157,7 @@
 @implementation KMSMessageParamsUnsubscribe
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey{
-    return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"object" : @"object",
+    return [[super JSONKeyPathsByPropertyKey] mtl_dictionaryByAddingEntriesFromDictionary:@{@"object" : @"object",
                                                                                 @"subscription" : @"subscription"}];
 }
 

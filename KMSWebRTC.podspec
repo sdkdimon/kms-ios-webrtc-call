@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "KMSWebRTC"
-  s.version          = "1.1.4"
+  s.version          = "1.1.5"
   s.summary          = "Kurento Media Server iOS Web RTC Call."
   s.homepage         = "https://github.com/sdkdimon/kms-ios-webrtc-call"
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
@@ -14,7 +14,6 @@ Pod::Spec.new do |s|
   s.source_files = 'KMSWebRTC/KMSWebRTC/*.{h,m}'
   s.ios.vendored_frameworks = 'KMSWebRTC/vendor/WebRTC/WebRTC.framework'
   s.xcconfig = { 'FRAMEWORK_SEARCH_PATHS' => '"${PODS_ROOT}/KMSWebRTC/KMSWebRTC/vendor/WebRTC"' }
-  s.dependency 'KMSClient', '1.1.1'
-  s.dependency 'ReactiveObjC', '2.1.2'
-
+  s.dependency 'KMSClient', '1.1.2'
+  s.dependency 'ReactiveObjC', '3.0.0'
 end

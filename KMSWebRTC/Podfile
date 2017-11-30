@@ -4,10 +4,9 @@ platform :ios, '8.0'
 use_frameworks!
 
 def shared_pods
-   pod 'ReactiveObjC', '2.1.2'
-   pod 'KMSClient', '1.1.1'
+   pod 'ReactiveObjC', '3.0.0'
+   pod 'KMSClient', '1.1.2'
    pod 'MantleNullValuesOmit', '0.0.2'
-   pod 'NSDictionaryMerge', '1.0'
    pod 'Mantle', '2.1.0'
 end
 
@@ -21,6 +20,5 @@ target 'LoopBackCall' do
     pod 'UIImage+Additions', '2.1.0'
     pod 'MBProgressHUD', '0.9.1'
     pod 'CGSizeAspectRatioTool', '1.0'
-    
     shared_pods
 end

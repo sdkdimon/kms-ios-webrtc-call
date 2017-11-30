@@ -20,13 +20,12 @@
 // THE SOFTWARE.
 
 #import "KMSRequestMessage.h"
-#import "NSDictionary+Merge.h"
-
-#import <Mantle/NSValueTransformer+MTLPredefinedTransformerAdditions.h>
 
 
 @interface KMSRequestMessage ()
- @property(assign,nonatomic,readwrite) KMSMethod method;
+
+@property (assign, nonatomic, readwrite) KMSMethod method;
+
 @end
 
 
@@ -69,7 +68,7 @@
 #pragma mark JSONKeyPathsByPropertyKey
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey{
-    return [[super JSONKeyPathsByPropertyKey] dictionaryByMergingDictionary:@{@"method" : @"method",
+    return [[super JSONKeyPathsByPropertyKey] mtl_dictionaryByAddingEntriesFromDictionary:@{@"method" : @"method",
                                                                                 @"params" : @"params"}];
 }
 

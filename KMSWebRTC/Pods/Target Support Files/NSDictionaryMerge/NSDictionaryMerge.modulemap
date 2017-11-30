@@ -1,6 +1,0 @@
-framework module NSDictionaryMerge {
-  umbrella header "NSDictionaryMerge-umbrella.h"
-
-  export *
-  module * { export * }
-}
