@@ -8,6 +8,7 @@ def shared_pods
    pod 'KMSClient', '1.1.2'
    pod 'MantleNullValuesOmit', '0.0.2'
    pod 'Mantle', '2.1.0'
+   pod 'WebRTC', '61.5.19063'
 end
 
 target 'KMSWebRTC' do

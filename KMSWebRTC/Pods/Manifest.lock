@@ -46,6 +46,7 @@ PODS:
   - ReactiveObjC (3.0.0)
   - SocketRocket (0.5.1)
   - UIImage+Additions (2.1.0)
+  - WebRTC (61.5.19063)
 
 DEPENDENCIES:
   - CGSizeAspectRatioTool (= 1.0)
@@ -55,6 +56,7 @@ DEPENDENCIES:
   - MBProgressHUD (= 0.9.1)
   - ReactiveObjC (= 3.0.0)
   - UIImage+Additions (= 2.1.0)
+  - WebRTC (= 61.5.19063)
 
 SPEC CHECKSUMS:
   CGSizeAspectRatioTool: f88e95b9ceec43259c29bde52cf5e9a8d3c72123
@@ -65,7 +67,8 @@ SPEC CHECKSUMS:
   ReactiveObjC: ce79989e8684b9086b5f8d0c74bc7b81a8729c9e
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   UIImage+Additions: 6181430b139099649e56171d58a52d6c37d57e42
+  WebRTC: 141474ba648e0b940a70696c183451b4a3b2b10f
 
-PODFILE CHECKSUM: e71ba411f6249e029823649256e0b41885d6e4c8
+PODFILE CHECKSUM: 370e97d60831824234f2c9c7f991d5a8be7cd8af
 
 COCOAPODS: 1.3.1

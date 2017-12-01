@@ -10,7 +10,6 @@
 		24ABE564A47C69EFEBDF023F /* Pods_KMSWebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57638637F635C6A594D546BB /* Pods_KMSWebRTC.framework */; };
 		8A2C2CEB1E65863200926C3B /* RTCPeerConnection+RAC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2C2CE81E6499C400926C3B /* RTCPeerConnection+RAC.m */; };
 		8A2C2CEC1E65863600926C3B /* RTCPeerConnection+RAC.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A2C2CE71E6499C400926C3B /* RTCPeerConnection+RAC.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8ACBB5441E65879A005326E3 /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ACBB5431E65879A005326E3 /* WebRTC.framework */; };
 		8AE3600E1D9C152D00E9E910 /* KMSWebRTC.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AE3600C1D9C152D00E9E910 /* KMSWebRTC.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AE360191D9C154500E9E910 /* KMSWebRTCCallInitiator.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AE360141D9C154500E9E910 /* KMSWebRTCCallInitiator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AE3601A1D9C154500E9E910 /* KMSWebRTCCallDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AE360151D9C154500E9E910 /* KMSWebRTCCallDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -24,7 +23,6 @@
 		57638637F635C6A594D546BB /* Pods_KMSWebRTC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KMSWebRTC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A2C2CE71E6499C400926C3B /* RTCPeerConnection+RAC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RTCPeerConnection+RAC.h"; sourceTree = "<group>"; };
 		8A2C2CE81E6499C400926C3B /* RTCPeerConnection+RAC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RTCPeerConnection+RAC.m"; sourceTree = "<group>"; };
-		8ACBB5431E65879A005326E3 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = vendor/WebRTC/WebRTC.framework; sourceTree = "<group>"; };
 		8AE360091D9C152D00E9E910 /* KMSWebRTC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KMSWebRTC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AE3600C1D9C152D00E9E910 /* KMSWebRTC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KMSWebRTC.h; sourceTree = "<group>"; };
 		8AE3600D1D9C152D00E9E910 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -41,7 +39,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8ACBB5441E65879A005326E3 /* WebRTC.framework in Frameworks */,
 				24ABE564A47C69EFEBDF023F /* Pods_KMSWebRTC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -95,7 +92,6 @@
 		AAE5453E4367DB5967D6296D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8ACBB5431E65879A005326E3 /* WebRTC.framework */,
 				57638637F635C6A594D546BB /* Pods_KMSWebRTC.framework */,
 			);
 			name = Frameworks;
