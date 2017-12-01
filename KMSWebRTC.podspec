@@ -15,4 +15,5 @@ Pod::Spec.new do |s|
   s.xcconfig = { 'FRAMEWORK_SEARCH_PATHS' => '"${PODS_ROOT}/KMSWebRTC/KMSWebRTC/vendor/WebRTC"' }
   s.dependency 'KMSClient', '1.1.3'
   s.dependency 'ReactiveObjC', '3.0.0'
+  s.dependency 'WebRTC', '61.5.19063'
 end
