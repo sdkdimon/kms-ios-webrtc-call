@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 
 #import "KMSMediaPipeline.h"
+
 #import "KMSSession.h"
 #import "KMSMessageFactoryMediaPipeline.h"
 
@@ -29,7 +30,6 @@
 @property(strong,nonatomic,readonly) KMSMessageFactoryMediaPipeline *messageFactory;
 
 @end
-
 
 @implementation KMSMediaPipeline
 
@@ -83,8 +83,5 @@
 {
     return [_kurentoSession sessionId];
 }
-
-
-
 
 @end

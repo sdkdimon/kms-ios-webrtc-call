@@ -20,25 +20,20 @@
 // THE SOFTWARE.
 
 #import "KMSSession.h"
+
 #import <SocketRocket/SRWebSocket.h>
 #import "KMSResponseMessage.h"
 #import "KMSRequestMessage.h"
 #import "KMSLog.h"
 #import "KMSRACSubject.h"
+#import "KMSSessionConnectionMonitor.h"
 
+@interface KMSSession () <SRWebSocketDelegate, KMSSessionPing>
 
-
-@interface KMSSession () <SRWebSocketDelegate>
-
-@property(strong,nonatomic,readwrite) NSString *sessionId;
-
-@property(strong,nonatomic,readwrite) RACCompoundDisposable *subscriptionDisposables;
-
+@property (strong, nonatomic, readwrite) NSString *sessionId;
+@property (strong, nonatomic, readwrite) RACCompoundDisposable *subscriptionDisposables;
 @property (strong, nonatomic, readwrite) SRWebSocket *webSocket;
-
-
-@property(assign,nonatomic,readwrite) KMSSessionState state;
-
+@property (assign, nonatomic, readwrite) KMSSessionState state;
 @property (strong, nonatomic, readwrite) RACSubject *websocketDidReceiveMessageSubject;
 @property (strong, nonatomic, readwrite) RACSubject *websocketDidOpenSubject;
 @property (strong, nonatomic, readwrite) RACSubject *websocketDidCloseSubject;
@@ -60,7 +55,8 @@
         _websocketDidCloseSubject = [RACSubject subject];
         _websocketDidFailWithErrorSubject = [KMSRACSubject subject];
         _errorSignal = _websocketDidFailWithErrorExternalSubject = [RACSubject subject];
-       
+        _connectionMonitor = [[KMSSessionConnectionMonitor alloc] initWithPingTimeInterval:3.0f pingFailCount:3];
+        _connectionMonitor.ping = self;
         _eventSignal =
         [[_websocketDidReceiveMessageSubject filter:^BOOL(RACTuple *args) {
             KMSMessage *message = [args second];
@@ -118,11 +114,7 @@
                 return [RACSignal error:nil];
             }
         }
-        
     }];
-    
-    
-    
 }
 
 
@@ -157,7 +149,6 @@
                     {
                         [subscriber sendError:responseMessageError];
                     }
-                    
                 }
             }];
             RACDisposable *webSocketDidFailWithErrorSignalDisposable =
@@ -171,6 +162,7 @@
             
             NSData *messageData = [self transformRequestMessage:message];
             [[self webSocket] send:messageData];
+            
             return signalDisposable;
         }
         else
@@ -178,8 +170,6 @@
             [subscriber sendError:nil];
             return nil;
         }
-        
-        
     }];
     
     return [[[self openIfNeededSignal] ignoreValues] concat:sendMesageSignal];
@@ -200,7 +190,6 @@
             RACCompoundDisposable *signalDisposable = [RACCompoundDisposable compoundDisposable];
             RACDisposable *webSocketDidCloseSignalDisposable =
             [webSocketDidCloseSignal subscribeNext:^(RACTuple *args) {
-                
                 [subscriber sendNext:nil];
                 [subscriber sendCompleted];
             }];
@@ -212,7 +201,6 @@
             
             [signalDisposable addDisposable:webSocketDidCloseSignalDisposable];
             [signalDisposable addDisposable:webSocketDidFailWithErrorSignalDisposable];
-            
             [[self webSocket] close];
             
             return signalDisposable;
@@ -224,7 +212,6 @@
         }
     }];
 }
-
 
 - (RACSignal *)openSignal
 {
@@ -252,16 +239,15 @@
             
             [signalDisposable addDisposable:webSocketDidOpenSignalDisposable];
             [signalDisposable addDisposable:webSocketDidFailWithErrorSignalDisposable];
-            
             [[self createWebSocket] open];
-        return signalDisposable;
+            
+            return signalDisposable;
         }
         else
         {
             [subscriber sendError:nil];
             return nil;
         }
-            
     }];
 }
 
@@ -277,31 +263,52 @@
 {
     [self setState:KMSSessioStateOpen];
     [_websocketDidOpenSubject sendNext:RACTuplePack(webSocket)];
+    [_connectionMonitor start];
 }
+
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error
 {
-    [self disposeWebsocket];
-    [self setState:KMSSessioStateClosed];
+    [self sessionDidFailWithError:error];
+}
 
+- (void)sessionDidFailWithError:(NSError *)error
+{
+    [_connectionMonitor stop];
+    [self setState:KMSSessioStateClosed];
+    
     if ([_websocketDidFailWithErrorSubject subscribersCount] > 0)
     {
-        [_websocketDidFailWithErrorSubject sendNext:RACTuplePack(webSocket, error)];
+        [_websocketDidFailWithErrorSubject sendNext:RACTuplePack(_webSocket, error)];
     }
     else
     {
         [_websocketDidFailWithErrorExternalSubject sendNext:error];
     }
-
+    [self disposeWebsocket];
 }
+
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean
 {
+    [_connectionMonitor stop];
     [self disposeWebsocket];
     [self setState:KMSSessioStateClosed];
     [_websocketDidCloseSubject sendNext:RACTuplePack(webSocket, @(code), reason, @(wasClean))];
 }
+
 - (void)webSocket:(SRWebSocket *)webSocket didReceivePong:(NSData *)pongPayload
 {
-    
+    [_connectionMonitor didReceivePong:pongPayload];
+}
+
+- (void)sendPing:(NSData *)data
+{
+    [_webSocket sendPing:data];
+}
+
+- (void)didFailReceivePong
+{
+    NSError *connectionError = [NSError errorWithDomain:@"org.sdkdimon.KMSClient" code:-1 userInfo:@{NSLocalizedDescriptionKey : @"Connection lost."}];
+    [self sessionDidFailWithError:connectionError];
 }
 
 // Return YES to convert messages sent as Text to an NSString. Return NO to skip NSData -> NSString conversion for Text messages. Defaults to YES.
@@ -310,16 +317,17 @@
     return NO;
 }
 
-
 #pragma mark MessageTransformer
 
-- (NSData *)transformRequestMessage:(KMSRequestMessage *)message{
+- (NSData *)transformRequestMessage:(KMSRequestMessage *)message
+{
     NSDictionary *jsonObject = [MTLJSONAdapter JSONDictionaryFromModel:message error:nil];
     KMSLog(KMSLogMessageLevelVerbose,@"Kurento API client will send message \n%@",jsonObject);
     return [NSJSONSerialization dataWithJSONObject:jsonObject options:0 error:nil];
 }
 
-- (KMSMessage *)transformResponseMessage:(NSData *)message{
+- (KMSMessage *)transformResponseMessage:(NSData *)message
+{
     NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:message options:0 error:nil];
     KMSLog(KMSLogMessageLevelVerbose,@"Kurento API client did receive message \n%@",jsonObject);
     return [MTLJSONAdapter modelOfClass:[KMSMessage class] fromJSONDictionary:jsonObject error:nil];

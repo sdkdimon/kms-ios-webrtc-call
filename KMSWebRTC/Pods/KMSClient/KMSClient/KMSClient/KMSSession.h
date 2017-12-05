@@ -20,9 +20,11 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
+
 #import <ReactiveObjC/ReactiveObjC.h>
 
 @class KMSRequestMessage;
+@class KMSSessionConnectionMonitor;
 
 typedef enum {
     KMSSessioStateClosed = 0,
@@ -37,10 +39,10 @@ typedef enum {
 
 @property (strong, nonatomic, readonly) NSURL *url;
 @property (strong, nonatomic, readonly) RACSignal *eventSignal;
-
 @property (strong, nonatomic, readonly) RACSignal *errorSignal;
 @property (assign, nonatomic, readonly) KMSSessionState state;
 @property (strong, nonatomic, readonly) NSString *sessionId;
+@property (strong, nonatomic, readwrite) KMSSessionConnectionMonitor *connectionMonitor;
 
 - (RACSignal *)sendMessageSignal:(KMSRequestMessage *)requestMessage;
 - (RACSignal *)openSignal;

@@ -59,7 +59,7 @@
 
 @end
 
-static NSString * const KMS_URL = @"ws://192.168.3.234:8888/kurento";
+static NSString * const KMS_URL = @"ws://192.168.0.156:8888/kurento";
 
 
 @interface RootViewController () <CallViewControllerDelegate,KMSWebRTCCallDataSource,KMSWebRTCCallDelegate>
@@ -164,7 +164,10 @@ static NSString * const KMS_URL = @"ws://192.168.3.234:8888/kurento";
 }
 
 - (void)callViewControllerDidHangup:(CallViewController *)callViewController{
-    [[_webRTCCall hangupSignal] subscribeCompleted:^{}];
+    [[_webRTCCall hangupSignal] subscribeCompleted:^{
+        NSLog(@"");
+        
+    }];
 }
 
 #pragma mark KMSWebRTCCallDataSource

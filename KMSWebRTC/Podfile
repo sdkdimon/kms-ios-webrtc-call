@@ -5,7 +5,7 @@ use_frameworks!
 
 def shared_pods
    pod 'ReactiveObjC', '3.0.0'
-   pod 'KMSClient', '1.1.2'
+   pod 'KMSClient', '1.1.3'
    pod 'MantleNullValuesOmit', '0.0.2'
    pod 'Mantle', '2.1.0'
    pod 'WebRTC', '61.5.19063'

@@ -6,10 +6,21 @@
 //  Copyright © 2017 dimon. All rights reserved.
 //
 
-#import <ReactiveObjC/ReactiveObjC.h>
+#import <ReactiveObjC/RACSignal.h>
+#import <ReactiveObjC/RACSubscriber.h>
 
-@interface KMSRACSubject : RACSubject
+NS_ASSUME_NONNULL_BEGIN
+
+@interface KMSRACSubject<ValueType> : RACSignal<ValueType> <RACSubscriber>
+
+/// Returns a new subject.
++ (instancetype)subject;
+
+// Redeclaration of the RACSubscriber method. Made in order to specify a generic type.
+- (void)sendNext:(nullable ValueType)value;
 
 - (NSUInteger)subscribersCount;
 
 @end
+
+NS_ASSUME_NONNULL_END

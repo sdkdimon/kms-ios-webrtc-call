@@ -20,17 +20,16 @@
 // THE SOFTWARE.
 
 #import "KMSWebRTCEndpoint.h"
+
 #import "KMSMessageFactoryWebRTCEndpoint.h"
 #import "KMSSession.h"
 #import "KMSResponseMessageResult.h"
 #import "KMSEvent.h"
 #import "KMSElementConnection.h"
 
-
 @interface KMSWebRTCEndpoint () <KMSMessageFactoryDataSource>
 
 @property(strong,nonatomic,readwrite) KMSSession *kurentoSession;
-
 @property(strong,nonatomic,readwrite) NSString *identifier;
 @property(strong,nonatomic,readwrite) NSString *mediaPipelineId;
 @property(strong,nonatomic,readwrite) RACSignal *eventSignal;
@@ -171,20 +170,3 @@
 }
 
 @end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
